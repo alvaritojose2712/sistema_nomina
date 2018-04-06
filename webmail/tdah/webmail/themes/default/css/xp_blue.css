@@ -1,0 +1,37 @@
+/* **********************************************************************
+	- File:			xp_blue.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Black Mesh sheet: This sheet contents only the change to the default sheet for this skin
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+TABLE.login 	{ background-image: url('../images/skins/xp_blue/login.gif'); }	
+.header 		{ background-image: url('../images/skins/xp_blue/header.gif'); }
+BODY.body,
+TABLE.background, 
+td.background 	{ background-image: url('../images/skins/xp_blue/background.gif'); }
+td.bar 			{ background-image: url('../images/skins/xp_blue/bar.gif'); }
+td.hbar 		{ background-image: url('../images/skins/xp_blue/hbar.gif'); }
+td.mbar 		{ background-image: url('../images/skins/xp_blue/mbar.gif'); }
+td.lmbar 		{ background-image: url('../images/skins/xp_blue/lmbar.gif'); }
+td.line 		{ background-image: url('../images/skins/xp_blue/line.gif'); }
+	TD.tab_info_visible {
+		cursor: pointer;
+		color: #FFFFFF; 
+		
+		background: url('../images/skins/xp_blue/lmbar.gif') repeat
+	}
+
+	TD.tab_info_visible {
+		cursor: pointer;
+		color: #FFFFFF; 
+		
+		background: url('../images/skins/xp_blue/lmbar.gif') repeat
+	}
+
+.i_frame,
+.innercontent 	{ background-color: #FAFAFF; }
+
+
+

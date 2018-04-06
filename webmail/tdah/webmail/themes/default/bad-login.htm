@@ -1,0 +1,65 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			bad_login.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Template to display error
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="BadLogin"}
+
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath/inc/header.tpl"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="login_body"> 
+
+	<table height="100%" class="tablecollapsed">
+	<tr>
+		<td width="100%" height="100%">
+		<div align="center">
+			<table border="0" cellpadding="0" cellspacing="0" >
+			<tr>
+				<td>
+				<table class="login container" border="0" cellspacing="0" cellpadding="10px" width="359" height="224">
+				<tr>
+					<td style="font-weight: bold; color: #FFFFFF;"><center>
+					<img border="0" src="themes/{$umTPath}/images/critical.gif" alt=""><br>&nbsp;<br>&nbsp;<br>
+					{#bdl_msg#}<br><br>
+					<input type="button" class="button" onClick="javascript:location='./index.php?lid={$umLid}&tid={$umTid}'" value="{#bt_back#}">
+					</center></td>
+				</tr>
+				</table>
+				</td>
+			</tr>
+			</table>
+		</div>
+		</td>  
+	</tr>  
+	</table>
+	
+</body>
+</html>

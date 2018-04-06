@@ -1,0 +1,107 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			print-message.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Format page for message printing
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Readmsg"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	{$pageMetas}
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+
+	{literal}
+	<script language="JavaScript" type="text/javascript">
+	function printIt() {
+		try {
+			self.print();
+		} catch(err) {
+			//
+		}
+		window.close();
+	}
+	</script>
+	{/literal}
+	<title>{if $webmailTitle}{$webmailTitle} - {/if}</title>
+</head>
+
+<body style="background-color: #FFFFFF; width: 100%; font: 10pt Arial,sans serif;" onLoad="printIt()">
+
+	<br><br>
+	<table class="tablecollapsed" style="padding: 5px;">
+		<tr>
+			<td style="border-bottom: 4px #000000 solid; font-size: 12pt;"><nobr><b>{$umSubject}</b></nobr></td>
+			<td style="border-bottom: 2px #000000 solid; width: 100%;">&nbsp;</td>
+		</tr>
+		</table>
+		<br>
+		
+		<table class="tablecollapsed" style="padding: 5px; font-size: 11pt;">
+		<tr>
+			<td width="150" valign="top"><b>{#from_hea#}</b></td>
+			<td>
+				{section name=i loop=$umFromList}"{$umFromList[i].name|default:#no_sender_text#|escape:"html"}"&nbsp;&lt;{$umFromList[i].mail|default:#no_sender_text#|escape:"html"}&gt;{/section}
+			</td>
+		</tr>
+		<tr valign="top">
+			<td><b>{#to_hea#}</b></td>
+			<td>
+			{section name=i loop=$umTOList}
+				{if $umTOList[i].name neq $umTOList[i].mail}"{$umTOList[i].name|escape:"html"}"&nbsp;{/if}&lt;{$umTOList[i].mail|escape:"html"}&gt;
+			{sectionelse}
+				{#no_recipient_text#}
+			{/section}
+			</td>
+		</tr>
+			
+		{if $umHaveCC eq 1}
+			<tr>
+				<td><b>{#cc_hea#}</b></td>
+				<td>
+					{section name=i loop=$umCCList}
+					{if $umCCList[i].name neq $umCCList[i].mail}"{$umCCList[i].name|escape:"html"}"&nbsp;{/if}&lt;{$umCCList[i].mail|escape:"html"}&gt;
+					{/section}
+				</td>
+			</tr>
+		{/if}
+		<tr>
+			<td valign="top"><b>{#date_hea#}</b></td>
+			<td>{$umDate|date_format:#date_format#}</td></tr>
+
+		{if $umHaveAttachments eq 1}
+		<tr>
+			<td valign="top"><b>{#attach_hea#}</b></td>
+			<td>{section name=i loop=$umAttachList}{$umAttachList[i].name|escape:"html"}&nbsp;&nbsp;{/section}</td></tr>
+		{/if}
+		<tr>
+			<td><b>{#subject_hea#}</b></td>
+			<td>{$umSubject|default:#no_subject_text#|truncate:100:"...":true|escape:"html"}</td></tr>
+	</table>
+	<hr>
+	{$umMessageBody}
+
+</body>
+</html>

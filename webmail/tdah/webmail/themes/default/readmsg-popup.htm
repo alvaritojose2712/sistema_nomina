@@ -1,0 +1,129 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			readmsg-popup.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Pop-up to display one message
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Readmsg"}
+{$umDocType}
+<html>
+<head>
+	{$pageMetas}
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="themes/{$umTPath}/css/common.css" type="text/css">
+	<script language="JavaScript" src="themes/{$umTPath}/js/webmail.js" type="text/javascript"></script>
+	{$umJS} 
+	<title>UebiMiau - {$umPageTitle|escape:"html"}</title>
+</head>
+
+<body class="bodypage"> 
+
+{*	SOME LINES HAVE BEEN COMMENTED BECAUSE THE CORRESPONDING ACTIONS ARE NOT RELEVANT WITH READ POP-UP - SHALL DELETED
+	{$umReplyForm}
+*}
+	<form name=move action="process.php" method="POST">
+	{$umDeleteForm} 
+	
+		<table class="tablecollapsed"  cellpadding="0">
+		<tr height="28">
+			<td class="bar" height="28" colspan="6">
+				<ul id="topleft">
+{*
+				{if $umHaveAttachments}
+					{if $umHavePrevious eq 1}
+						<li><a href="{$umPreviousLink}"title="{$umPreviousSubject}"><img src="themes/{$umTPath}/images/toolbar/prev_mail.gif" alt="" border="0"></a></li>
+					{else}
+						<li><a><img src="themes/{$umTPath}/images/toolbar/prev_mail_2.gif" border="0" align="middle"></a></li>
+					{/if}
+					{if $umHaveNext eq 1}    	
+					{else}
+						<li><a href="{$umNextLink}"title="{$umNextSubject}"><img src="themes/{$umTPath}/images/toolbar/next_mail.gif" alt="" border="0"></a></li>
+						<li><a><img src="themes/{$umTPath}/images/toolbar/next_mail_2.gif" border="0" align="middle"></a></li>	
+					{/if}
+				{/if}
+*}
+					<li><a class="separator"><img src="themes/{$umTPath}/images/toolbar/divider.gif" alt="" border="0" align="middle"></a></li>
+					<li><a href="javascript:deletemsg();" title="{#delete_mnu#}"><img src="themes/{$umTPath}/images/toolbar/delete.gif" border="0" alt="{#delete_mnu#}">&nbsp;{#delete_mnu#}</a></li>
+					<li><a class="separator"><img src="themes/{$umTPath}/images/toolbar/divider.gif" alt="" border="0" align="middle"></a></li>
+					<li><a href="javascript:spam_addresses();" title="{#spam_mnu#}"><img src="themes/{$umTPath}/images/toolbar/spam.gif" border="0" alt="{#spam_mnu#}">&nbsp;{#spam_mnu#}</a></li>
+					<li><a class="separator"><img src="themes/{$umTPath}/images/toolbar/divider.gif" alt="" border="0" align="middle"></a></li>
+{*			
+					<li><a href="javascript:reply();"target= "Main" title="{#reply_mnu#}"><img src="themes/{$umTPath}/images/toolbar/reply.gif" border="0" alt="{#reply_mnu#}"></a></li>
+					<li><a href="javascript:replyall();" title="{#reply_all_mnu#}"><img src="themes/{$umTPath}/images/toolbar/replyall.gif" border="0" alt="{#reply_all_mnu#}"></a></li>
+					<li><a href="javascript:forward();" title="{#forward_mnu#}"><img src="themes/{$umTPath}/images/toolbar/forward.gif" border="0" alt="{#forward_mnu#}">&nbsp;</a></li>
+*}			
+					<li><a href="javascript:catch_addresses();" title="{#catch_address#}"><img src="themes/{$umTPath}/images/toolbar/contacts.gif" border="0" alt="{#catch_address#}">&nbsp;{#catch_address#}</a></li>
+					<li><a class="separator"><img src="themes/{$umTPath}/images/toolbar/divider.gif" alt="" border="0" align="middle"></a></li>
+					<li><a href="javascript:printit();" title="{#print_mnu#}"><img src="themes/{$umTPath}/images/toolbar/print.gif" border="0" alt="{#print_mnu#}">&nbsp;{#print_mnu#}</a></li>
+					<li><a class="separator"><img src="themes/{$umTPath}/images/toolbar/divider.gif" alt="" border="0" align="middle"></a></li>
+					<li><a href="javascript:headers();" title="{#headers_mnu#}"><img src="themes/{$umTPath}/images/toolbar/header.gif" border="0" alt="{#headers_mnu#}">&nbsp;{#headers_mnu#}</a></li>
+				</ul>
+				<ul id="topright" style="width: 100px;">
+					<li><a href="javascript:self.close();" title="{#bt_close#}"><img src="themes/{$umTPath}/images/toolbar/logoff.gif" border="0" alt="{#bt_close#}">&nbsp;{#bt_close#}</a></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td class="upper_line" colspan="6">
+				<table class="background under_line " width="100%" cellpadding="3">
+				<tr>
+					<td width="9%"><b>{#from_hea#}</b></td>
+					<td width="44%">{section name=i loop=$umFromList}&nbsp;<a href="{$umFromList[i].link}" title="{$umFromList[i].title|escape:"html"}" class="menu">{$umFromList[i].name|default:#no_sender_text#|escape:"html"}</a>{/section}</td>
+					<td width="9%"><b>&nbsp;</b></td>
+					<td width="8%"><b>{#to_hea#}</b></td>
+					<td width="28%">
+					{section name=i loop=$umTOList}
+						{if $firstto eq "no"};{/if}&nbsp;<a href="{$umTOList[i].link}" title="{$umTOList[i].title|escape:"html"}" class="menu">{$umTOList[i].name|escape:"html"}</a>{assign 
+					var="firstto" value="no"}
+					{sectionelse}
+						&nbsp;{#no_recipient_text#}
+					{/section}
+					</td>
+				</tr>
+				<tr> 
+					<td><b>{#subject_hea#}</b></td>
+					<td>{$umSubject|default:#no_subject_text#|truncate:100:"...":true|escape:"html"}</td>
+					<td>&nbsp;</td>
+					<td><b>{#date_hea#}&nbsp;</b></td>
+					<td>{$umDate|date_format:#date_format#}</td>
+				</tr>
+				</table>
+			<td>
+		</tr>
+		<tr class="page_color under_line" cellpadding="3">
+			<td class="msg_links" colspan="6" style="padding: 3px;">
+		{if $umHaveAttachments}
+			{section name=i loop=$umAttachList}
+				&nbsp; {$umAttachList[i].downlink}<img src="themes/{$umTPath}/images/download.gif" border="0" alt=""></a>&nbsp; {$umAttachList[i].normlink}{$umAttachList[i].name|truncate:30:"...":true|escape:"html"}</a><br >
+			{/section}
+		{/if}
+			</td>
+		</tr>
+		</tr>
+		</table>
+	</form>
+	
+	<font color="#000000">{$umMessageBody}</font>
+	
+</body>
+</html>

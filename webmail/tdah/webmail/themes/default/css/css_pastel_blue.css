@@ -1,0 +1,39 @@
+/* **********************************************************************
+	- File:			css_pastel_blue.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Pastel Blue sheet: This sheet contents only the change to the default sheet for this skin
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+TABLE.login 	{ background-image: url('../images/skins/css_pastel_blue/login.gif'); }	
+.header {
+	background-image: none; 
+	background-color: #3D77CB
+}
+BODY.body,
+TABLE.background,
+td.background 	{ background-image: none; }	
+td.bar,
+td.hbar {
+	background-image: none; 
+	background-color: #EFEFEF 
+}
+td.mbar {
+	background-image: none;
+	background-color: #FAFAFA;
+}
+td.lmbar {
+	background-image: none; 
+	background-color: #3D77CB
+
+}
+td.line {
+	background-image: none; 
+	background-color: #CCCCCC
+}
+.i_frame,
+.innercontent 	{ background-color: #FFFFFF; }
+
+TD.tab_info_visible { background-color: #3D77CB; }
+.navbar a 		{ color: #C10000; }

@@ -1,0 +1,38 @@
+/* **********************************************************************
+	- File:			black_mesh.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Black Mesh sheet: This sheet contents only the change to the default sheet for this skin
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+TABLE.login 	{ background-image: url('../images/skins/black_mesh/login.gif'); }	
+.header 		{ background-image: url('../images/skins/black_mesh/header.gif'); }
+BODY.body,
+TABLE.background, 
+td.background 	{ background-image: url('../images/skins/black_mesh/background.gif'); }
+td.bar 			{ background-image: url('../images/skins/black_mesh/bar.gif'); }
+td.hbar 		{ background-image: url('../images/skins/black_mesh/hbar.gif'); }
+td.mbar 		{ background-image: url('../images/skins/black_mesh/mbar.gif'); }
+td.lmbar 		{ background-image: url('../images/skins/black_mesh/lmbar.gif'); }
+td.line 		{ background-image: url('../images/skins/black_mesh/line.gif'); }
+
+TD.tab_info_visible {
+		cursor: pointer;
+		color: #FFFFFF; 
+		
+		background: url('../images/skins/black_mesh/lmbar.gif'); }
+	}
+
+
+
+.i_frame,
+.innercontent 	{ background-color: #FAFAFA; }
+.hover_color,
+.menu li a:hover,
+#topright li a:hover,
+#topleft li a:hover,
+#topleft div a:hover,
+.trees .tree_hover,
+TD.tab_info_visible {	background-color: #C1C1C1; }
+.navbar a 		{ color: #888888; }

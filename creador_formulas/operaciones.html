@@ -1,0 +1,195 @@
+<style type="text/css">
+	.write_formula{
+		position: absolute;width: 100%;height: 200px;padding: 10px;font-size: 30px;
+	}
+	.variable{
+		font-style: italic;
+		color: #FC4606;
+		 box-shadow: 0px 0px 30px #ffffff;
+	}
+	.signo{
+		font-style: italic;
+		color: red;
+		 box-shadow: 0px 0px 30px #ffffff;
+	}
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#this_json").append("<h2>Crear operación para: </h2>"+JSON.stringify(json)+"");
+		
+		try{
+			$("#formula").val($.cookie('operacion'));
+			$("#formula_aporte").val($.cookie('operacion_aporte'));
+			$('#descripcion_formula').val($.cookie('descripcion_formula'))
+			$('#vigencia').val($.cookie('vigencia'))
+			$('#tipo_concepto').val($.cookie('tipo_concepto'))
+			$('#tipo_sueldo').val($.cookie('tipo_sueldo'))
+			$('#asignacion_deduccion').val($.cookie('asignacion_deduccion'))
+			$('#periodo_pago').val($.cookie('periodo_pago'))
+			if ($.cookie('asignacion_deduccion')=="aporte_patronal") {
+				$("#contenedor_formula_aporte").css("display","")
+			}
+
+		}catch(err){
+
+		}
+		$("#boton_atras").click(function () {
+			pagina_actual('condiciones.php')
+			set_cookie()
+		})
+		////////////////////////////////////////////////////////////////////////////////////
+	
+		$("#write_formula_escribir").keyup(function(){
+			
+			var vars = ['unidad_tributaria','sueldo_tabla','años_antiguedad','prima_hijos','lunes_del_mes','recibo_asignaciones','recibo_deducciones','sueldo_normal']
+
+			var texto_crudo = $("#write_formula_escribir").html();
+			var text_format = "";
+			
+			text_format += texto_crudo.replace(/unidad_tributaria/g,"<span class='variable'>unidad_tributaria</span>").replace(/sueldo_tabla/g,"<span class='variable'>sueldo_tabla</span>").replace(/años_antiguedad/g,"<span class='variable'>años_antiguedad</span>").replace(/prima_hijos/g,"<span class='variable'>prima_hijos</span>").replace(/lunes_del_mes/g,"<span class='variable'>lunes_del_mes</span>").replace(/sueldo_normal/g,"<span class='variable'>sueldo_normal</span>").replace(/menos/g,"<span class='signo'>-</span>").replace(/entre/g,"<span class='signo'>/</span>").replace(/mas/g,"<span class='signo'>+</span>").replace(/por/g,"<span class='signo'>*</span>");		
+			
+			$("#write_formula_mostrar").html(text_format);
+		});
+	});
+	function set_cookie() {
+		$.cookie('descripcion_formula',$('#descripcion_formula').val());
+		$.cookie('vigencia',$('#vigencia').val());
+		$.cookie('tipo_concepto',$('#tipo_concepto').val());
+		$.cookie('tipo_sueldo',$('#tipo_sueldo').val());
+		$.cookie('asignacion_deduccion',$('#asignacion_deduccion').val());
+		$.cookie('periodo_pago',$('#periodo_pago').val());
+		$.cookie('operacion',$('#formula').val());
+		$.cookie('operacion_aporte',$('#formula_aporte').val());
+	}
+</script>	
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#asignacion_deduccion").change(function () {
+			var c = $("#contenedor_formula_aporte")
+			if ($(this).val()=="aporte_patronal") {
+				c.css("display","")
+			}else{
+				c.css("display","none")
+			}
+		})
+	})
+	function guardar_formula(){
+		if ($("#vigencia").val()=="" || $("#descripcion").val()=="") {
+			alert("Error: Campos vacíos!")
+		}else{
+			$.ajax({
+				url:'guardar_formula.php',
+				type:"post",
+				data:{
+					'tipo_concepto':$("#tipo_concepto").val(),
+					'vigencia':$("#vigencia").val(),
+					'tipo_sueldo':$("#tipo_sueldo").val(),
+					'asignacion_deduccion':$("#asignacion_deduccion").val(),
+					'descripcion':$("#descripcion_formula").val(),
+					'periodo_pago':$("#periodo_pago").val(),
+					'condiciones':JSON.stringify(json),
+					operaciones:function () {
+						if ($("#contenedor_formula_aporte").css('display')=="none") {
+							return '{"operacion":"'+$("#formula").val()+'"}'
+						}else{
+							return '{"aporte_patronal":"'+$("#formula_aporte").val()+'","deduccion":"'+$("#formula").val()+'"}'
+						}
+						
+					}
+				},
+				success:function(data){
+					alert(data);
+				}
+			});
+		}
+		set_cookie()
+	}
+</script>
+	<div style="width: 50%;height: 100%" class="w3-display-topmiddle w3-container">
+		<div class="bg-info text-white" style="padding: 5px"><center><h1>Parámetros de la nómina</h1></center></div>
+		<hr>
+		<div>
+			<article>
+				<header>Descripción</header>
+				<textarea placeholder="Nombre de la fórmula" id="descripcion_formula" style="width: 100%"></textarea>
+			</article>
+			<hr>
+			<article>
+				<header>Vigente desde</header>
+				<input type="date" class="form-control" id="vigencia">
+			</article>
+			<hr>
+			<article>
+				<header>Tipo de concepto</header>
+				<select class="form-control" id="tipo_concepto">
+					<option value="prima salarial">Prima salarial</option>
+					<option value="deduccion salarial">Deducción salarial</option>
+					<option value="bono salarial">Bono salarial</option>
+					<option value="bono alimentacion">Bono de alimentación</option>
+					<option value="aporte_patronal">Aporte patronal</option>
+				</select>
+			</article>
+			<hr>
+			<article>
+				<header>Tipo de sueldo</header>
+				<select class="form-control" id="tipo_sueldo">
+					<option value="sueldo basico">Sueldo básico</option>
+					<option value="sueldo normal">Sueldo normal</option>
+					<option value="aporte_patronal">Aporte patronal</option>
+				</select>
+			</article>
+			<hr>
+			<article>
+				<header>Asignación-Deducción-Aporte</header>
+				<select class="form-control" id="asignacion_deduccion">
+					<option value="asignacion">Asignación</option>
+					<option value="deduccion">Deducción</option>
+					<option value="aporte_patronal">Aporte patronal</option>
+				</select>
+			</article>
+			<hr>
+			<article>
+				<header>Período de pago</header>
+				<select class="form-control" id="periodo_pago">
+					<option value="semanal">Semanal</option>
+					<option value="mensual" selected="">Mensual</option>
+					<option value="anual">Anual</option>
+				</select>
+			</article>
+			<hr>
+		</div>
+		<div class="bg-info text-white" style="padding: 5px"><center><h1>Operaciones</h1></center></div><hr>
+		<header id="this_json" style="padding: 10px"></header>
+		<header style="padding: 10px">Variables posibles: 
+				<strong>unidad_tributaria</strong>,
+				<strong>sueldo_tabla</strong>,
+				<strong>años_antiguedad</strong>,
+				<strong>prima_hijos</strong>,
+				<strong>lunes_del_mes</strong>,
+				<strong>sueldo_normal</strong>
+				<br>
+				Operaciones posible: 
+					<strong>menos</strong>,
+					<strong>mas</strong>,
+					<strong>entre</strong>,
+					<strong>por</strong>
+		</header>
+			<hr>	
+		<div>
+			<div class="form-control">
+				<label for="formula">Fórmula de <b>asignación o deducción</b></label>
+				<textarea placeholder='Escriba su fórmula' id='formula' style='width: 100%;height:100px'></textarea>
+			</div>
+			<div class="form-control" style="display: none" id="contenedor_formula_aporte">
+				<label for="formula">Fórmula de <b>aporte patronal</b></label>
+				<textarea placeholder='Escriba su fórmula' id='formula_aporte' style='width: 100%;height:100px'></textarea>
+			</div>
+			
+		</div>
+	</div>
+
+		
+
+<button style="position: fixed" onclick="guardar_formula()" class="w3-button w3-circle w3-teal w3-display-right"><i class="fa fa-hand-o-right fa-5x" aria-hidden="true"></i></button>
+
+<button style="position: fixed" id="boton_atras" class="w3-button w3-circle w3-teal w3-display-left"><i class="fa fa-hand-o-left fa-5x" aria-hidden="true"></i></button>

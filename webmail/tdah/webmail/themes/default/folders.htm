@@ -1,0 +1,94 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			folders.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Display the list of the folders
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Folders"} 
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	{$pageMetas}
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head>
+
+<body class="bodypage folders"onLoad="startclock();">
+
+	<form name="form1" action="folders.php" method="post" onSubmit="return false;">
+	{$umForms}
+	
+	<!--"start outer table" -->
+	<table class="tablecollapsed" cellpadding="0" height="99%">
+	
+	<!--"BANNER" -->
+	{include file="$umTPath$TPL_BANNER"}
+	
+	<!--"TOOLBAR" --> 		       
+	{assign var='umTLB_HELP' value=2}
+	{assign var='umTLB_LOGOFF' value=1}
+	{assign var='umTLB_FOLDERS' value=1}
+	{assign var='umTLB_REFRESH' value=1}
+	{assign var='umTLB_COMPOSE' value=1}
+	{assign var='umTLB_NEW_ENTRY' value=2}
+	{include file="$umTPath$TPL_TOOLBAR"}
+        
+	 <!--"start inner table" -->
+	<!--"start inner content" -->
+	<tr>
+		<td valign="top">
+		 
+		<!--"start content table" -->
+		<table class="innercontent" cellpadding="0" height="100%">
+		<tr> 
+			<!--"LEFT PANEL" --> 		       
+			{include file="$umTPath$TPL_PANEL"}
+	
+			<!--"start center content" -->
+			<td valign="top" class="content">
+
+				<div class="pagetitle">
+					<div class="title">{#fld_title#}</div>
+					<div class="new_box">
+						<a><img src="themes/{$umTPath}/images/add.gif" border="0" alt="">&nbsp;&nbsp;{#fld_make_new#}</a>
+						<input type="Text" name="newfolder" value="" class="textbox">&nbsp; 
+						<input type="button" value="{#bt_OK#}" class="button" onclick="javascript: create_form();">
+					</div>
+					<div class="image"><img src="themes/{$umTPath}/images/folders.gif" alt=""></div>
+				</div>
+	{include file="$umTPath$TPL_FOLDERS"}
+			
+			</td><!--"end center content" -->		
+		</tr>
+		</table><!--"end content table" -->	
+			
+		</td>		
+	</tr><!--"end inner content" -->
+	</table><!--"end outer content" -->
+	</form>
+
+</body>
+</html>

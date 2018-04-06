@@ -1,0 +1,15 @@
+/* **********************************************************************
+	- File:			default.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Default sheet: This empty sheet is used by the Style Sheet Switcher
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+
+TD.tab_info_visible {
+		cursor: pointer;
+		color: #FFFFFF; 
+		
+		background: url('../images/skins/default/lmbar.gif') repeat
+	}

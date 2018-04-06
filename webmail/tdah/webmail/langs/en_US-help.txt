@@ -1,0 +1,311 @@
+#
+# Help file for Uebimiau 3.2.x
+# Fixed Grammar and spelling
+# version 1.1 - July, 2010
+# File: en_US-help.txt
+
+# CharSet 
+default_char_set				= UTF-8
+bt_close					= Close
+
+
+#
+# TABS & TITLE
+#
+hlp_title					= Webmail Help
+
+hlp_tab_general				= General
+hlp_tab_inbox					= Inbox
+hlp_tab_chat					= Chat
+hlp_tab_calendar				= Calendar
+hlp_tab_compose				= New mail
+hlp_tab_addressbook				= Add. book
+hlp_tab_folders				= Folders
+hlp_tab_search				= Search
+hlp_tab_preferences				= Preferences
+hlp_tab_credits				= Credits
+
+
+[Help]
+
+#
+# GENERAL Section
+#
+hlp_general					= General information
+hlp_text_general				= Welcome to <b>Uebimiau</b> Webmail & Chat
+uebimau_version				= UebiMiau:
+smarty_version				= Smarty engine:
+tinymce_version				= Tiny-MCE editor:
+
+license_gpl					= UebiMiau is released under license:
+display_opt 					= Optimized for 1024x768 display
+
+hlp_text_gen1					= <center><b>Uebimiau</b> (<i>Uebimiau</i>) is a universal Webmail, Chat and Calendar 							developed in PHP.<br>It is free and can be installed on any email server.</center>
+						<ul>
+						<li>It runs under any System</li>
+						<li>It doesn't require any extra PHP modules</li>
+						<li>Doesn't need a database (MySQL, PostreSQL,etc)</li>
+						<li>Doesn't need IMAP, but is compatible with <b>POP3</b> and <b>IMAP</b></li>
+						<li>Offers a <b>Chat</b> room between email account users</li>
+						<li>Compatible with the MIME Standard (send/receive text/html emails)</li>
+						<li>Doesn't need cookies</li>
+						<li>Easy installation. You only modify text files with the installer</li>
+						<li>Compatible with Apache, PHP, Sendmail or QMAIL</li>
+						<li>Can be easily translated into any language</li>
+						<li>Can use a variety of skins</li>
+						</ul>
+
+#
+# INBOX Section
+#
+hlp_inbox					= Message Inbox & Folders
+hlp_text_inbox				= This page displays the messages received (inbox), sent, classified by the filters or sorted by the users into custom defined folders. The number of messages displayed per page can be set in the "Preferences" page.
+
+hlp_title_inbox1				= Check for new incoming mails
+hlp_text_inbox1				= To recurrently check for new incoming messages, you may set the refresh delay in the 								"Preferences" page and/or click the "Check Mail" button from the toolbar. This sends requests to 						all your configured accounts and collects the new messages.
+
+hlp_title_inbox2				= The folders
+hlp_text_inbox2 				= There are 4 systems folders and custom folders. The folders are :
+						<ul>
+						<li><b>Inbox</b> to gather all new incoming messages.</li>
+						<li><b>Trash</b> where the deleted messages go if you have selected this behavior in the 							"Preferences" page.</li>
+						<li><b>Sent</b> Outgoing messages can be saved here if you have configured it in your 							"Preferences" page.</li>
+						<li><b>Spam</b> to collect all the messages that you have classified as SPAM either manually 							or by a custom filter (<i>see Preferences page</i>).</li>
+						<li><b>Custom folders</b> managed by the user to store messages. You can add as many 							folders as necessary but no subfolders can be created.</li>
+						</ul><br>
+To empty a folder, click on the down arrow to the right of the folder in the folder tree in the left panel. Messages within the folder are deleted without any chance to get them back.
+
+hlp_title_inbox3				= Inbox folder 
+hlp_text_inbox3				= All incoming messages arrive in this folder. The number of unread messages appears in bold in 						the tree folder. From the inbox message list you can read, reply and sort out your messages. 
+						You can also take actions regarding SPAM messages in order to filter and/or block addresses.
+
+hlp_title_inbox4				= Delete message
+hlp_text_inbox4				= When you delete a message it can go into the trash before being completely removed. This 							option can be set in the "Preferences" page.
+
+hlp_title_inbox5				= Move message to a folder
+hlp_text_inbox5				= You can move messages to any folder <u>EXCEPT</u> into the Inbox.
+
+hlp_title_inbox6				= Actions on message
+hlp_text_inbox6				= To help with message identification, you can decide to:
+						<ul>
+						<li><b>Check/Uncheck</b> messages to draw your attention</li>
+						<li>Mark <b>Read/Unread</b> messages. After reading messages, they automatically change to 						Read. </li></ul>
+
+hlp_title_inbox7				= SPAM message
+hlp_text_inbox7				= You can move SPAM messages to the SPAM folder from the toolbar "Move" button or, when 							reading a message with a click on the "SPAM" button from the toolbar to create a filter for future 							incoming messages and send them directly into the SPAM folder. The latter will automatically 							create a filter that may be edited in the "Preferences" page.
+
+hlp_title_inbox8				= Read messages from the list
+hlp_text_inbox8				= When you click on a message from the message list page, you get this message displayed. 							By using the "Up" and "Down" arrows from the toolbar, you can read the previous or following 							message in the list.
+
+hlp_title_inbox9				= Forward and Reply
+hlp_text_inbox9				= When reading a message, simply click on the "Actions" button from the toolbar to get access for 						Reply, Reply all, and Forward actions.
+
+hlp_title_inbox10				= Add to address book
+hlp_text_inbox10				= Click on the "Actions" button from the toolbar and select "Add to the address book" to get a 							popup that allows you to add addresses from the currently displayed message into the address 							book. (If one or more addresses are already in the address book, they won't show in the pop-up.)
+
+hlp_title_inbox11				= Display message header
+hlp_text_inbox11				= To get information about message routing, you may want to display the message header. Click 						on the "Actions" button from the toolbar and select "Headers". 
+
+hlp_title_inbox12				= Print message
+hlp_text_inbox12				= To print the currently displayed message, click on the "Actions" button from the toolbar and 							select "Print". The message is reformatted to fit a printed page. Select the printer to be used and 						validate.
+
+hlp_title_inbox13				= Block message
+hlp_text_inbox13				= Block address is used to delete any incoming messages that reach your mailbox. It creates a 							filter to delete the messages that have the selected address. To remove this filter, go to the 							"Preferences" page and select the corresponding filter.
+
+hlp_title_inbox14				= Retrieve attachments
+hlp_text_inbox14				= There are two ways to retrieve attachments.
+						<ul>
+						<li>click on the name of the document to open it (<i>depends on your browser and the document 						format</i>)</li>
+						<li>click on the download icon to save it to your local computer.</li>
+						</ul>
+
+#
+# CHAT Section
+#
+hlp_chat					= Chat room
+hlp_text_chat					= You may want to define a <b>nickname</b> before accessing the chat room. Go to the 								"Preferences" page. If not set, it will be your name or your email address.
+
+hlp_title_chat1					= Using the chat room
+hlp_text_chat1					= There is no need to login to enter the Chat room since you are already logged in to your email 							account. Just keep in mind some rules (<i>see below</i>).<br><br>You may have chosen one 							language and be surprised to see the Chat room running in an another one. Keep in mind that the 						administrator has chosen a default language for the Chat room that fits for the majority of 							participants and this may differ from your preferences.<br><br>A sound will remind you when new 						messages arrive, the Chat room is cleared or the participant's status has changed. If your status 						is not "online", sounds are muted.
+
+hlp_title_chat2					= Send a file
+hlp_text_chat2					= You may want to share a photo with other participants. Because the program does not use FTP 						for file transfer the size of the file to be exchanged is limited. Most servers will not allow 							files bigger than 2 MB.
+
+hlp_title_chat3					= Clear the chat room
+hlp_text_chat3					= Privacy is important. Any participant can decide to clear the Chat room. Clearing the chat room 						will also clear uploaded files. The name of the participant who clears the Chat room will appear on 						the screen.
+
+hlp_title_chat4					= Change status
+hlp_text_chat4					= You can change your status to inform other participants about your availability. A specific flag that reflect your new status is displayed in front of your nickname.
+
+hlp_title_chat5					= Share your mood
+hlp_text_chat5					= Feel free to use smiley to express your mood. You can either directly type the smiley code in your message or click on the smiley icon to pop-up a pick list of smileys.<br>After selecting a smiley from the list or sending a message, the smiley list will disappear.
+
+hlp_title_chat6					= Rules
+hlp_text_chat6					= We encourage you to always be responsible and to respect other participants. Your conduct should be guided by common sense, basic "netiquette", and chat rules
+
+hlp_title_chat7					= Experimental features
+hlp_text_chat7					= We are continuously developing our application. New features are not always fully tested.<br>To change your nickname during a chat session, type the command: <b>/nick new_nickname</b>
+
+
+
+#
+# CALENDAR Section
+#
+hlp_calendar						    = Calendar
+hlp_text_calendar					  = This calendar is a fully functional event calendar specific to each user in the webmail, all events will be stored in the users database and not seen by any other mail client.
+
+hlp_title_calendar1					= Using the Calendar
+hlp_text_calendar1					= The current day is highlighted in blue, each month can be explored by clicking on the right or left arrows. To click back to the current day just use the calendar menu on the left, the calendar will return to the current day.
+
+hlp_title_calendar2					= Events
+hlp_text_calendar2					= By double clicking on a day an event box will pop up, you might need to change your pop up settings to see it! Choose the time for the event and fill in the details of that event, Click on add at the bottom to save the event. You have the option of changing the date to another day and the event will be put on that day instead of the day you are on! After an event is made you can add another on the same day by clicking that day again, fill in the time and the event will be put in the correct order when you hover over it.
+ 
+hlp_title_calendar3					= Edit an Event
+hlp_text_calendar3					= Hover over the event, click edit in the box, click inside the text box and edit the text. If you have multiple events for a day you have the option of editing each one individually. If you need to change the day or time of the event you can do it by clicking the drop downs at the top. 
+
+hlp_title_calendar4					= Delete an Event
+hlp_text_calendar4					= Hover over the event, click edit in the box, click delete on the bottom. If you have multiple events for a day you have the option of deleting each one individually.
+
+hlp_title_calendar5					= Future Features
+hlp_text_calendar5					= In the future we may have a feature where the server emails an event to you on the day of the event. An option will be put in preferences.
+ 
+
+
+
+
+
+#
+# NEW MAIL Section
+#
+hlp_compose						= Compose new mail
+hlp_text_compose				= This section is related to the new message composition. Keep in mind that you do not have the capability to save Draft messages for the time being and not sent messages will be lost.
+
+hlp_title_new1					= Select recipient
+hlp_text_new1					= Click on the address book icon to pop-up your list of contacts and have direct access for adding <ul><li>Recipients (To)</li><li>Copied recipients (Cc - <i>carbon copy</i>)</li><li>Hidden recipients (Bcc - <i>Blind carbon copy</i>)</li></ul>Don't forget to add a relevant subject. It will help the recipients and the automatic filtering scripts to sort out efficiently your messages, so does Uebimiau.
+
+hlp_title_new2					= Priority
+hlp_text_new2					= There are 3 levels of priority :<ul><li><b>Normal</b> selected by default</li><li><b>High priority</b> to draw recipients attention</li><li><b>Low</b> for informational messages</li></ul>
+
+hlp_title_new3					= Add your signature
+hlp_text_new3					= In the "Preferences" you can automatically add your signature to new messages.<ul><li>When such an option is selected, the signature is automatically added and show up into your message. The checkbox is checked but disabled. To remove your signature, just select and delete the text from the editor. You won't be able to add your signature again without restarting a new message.<br></li><li>When this option is not selected, the "Add signature" check box is enabled and you can add your signature to the new message by checking the box. It won't appear in the message but will be added when the message will be sent.</li></ul>
+
+hlp_title_new4					= Enable read receipt
+hlp_text_new4					= To track your message and get a feedback when the recipients read your message you can ask for a "Read receipt". This option can be set as default into the "Preferences" page. Nevertheless, the default selection can be override by checking or not the "Require read receipt" checkbox in the Compose new message page.<br>NOTE: Recipients may always have the possibility to decline the sending of read receipts.
+
+hlp_title_new5					= Attach documents
+hlp_text_new5					= To attach document to your new message, click on the "Attach new file" button into the toolbar. Select and add the document. The attached document list is displayed in the Compose new message page. To remove one attached document, simply click the delete icon. You can check the attached document by a click on its name or you can download it by a click on the download icon.
+
+hlp_title_new6					= Use advanced editors
+hlp_text_new6					= Use of advanced editor is set into the "Preferences" page. The advanced editors are useful to get a view of the final presentation. There are 2 advanced editors that can be enabled.<br><small>NOTE: The advanced editor will fill-up the available place in the browser window BUT won't resize if you resize the window.</small>
+
+hlp_title_new7					= Send your message
+hlp_text_new7					= When your message is completed, click on the "Send" button into the toolbar to send your message. A new page is displayed to keep your informed about the sending.<br><br><b>Sending message can take several minutes</b>. You must be patient!<br>Once a message is sent, there is no way to interrupt the transmission. Depending on mail server, this can be somewhat long. Unless there is a failure message, the process is going correctly.
+
+
+
+#
+# ADDRESS BOOK Section
+#
+hlp_addressbook					= Address book
+hlp_text_addressbook			= The Address book page display the list of contacts. The number of contacts displayed per page can be set into the "Preferences" page.<br>From this page you can:<ul><li>display the content of a contact's card,</li><li>edit the contact card,</li><li>add new contacts</li></ul>
+
+hlp_title_address1				= Display a contact card
+hlp_text_address1				= This option display all the information for the selected contact card. It provides direct access to:<ul><li><b>New messages</b> for this contact. A click on the "Preferred E-mail", "Alternate E-mail" or "Work E-mail" opens the new message compose page and the contact address is automatically selected for the recipient</li><li><b>Map location</b> when the Street information is filled. MapQuest is called with the contact's address and displayed the contact location on the map</li><li><b>Website</b>'s contact when the "Web site" information is filled.</li></ul>All information related to the selected contact are available including the photo and notes when available.
+
+hlp_title_address2				= Edit a contact card
+hlp_text_address2				= Any information related to the contact can be entered into the contact's card using the "Edit" button from the displayed card or the Edit icon from the contact's list.<br>One photo can be attached by contact. The maximum recommended size is 200x200 pixels.
+
+hlp_title_address3				= Add new contact
+hlp_text_address3				= New contact can be added from the read message page when reading a message (Action/Add to the address book button from the toolbar) but also created from scratch.<br>New contact minimum information are the name and the preferred e-mail. Contact with the same preferred e-mail are forbidden.<br><small><span style="color: #FF0000;">IMPORTANT</span>: You won't be able to attach photo to a newly created contact card. You must save it first then edit it and upload a photo.</small>
+
+hlp_title_address4				= Delete a contact card
+hlp_text_address4				= To delete a contact, click on the delete icon from the contact list. You will be prompted to confirm before deletion. Deleted contacts cannot be recovered.
+
+
+
+#
+# FOLDERS Section
+#
+hlp_folders						= Message folders
+hlp_text_folders				= There are 4 systems folders and custom folders. The folders are :<ul><li><b>Inbox</b> to gather all new incoming messages.</li><li><b>Trash</b> where go the deleted messages if you have selected this behavior in the "Preferences" page.</li><li><b>Send</b> where you can save your outgoing messages if you have configured it so in your preferences.</li><li><b>Spam</b> to collect all the messages that you have classified as SPAM either manually or by a custom filter (<i>see Preferences page</i>).<br></li><li><b>Custom folders</b> managed by the user to store the messages. You can add as many folders as necessary but no subfolders can be created.</li></ul>
+
+hlp_title_folders1				= Add a new folder
+hlp_text_folders1				= You can name your folder using letters, numbers, space and dash. Other characters are prohibited. Folders are all at the same level, meaning, there is no possibility to have subfolders.
+
+hlp_title_folders1				= Empty folder
+hlp_text_folders1				= To empty a folder, click on the down arrow right to the folder in the folder tree in the left panel. Messages within the folder are deleted without any chance to get them back.
+
+hlp_title_folders2				= Delete a folder
+hlp_text_folders2				= Deleting a folder will also remove all the filters that redirect incoming message into it. A message will prompt you to confirm the folder deletion.
+
+hlp_title_folders3				= Move folder content
+hlp_text_folders3				= To move the content of a folder, go to the folder first and check all the message using the checkbox in the title bar then from the toolbar select in "Move to" the destination folder.
+
+hlp_title_folders4				= Size of the folders
+hlp_text_folders4				= The size of all messages within one folder is displayed either in kB or MB according to the volume of messages. When the quota option is enable, a bar graph shows the place used and remaining.<br><br><b>IMPORTANT</b>: Whenever the quota is activated and you reach it, you won't be able to do any action on your messages without retrieving some free place. Nevertheless, incoming messages will still be allow arriving.
+
+
+
+#
+# SEARCH Section
+#
+hlp_search						= Search engine
+hlp_text_search					= Uebimiau has a search engine to help you to retrieve messages.
+
+hlp_title_search1				= Search criteria
+hlp_text_search1				= The filtering can be done over:<ul><li><b>Sender</b> (From)</li><li><b>Subject</b></li><li>Text from the message <b>Body</b></li></ul><br>The list of messages that fit the criteria is displayed below.<br>The search criteria is not case sensitive and applies on any words that has some matches and not full words (ex. "text" will find text, textbook, texture, etc.).
+
+
+
+#
+# PREFERENCE Section
+#
+hlp_preferences					= Preferences
+hlp_text_preferences			= The "Preferences" page has 5 tabs to configure the behavior of Uebimiau for your mailbox. At the first login, your administrator may have chosen to send you directly to this page in order to let you customize the application with your preferences.
+
+hlp_title_pref1					= General information
+hlp_text_pref1					= <ul><li><b>Name</b> is the name associated with your e-mail address</li><li><b>Nickname</b> is used as alias in the chat room</li><li><b>Reply to</b> is the address to use when you reply to a message. It may be different from your login address</li><li><b>Time zone</b> is your location regarding the offset to Greenwich meridian</li><li><b>Default edit mode</b> where you can select the type of editor to be used:<ul><li><b>Plain text</b> to use plain text with html tags if needed</li><li><b>HTML editor</b> from Tiny MCE that offers an advanced edition interface</li></ul></li></ul>IMPORTANT: Save your modifications before leaving this page otherwise they will be lost!
+
+hlp_title_pref2					= Messages
+hlp_text_pref2					= <ul><li><b>Maximum number of messages/contacts per page</b> shall be set according to your screen resolution</li><li><b>Automatically check for new mail</b> define periodicity for checking for new incoming messages</li><li><b>Show attached images</b> will display external images that are link to the message (<i>this may be a door for SPAM</i>)</li><li><b>Require read receipt by default</b> to get feedback from your recipients</li><li><b>Reset READ messages as UNREAD when you logout</b> may be used when using remote access and want to ignore operation done in message for example</li><li><b>Save sent message in "Sent"</b> to keep a copy of sent messages</li></ul>
+
+hlp_title_pref3					= Signature
+hlp_text_pref3					= <ul><li><b>Write your signature</b> enables you to create your signature. Picture are not allowed and avoid using the quote (better use the ` ).</li><li><b>Add your signature to all the outgoing message</b>. If not set, you will be able to add your signature on new message later on by checking the "Add signature" box on the compose page.</li></ul>
+
+hlp_title_pref4					= Trash
+hlp_text_pref4					= <ul><li><b>When you delete a message, move it to "Trash"</b> therefore you get a chance to retrieve these messages later on. To destroy those messages, simply empty the Trash folder (click on the down arrow on the right side of the Trash folder in the folder tree) </li><li><b>When you Spam a message, move it to "Spam"</b> This will store SPAM messages in the Spam folder</li><li><b>Save only read messages in the "Trash"</b> All messages that have been read are moved to the Trash folder</li><li><b>Empty trash folder when you logout</b> to always start a new session with a clean Trash.</li></ul>
+
+hlp_title_pref5					= Skin
+hlp_text_pref5					= Selection of a skin will immediately reflect a skin change.<br>When you are satisfied with the selection, do not forget to save your selection otherwise it will come back to the previously define skin.
+
+hlp_title_pref6					= Filters
+hlp_text_pref6					= You can add as many filters as you need. <br>IMPORTANT: Folder deletion will automatically deletes the associated filters.<br>To create a new filter you should use the following fields and press "Add filter"<ul><li><b>Filter on field</b> set which field (From, Subject, To, Header, Body) will be analyzed in the incoming messages</li><li><b>Search for</b> give the text to match</li><li><b>Action</b> to take when the criteria is matched (Move, Delete, Mark read)</li><li><b>Destination folder</b> for the incoming messages that match the criteria when the "Move" action is chosen</li></ul>Below, the list of available filters is displayed. One specific filter could be deleted using the delete icon. Multiple selections sre allowed and selected filters are deleted when pressing the "Delete selected filters" button.
+
+hlp_title_pref7					= <font color="#CC0000">Administration</b> - Restricted</font>
+hlp_text_pref7					= This section is restricted to the system administrators. It can be accessed by a click on the small icon on the bottom right on the first tab. You shall identify yourself as an administrator using valid username and password. Administration page will give you access to:<ul><li><b>Edit Config</b> to modify the default setting and Uebimiau system configuration</li><li><b>Edit Languages</b> to define the languages supported by the application</li><li><b>Edit Themes</b> to define the themes available</li><li><b>Edit POP3</b> to setup the POP server that are accessible</li><li><b>View Logs</b> to display the list of abnormal events during login and admin connections</li><li><b>Reset Chat room</b> to reinitialize the chat room exchanges and upload files</li><li><b>Manage Admins</b> to maintain the list of authorized administrators</li></ul>
+
+
+
+#
+# CREDITS Section
+#
+hlp_credits						= Credits & Information
+hlp_text_credits				= Uebimiau is an open source development available at sourceforge that started in 1997 by Aldoir Ventura (<a href="http://www.uebimiau.org/" target="_blank">http://www.uebimiau.org/</a>) as a challenge for client web supporting both POP and IMAP.<br>Then it moved into a sourceforge project (<a href="http://sourceforge.net/projects/uebimiau/" target="_blank">http://sourceforge.net/projects/uebimiau/</a>) to become a widely spread out e-mail client.<br>Now Uebimiau has its own helpdesk located at <a href="http://tdah.us/" target="_blank">http://tdah.us/</a>.
+
+hlp_title_auth1					= Credits and information
+hlp_text_auth1					= UebiMiau is a GPL'ed software developed by<br><br>- Aldoir Ventura - aldoir@users.sourceforge.net<br> - <a href=" http://uebimiau.sourceforge.net" target="_blank"> http://uebimiau.sourceforge.net</a><br><br>São Paulo - Brasil<br>
+hlp_text_auth1a					= ______________________________________________________<br><br>Version 3.2.0 Upgrades and templates developed by<br><br>- Todd Henderson - Lead Developer<br>- http://tdah.us<br><br>- Dave Rodgers - Developer<br>- http://www.manvel.net<br> <br>- Laurent (AdNovea) - Developer<br>- http://www.adnovea.com <br><br>
+hlp_text_auth1b					= Special thanks to the developers at codeworxtech.com, tinymce.moxiecode.com	telaen.org, phptoys.com, winged.info, ngcoders.com without help this project wouldn't be possible <br>______________________________________________________
+
+hlp_title_auth2					= Support us
+hlp_text_auth2					= Feel free to contact us, send donations or anything to me as well...<br>
+
+hlp_title_auth3					= Translation
+hlp_text_auth3					= <ul><li><b>English</b> - Todd Henderson, Dave Rodgers</li><li><b>French</b> - Laurent (laurent@adnovea.com), Christophe Buguet (christophe.buguet@wanadoo.fr)</li><li><b>Portuguese</b> - </li></ul>
+
+hlp_title_auth4					= Releases
+hlp_text_auth4					= <ul><li>version 3.2.0 (November 2008)</li><li>version 3.2.0 Beta2 (05/27/2008)</li><li>version 3.2.0 Beta1 (04/25/2008)</li></ul>
+
+hlp_title_auth5					= Validation
+hlp_text_auth5					= UebiMiau v3.3.0 has been checked against W3C validator. We have passed:<ul><li><b>CSS Level 2.1</b> for the style sheets</li><li><b>HTML 4.1 transitional</b> for the HTML code with 5 waivers<sup>(*)</sup></li><li>error_reporting(E_ALL) for the PHP code</li></ul>(*) <small>use of: &lt;nobr&gt; tags, "height" attributs in &lt;table&gt; tags, "&amp;" general entities instead of "&amp;amp;" for GET, "name" attributs in &lt;form&gt; tags and "onresize" functions in &lt;body&gt; tags.</small>
+

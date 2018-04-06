@@ -1,0 +1,1049 @@
+/* **********************************************************************
+	- File:			common.css
+	- Developer: 	Todd Henderson / Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Default sheet: All common styles are in this stylesheet
+
+************************************************************************* */
+/* CUSTOM SECTION
+   ======================================================================*/ 
+	.server { display: block; color: #FFFFFF; }		/* Show or hidden the server names in login screen [display=block,none] */
+	.sendbutton { display: none; color: #FF0000; }	/* Show or hidden the possibility to resend and return if sending is too long for debug*/
+
+/* GENERAL STYLES SECTION
+   ======================================================================*/ 
+	html, body {margin: 0px; padding: 0px; border-width: 1px; background-color: #FAFAFA;}
+	td {	font: 11px Verdana; color: #000000; text-decoration: none; }
+	body, th, td, input, select, textarea { font: 11px Tahoma,Arial,Verdana,Geneva,Helvetica,sans-serif; color: #000000; }
+	form { margin: 0px; padding: 0px; }
+	input, select, textarea { border: 1px solid #CCCCCC; }
+	fieldset { padding: 7px; border: solid 1px #CCCCCC; }
+	legend { color: #000000; } 	
+	hr { border: 1px #CCCCCC groove; }
+	acronym { border: 0; padding: 0; }	
+	img 	{ border-width: 0px; } 
+/* SPECIFIC CLASS & ID STYLES SECTION
+   ======================================================================*/ 
+	BODY .body, .background {
+	background: url('../images/skins/default/background.gif') repeat; }
+	.button { height: 22px; padding: 2px 5px 1px 5px; color: #2F3A55; font-size: 11px; border: 1px solid #CCCCCC; background: url('../images/skins/default/bar.gif') repeat }
+	td.bar, 
+	.tr_bar td {
+		color: #000000; 
+		font: 11px Verdana; 
+
+		text-decoration: none; 
+		background: #F0F0F0 url('../images/skins/default/bar.gif') repeat;
+	}
+	
+	td.bar img {
+		vertical-align: middle;
+	}
+	
+	td.bar a {
+		color: #000000;
+		text-decoration: none;
+	}
+	
+	td.hbar {
+		color: #000000; 
+		font: 11px Verdana; 
+		text-decoration: none; 
+		background: url('../images/skins/default/hbar.gif') repeat
+	}
+	
+	td.mbar {
+		color: #000000; 
+		font: 11px Verdana; 
+		text-decoration: none; 
+		background: url('../images/skins/default/mbar.gif') repeat
+	}
+	
+	td.lmbar {
+		color: #FFFFFF; 
+		font: 11px Verdana; 
+		text-decoration: none; 
+		background: url('../images/skins/default/lmbar.gif') repeat
+	}
+	
+	td.line {
+		color: #000000; 
+		font: 11px Verdana; 
+		text-decoration: none; 
+		background: url('../images/skins/default/line.gif') repeat
+	}
+	
+	td.modbar {
+		color: #ffffff; 
+		font: 11px Verdana; 
+	width: 100%;
+		height: 23px;
+		text-decoration: none; 
+		background: url('../images/skins/default/lmbar.gif') repeat
+	}
+	
+	TABLE.modbar {
+		color: #ffffff; 
+		font: 11px Verdana; 
+	width: 100%;
+		height: 23px;
+		text-decoration: none; 
+		
+	}
+	
+	DIV.modbar { 
+	width: 100%;
+		height: 23px;
+	display: block; }
+	
+	
+	
+	
+	.textbox { 
+		color: #000000; 
+		font: 11px Verdana; 
+		border: 1px solid #CCCCCC; 
+		background-color: #FFFFFF; 
+	}
+
+/* Generic styles for tables */
+
+	TABLE.tablecollapsed {
+		width: 100%;
+		
+		margin: 0;
+		border: 0;
+		border-collapse: collapse;
+	}
+	
+	TD.nopadding { padding: 0; }
+
+td.read {
+		vertical-align:top;
+		padding: 2px 5px 1px 5px;
+		
+		font-size: 12px;
+	}
+/* Tab styles */
+/* Back Ground */
+	TABLE.tab { 
+		width: 635px;
+		border: solid 1px #CCCCCC;
+		background-color: #FAFAFA; 
+	}
+	
+	.tab_table {
+		width: 635px;
+		border-collapse: collapse;
+	}
+
+
+/* DISCARDED: TD.tab_blank { border: solid 1px #FFFFFF; } */
+	
+
+	
+	TD.tab_info_visible td 	{ 
+	     font-weight: bold; 
+		 color: #FFFFFF;
+			border-width: 1px;
+		border-top-color: #444444;
+		border-left-color: #CCCCCC;
+		border-right-color: #CCCCCC;
+		border-bottom-color: #CCCCCC;
+		 
+		 
+		 }
+	
+	TD.tab_info_hidden 		{ 
+		cursor: pointer;
+		background: url('../images/skins/default/bar.gif') repeat
+	}
+	
+
+	DIV.priority_outer {
+		position: absolute;
+		z-index: 2;
+		visibility: hidden;
+		left: 170px;
+		top: 84px;
+		width: 100px;
+		border-style: solid;
+		border-width: 1px;
+		border-top-color: #CCCCCC;
+		border-left-color: #CCCCCC;
+		border-right-color: #CCCCCC;
+		border-bottom-color: #CCCCCC;
+	}
+	
+	DIV.priority_inner {
+		border-left:1px solid #FFFFFF; 
+		border-right:1px solid #CCCCCC; 
+		border-top:1px solid #FFFFFF; 
+		border-bottom:1px solid #CCCCCC; 
+		width: 100%;
+	}
+	
+	DIV.tab_visible { display: block; }
+	
+	DIV.tab_hidden 	{ display: none; }
+	
+	DIV.showmodal	{ border: 0; display: block; }
+	
+	DIV.hidemodal	{ border: 0; display: none; }
+	
+
+/*  */
+
+	TD.folders_visible {
+		background-color: #FFFFFF;
+		border-top: 1px #CCCCCC solid;
+		border-left: 1px #CCCCCC solid;
+		border-right: 1px #FFFFFF solid;
+		border-bottom: 1px #FFFFFF solid;
+		width: 250px;
+		padding: 0;
+	}
+	
+	TD.folders_hidden {
+		width: 1px;
+	}
+
+
+/* Folder pages */
+
+	.listtable td {
+		border-top: dashed 1px #E2E7EB;
+		padding: 1px 4px 1px 4px; 
+	}	
+	
+	TABLE.folders_inner {
+		background-color: #FFFFFF;
+		border-style: solid;
+		border-width: 1px;
+		border-top-color: #CCCCCC;
+		border-left-color: #CCCCCC;
+		border-right-color: #CCCCCC;
+		border-bottom-color: #CCCCCC;
+	}
+	
+	TD.folders_outer {
+		background-color: #FFFFFF;
+		border-style: solid;
+		border-width: 1px;
+		border-top-color: #CCCCCC;
+		border-left-color: #CCCCCC;
+		border-right-color: #FFFFFF;
+		border-bottom-color: #FFFFFF;
+	}
+
+
+/*  */
+
+	.status { 
+		color: #FF0000;
+		padding-left: 150px;
+		white-space: nowrap;
+	}
+
+
+/* Contact pages */
+	
+	.quicklist { width: 300px; }
+
+
+
+/* Highligh item in a list */
+	.menu {
+		margin: 0;
+		padding: 0;
+		z-index: 30; 
+		color: #000000;
+		font-size: 8pt; 
+		font-weight: normal;
+		text-decoration: none; 
+	}	
+			
+	.menu li {
+		float: left;
+		width: 100%;
+		height: 23px;
+		margin: 0;
+		padding-left: 0px; 
+		padding-right: 0px; 
+		list-style-type: none; 
+		font: normal 11px Verdana; 
+	}
+	
+	.menu li a {
+		display: block;
+		width: 100%;
+		padding: 2px 0 2px 0; 
+		color: #000000;
+		text-decoration: none; 
+	}
+	
+	.hover_color,
+	.menu li a:hover {
+		background: #C1C1EE;
+	}
+
+	a:link .menu,
+	a:visited .menu,
+	a:hover .menu {
+		font: 11px Verdana; 
+		color: #000000;
+		vertical-align: text-bottom;
+		text-decoration: none; 
+	}
+	
+
+
+TABLE.login 	{ background-image: url('../images/skins/default/login.gif'); }	
+/*	LOGIN PAGE & BAD-LOGIN
+   -----------------------------------------*/
+	BODY.login_body	{ background: url('../images/skins/default/background.gif') repeat; }
+
+	.login_body .container { 
+		width: 359px;
+		height: 224px;
+		margin : 0;
+		padding: 0;
+		border: 0;
+		background: url('../images/skins/default/login.gif') repeat; 
+	}
+	
+	.login_body .box { 
+		border: 0;
+		margin: 0;
+		padding: 4px;
+		width: 100%;
+	}
+	.login_body .box td { 
+		color: #FFFFFF;
+	}
+
+	.login_body .title {
+		text-align: center;
+		font: bold 18pt Bookman Old Style; 
+		text-decoration: none; 
+	}
+
+	.login_body .info {
+		margin: 0;
+		padding: 0 5px 2px 0;
+		vertical-align: text-bottom;
+		color: #FFFFFF;
+		text-align: right;
+		font: italic 8pt Arial;
+	}
+
+	.login_body .textbox {
+		width: 175px;
+		height: 22px;
+	}
+
+
+
+/*	ALL PAGES
+   -----------------------------------------*/
+	.bodypage 	{ background-color: #FAFAFA; }
+	
+	.content	{ height: 100%; border: solid 1px #CCCCCC;  }
+	
+	.page_color	{ background: #FFFFFF; }	/* page that contents mail bodies, lists) */
+
+	.under_line { border-bottom: solid 1px #CCCCCC; }
+	.upper_line { border-top: solid 1px #CCCCCC; }
+	
+	.pagetitle {
+		height: 48px;
+		padding: 0;
+		margin: 0;
+		border-bottom: solid 1px #CCCCCC;
+		background: transparent url('../images/skins/default/background.gif') 0 0 repeat;
+	}
+	
+	.pagetitle .title {
+		float: left;
+		padding: 10px 0 0 10px;
+		font: bold 14pt Arial;
+		color: #444444;
+	}
+	
+	.pagetitle .image {
+		float: right;
+		padding-right:48px;
+		vertical-align: middle;
+	}
+
+	.text_body {
+		width: 100%;
+		height: 100%;
+		background-color: #FFFFFF;
+	}
+	
+	/* style for links in messages such as To/Cc/Bcc/Attachment */
+	.msg_links a:link, .msg_links a:visited {
+		font: 11px Verdana; 
+		color: #0000FF;
+		text-decoration: none;
+	}
+
+	.msg_links a:hover {
+		color: #808080;
+	}
+	
+
+
+/*	NAVIGATION (multiple pages)
+   -----------------------------------------*/ 
+	.navbar			{ color: #000000;  }
+	.navbar a 		{ color: #0000C1; font-weight: bold; text-decoration: none; }
+	.navbar a:hover { color: #CCCCCC; }
+
+
+
+/*	TOP BANNER
+   -----------------------------------------*/ 
+
+	.header {
+		padding: 0;
+		color: #FFFFFF; 
+		font: bold 18px Bookman Old Style; 
+		text-decoration: none;
+		background: url('../images/skins/default/header.gif') repeat;
+	}
+	
+	.date {
+		color: #FFFFFF; 
+		font: 11px Verdana; 
+		text-decoration: none 
+	}
+
+	.login_time {
+		font: bold 11px Verdana;
+		color: #FFFFFF;
+		padding: 0 10px 0 0;
+	}
+
+
+
+/*	TOOLBAR
+   -----------------------------------------*/ 
+	#topleft, #topright {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+	#topright 		{ float: right; width: 250px; }
+	#topleft 		{ float: left; display:inline; }
+	#topleft li 	{ float: left; }
+	#topright  li 	{ float: right; }
+	
+	#topleft li a,
+	#topright li a	{ 
+		display: inline;
+		color: #000000;
+		text-align: left;
+		vertical-align: bottom;
+		text-decoration: none; 
+	}
+	#topleft li a 	{ padding: 3px 2px 0px 2px; }
+	#topright  li a { padding: 3px 10px 0px 2px; }
+
+	/* Scroll down menu */	
+	#topleft div {
+		position: absolute;
+		visibility: hidden;
+		top: 73;
+		margin: 0;
+		padding: 0;
+		background: #FFFFFF;
+		border: 1px solid #5970B2;
+	}
+	
+	#topleft div a	{
+		position: relative;
+		display: block;
+		margin: 0;
+		width: auto;
+		white-space: nowrap;
+		text-align: left;
+		text-decoration: none;
+		color: #000000;
+		font: normal 11px Arial; 
+		padding: 4px 10px 4px 10px; 
+		background: none 0% 0% repeat scroll;
+	}
+	
+	/* Cusor highlight */
+	#topleft div a:hover,
+	#topleft li a:hover,
+	#topright li a:hover{
+		background: #C1C1EE;
+	}
+
+	#topleft li a.separator:hover,
+	#topright li a.separator:hover { background: none; } /* avoid hover above the separator in FF */
+
+
+
+/* LEFT PANEL : TREE, MENU & VERTICAL SEPARATOR
+   -----------------------------------------*/ 
+   
+	.v_separaror { 
+		width: 7px; 
+		background-color: #FAFAFA;
+	}
+
+	.panel {
+		width: 180px;
+		border: solid 1px #CCCCCC; 
+	}
+   
+   .tree {
+		width: 180px;
+		border: solid 1px #CCCCCC; 
+	}
+	
+	.menus {
+		width: 180px;
+		border: solid 1px #CCCCCC; 
+	}
+   
+	.innercontent {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #FFFFFF;
+	}
+	
+	.trees .title {
+	width: 180px;
+		height: 19px;
+		text-align: center;
+		font-weight: bold;
+	
+		border-bottom: solid 1px #CCCCCC;
+	}
+   	.mod .title {
+		height: 19px;
+		width: 180px;
+		text-align: center;
+		font-weight: bold;
+		border-top: solid 1px #FAFAFA;
+		border-bottom: solid 1px #FAFAFA;
+	}
+	.trees .tree_item,
+	.trees .tree_empty {
+		height: 20px;
+		cursor: pointer;
+	}
+	
+	.trees .tree_item img,
+	.trees .tree_empty img {
+		vertical-align: middle;
+	}
+	
+	.trees .tree_hover {
+		background: #C1C1EE;
+	}
+	
+	.menus .title {
+	width: 180px;
+		font-weight: bold;
+		color: #FFFFFF;
+	}
+
+
+
+/* POPUP
+   -----------------------------------------*/ 
+   TABLE.popup {
+		width: 100%; 
+		height: 100%; 
+		padding: 0; 
+		margin: 0;
+		border-collapse: collapse;
+   }
+	.popup td {
+		padding: 0 5px 0 5px; 
+	}
+	
+	.popup fieldset {
+		padding: 0px;
+	}
+
+
+
+/* READ MESSAGE PAGE & MESSAGE LIST
+   -----------------------------------------*/ 
+	BODY.readmsg {}
+
+	
+
+/* CHAT PAGE
+   -----------------------------------------*/ 
+	.i_frame {
+		width: 100%;
+		overflow:hidden;
+		height: 465px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background-color: #FFFFFF; 
+	} 
+	
+/* Task PAGE
+   -----------------------------------------*/ 
+	.i_task {
+		width: 100%;
+		
+		height: 465px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background-color: #FFFFFF; 
+	} 	
+
+/* MOD CALENDAR PAGE
+   -----------------------------------------*/ 
+	.modcal{
+		width: 100%;
+		height: 135px;
+		width: 180px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background-color: #FFFFFF; 
+	} 
+/* MOD CHAT PAGE
+   -----------------------------------------*/ 
+	.modchat{
+	width: 180px;
+	height: 80px;
+	
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background-color: #FFFFFF; 
+	} 	
+	
+/* MOD WEATHER PAGE
+   -----------------------------------------*/ 
+ td.modweather_title {
+	width: 180px;
+	text-align: center;
+	font-weight: bold;
+	font: bold 12px Verdana; 
+	padding-top: 7;
+	padding-bottom: 7;
+	margin: 0;
+	border-bottom:1px solid #BEBEC2;
+	}
+	
+.modweather{
+	width: 100%;
+	width: 180px;
+	height: 125px;
+    font-size : 12px;
+		}
+
+
+	
+ .modbody{
+	width: 180px;
+	font:12px Verdana; 
+	padding: 4px 10px 4px 10px; 
+	
+	}
+
+
+
+
+/* COMPOSE MESSAGE 
+   -----------------------------------------*/
+	BODY.compose .textbox { width: 200px; }
+
+
+
+/* ADRESSBOOK PAGE
+   -----------------------------------------*/ 
+	BODY.addresscards .textbox { width: 430px; }
+
+
+
+/* FOLDERS PAGE
+   -----------------------------------------*/ 
+	BODY.folders .title { width: 200px; }
+	
+	BODY.folders .textbox { width: 200px; }
+	
+	BODY.folders .new_box { 
+		float: left; 
+		width: 300px; 
+		padding-top: 5px;
+	}
+
+
+
+/* SEARCH PAGE
+   -----------------------------------------*/ 
+	BODY.search .textbox { width: 400px; }
+
+
+
+/* PREFERENCE PAGE
+   -----------------------------------------*/ 
+	.preferences .info {
+		width: 580px;
+		margin: 0;
+		padding-top: 0px;
+		color: #808080;
+		text-align: right;
+		font: italic 8pt Arial;
+	}
+
+	.preferences #htmleditor {
+		width: 100%;
+/*		height: 300px; 	height shall be placed into the <textarea> for FF (preferences.htm) */
+	}
+
+
+
+/* HELP PAGE
+   -----------------------------------------*/ 
+   
+	.help a:link, .help a:visited { 
+		font-weight: normal; 
+		color:#4444FF;
+		text-decoration: none; 
+	}
+	
+	.help a:hover { color:#888888; }
+	
+	.help .tab { width: 100%; }
+	
+	.help DIV.tab_visible,
+	.help DIV.tab_hidden {
+		padding: 0;
+		overflow: auto;
+	}
+	
+	.help_title {
+		height: 20px;
+		padding: 5px;
+		margin: 0;
+		color: #FFFFFF;
+		font: bold 11pt Arial;
+		background: #888888;
+	}
+	
+	.help_text { 
+		padding: 15px; 
+		text-align: justify;
+		font: normal 9pt Arial;
+	}
+
+	.help_section {
+		width: 400px; 
+		margin: 20px 0 5px 0;
+		padding: 2px 5px ;
+		font: bold 10pt Arial;
+		color: #616188;
+		border: solid 1px #444444;
+		background-color: #EEEEEE;
+	}
+	
+	.help .infos {
+		width: 359px; 
+		height: 224px; 
+		
+		border: 0; 
+		background: transparent url('../images/help/login.gif') 0 0 no-repeat;
+	}
+	
+	.help .infos td { padding: 0 10px 0 10px; color: #FFFFFF; }
+	.help .infos a:link,
+	.help .infos a:visited { font-weight: normal; color: #AAAAFF; }
+
+
+
+/* Attatchments
+   -----------------------------------------*/ 
+   
+/* Start Show/Hide layer CSS style */
+<!-- ***** -->
+
+.dhtmlgoodies_question{	/* Styling question */
+	/* Start layout CSS */
+	background-color:#E5E5E6;
+	width:100%;
+	margin-bottom:0px;
+	margin-top:0px;
+	padding-left:2px;
+	height:0px;
+	/* End layout CSS */
+	
+	overflow:hidden;
+	cursor:pointer;
+}
+.dhtmlgoodies_answer{	/* Parent box of slide down content */
+	/* Start layout CSS */
+	border-bottom:1px solid #BEBEC2;
+	/* background-color:#F7F7F8; */
+	width:100%;
+	
+	/* End layout CSS */
+	
+	visibility:hidden;
+	height:0px;
+	overflow:hidden;
+	position:relative;
+
+}
+.dhtmlgoodies_answer_content{	/* Content that is slided down */
+	padding:0px;
+	font-size:0.9em;	
+	position:relative;
+}
+
+
+div.header_div
+{
+	position: relative;
+	background-color: #EFEFEF;
+	width: 100%;
+	height: 45px;
+	overflow: auto;
+	margin: auto;
+}
+div.container
+{
+	border: 0 solid black;
+	background-color: #FFFFFF;
+	
+	position: relative;
+	margin: auto;
+	display: block;
+	overflow: auto;
+	/* SPECIFY HEIGHT & WIDTH AS DESIRED */
+	height: 100%;
+	width: 100%;
+}
+div.rss
+{
+	width: 100%;
+	padding: 10px;
+	margin: 0px;
+	background-color: white;
+	position: relative;
+	border: 0px solid black;
+}
+a.rss_link,a.rss_link:active
+{
+	color: blue;
+	text-decoration: none;
+}
+a.rss_link:hover
+{
+	color: #BBBBFF;
+}
+a.rss_link:visited
+{
+	color: gray;
+}
+a.top,a.top:active {
+	color: gray;
+	text-decoration: none;
+}
+a.top:hover {
+	color: black;
+	text-decoration: underline;
+}
+a.top:visited {
+	color: gray;
+	text-decoration: none;
+}
+font.graytext
+{
+	padding: 10px;
+	font-size: 10pt;
+	color: #444444;
+}
+font.rss_title
+{
+	font-size: 12pt;
+	font-weight: bold;
+	text-decoration: underline;
+	display: block;
+}
+font.rss_date
+{
+	font-size: 9pt;
+	font-weight: normal;
+	color: black;
+	display: block;
+}
+font.rss_description
+{
+	font-size: 12pt;
+	color: black;
+}
+
+	
+/* ----- Layers classes ------ */
+/* general.tpl + view_post.tpl */
+
+.newsContent {
+	margin:0 0 1.5em 0;
+	background-color:#000;
+	border:1px solid #DDE4EB;
+	padding: 6px;
+}
+.newsContent h1 {
+	font-size:16pt;
+	font-weight:bold;
+	color:rgb(0,102,208);
+	border-bottom:1px solid #ddd;
+	margin:0;
+	padding:0;
+}
+.newsContent h1 a {
+	text-decoration:none;
+	font-size:1em;
+	font-weight:bold;
+}
+.newsContent h2 {
+	text-align:right;
+	font-size:1em;
+	font-weight:normal;
+	margin:0 0 1em 0;
+	padding:0;
+}
+.newsContent .submessage {
+	text-align:right;
+	margin:1em 0 0 0;
+}
+.newsContent .message p {
+	margin:0 0 1em 0;
+	padding:0;
+	
+}
+.newsContent .message blockquote {
+	margin:1em;
+	border-left:3px solid #ddd;
+	padding:0 0 0 1em;
+}
+.newsContent .message pre {
+	background-color:#eee;
+	border:1px dashed #aaa;
+	color:#000;
+	margin:1em 0;
+	padding:0.3em;
+}
+.newsContent .message img {
+	border-style:none;
+}
+.newsContent .message ul {
+	margin:0 0 1em 2.5em;
+	padding:0;
+}
+
+
+/* comments.tpl */
+
+#newsComment ol {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+#newsComment li {
+	border-bottom:1px dashed #aaa;
+	margin:0 0 1em 0;
+}
+#newsComment .submessage {
+	text-align:right;
+	margin:0.5em 0.5em 0.3em 0;
+}
+#newsComment h3 {
+	margin:3em 0 1em 0;
+	padding:0.3em 0.5em;
+	font-size:1.2em;
+	background-color:#ddd;
+	color:#000;
+}
+#newsComment .message blockquote {
+	margin:0 3em 0 2em;
+	padding:0;
+}
+
+
+
+
+/* note.tpl */
+
+#newsNotice {
+	margin:0 0 2em 0;
+	background-color:#FFFFE0;
+	color:#000;
+	padding:0.5em;
+}
+#newsNotice span {
+	font-weight:bold;
+	font-size:1.5em;
+}
+
+
+/* comment_form.tpl */
+
+#commentForm {
+	margin:3em 0 1em 0;
+}
+#commentForm h3 {
+	margin:0 0 1em 0;
+	padding:0.3em 0.5em;
+	font-size:1.2em;
+	background-color:#ddd;
+	color:#000;
+}
+#commentForm div {
+	margin:0 0 0.2em 0;
+}
+#commentForm input {
+	font:normal 1em Verdana, Arial, Helvetica, sans-serif;
+}
+#commentForm .name, #commentForm .website {
+	width:20em;
+	border:1px solid #ddd;
+	padding:0.3em;
+}
+#commentForm .message {
+	width:30em;
+	border:1px solid #ddd;
+	padding:0.3em;
+}
+
+
+/* archives.tpl */
+
+ul#newsArchive {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+#newsArchive li {
+	margin:0 0 0.5em 0;
+}
+
+
+/* categories.tpl */
+
+ul#newsCategory {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+#newsCategory li {
+	margin:0 0 0.5em 0;
+}

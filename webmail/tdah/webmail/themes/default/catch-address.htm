@@ -1,0 +1,87 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			catch-address.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Popup to add or not an address to the address book
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Catch"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="innercontent">
+
+	<form name=form1 action="catch_address.php" method=POST>
+	{$umForms}
+	<input type=hidden name="ix" value="{$umIx}">
+	<input type=hidden name="folder" value="{$umFolder|escape:'html'}">
+	
+	<table class="popup">
+	<tr height="20">
+		<td class="lmbar" align="center" colspan="2"><b>{#adr_address_entry#}</b></td>
+	</tr>
+	
+	{if $umAvailableAddresses gt 0 }
+	<tr>
+		<td valign="top"><br><fieldset>
+			<legend>{#ctc_information#}</legend><br>
+			<table class="tablecollapsed">
+			<tr height="20" class="upper_line">
+				<td class="bar" width=""60%""><b><center>{#ctc_name#}</b></center></td>
+				<td class="bar"><center><b>{#ctc_email#}</b></center></td>
+			</tr>
+			{section name=i loop=$umAddressList}
+				<tr class="page_color">
+					<td class=menu valign=top><input type=checkbox name=ckaval[] checked value={$umAddressList[i].index}>&nbsp;<i>
+					<b>{$umAddressList[i].name|truncate:30:"...":true|escape:"html"}</b></i></td>
+					<td class=menu>{$umAddressList[i].mail}</td>
+				</tr>
+			{/section}
+			</table>
+		</fieldset></td>
+	</tr>
+	<tr>
+		<td valign="top" align="center"><input class="button" type=submit name=submit value="{#ctc_save#}">&nbsp; 
+			<input class="button" type="button" value="{#ctc_close#}" onclick="javascript:self.close();"><br>
+		</td>
+	</tr>
+	{else}
+		<tr>
+		<td valign="top" align="center"><br>
+			<font color="#0000FF">{#ctc_no_address#}</font><br><br><br>
+			<input class="button" type="button" value="{#ctc_close#}" onclick="javascript:self.close();">
+		</td>
+	</tr>
+	{/if}
+	
+	</table>
+	</form>
+
+</body>
+</html>

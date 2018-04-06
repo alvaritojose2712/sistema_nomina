@@ -1,0 +1,51 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			headers-window.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Template to display mail headers
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Headers"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+	
+<body class="innercontent">
+
+	<table class="popup">
+	<tr height="20">
+		<td class="lmbar" align="center" colspan="2"><b>{#mail_header#}</b></td>
+	</tr>
+	<tr>
+		<td style="WORD-BREAK:BREAK-ALL;"><font face="Courier New" size=2>{$umHeaders}</font><br></td>
+		
+	</tr>
+	</table>
+	
+</body>
+</html>

@@ -1,0 +1,84 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			spam-address.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Pop-up to block (SPAM) or not an address
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="SpamSender"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="innercontent">
+
+	<form name=form1 action="spam_address.php" method=POST>
+	<input type=hidden name="ix" value="{$umIx}">
+	<input type=hidden name="folder" value="{$umFolder|escape:'html'}">
+	{$umForms}
+		
+	<table class="popup">
+	<tr height="20">
+		<td class="lmbar" align=center><b>{#spm_ask#}</b></td>
+	</tr>
+	{if $umAvailableAddresses gt 0 }
+		<tr>
+			<td><fieldset>
+				<legend>{#spm_information#} </legend>
+				<br>
+				{section name=i loop=$umAddressList}
+					<input type="checkbox" name="fFilter[]" value="{$umAddressList[i].index}">
+					<font color="#FF0000">{$umAddressList[i].mail}</font><br>
+				{/section}<br>
+			</fieldset></td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input class="button" type="submit" name="submit" value="{#spm_save#}" >&nbsp; 
+				<input class="button" type="button" value="{#spm_close#}" onclick="javascript:self.close();">
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<p align="justify"><small>{#spm_warn#}</small></p>
+			</td>
+		</tr>
+		{else}
+		<tr>
+			<td valign="top" align="center"><br>
+				<font color="#0000FF">{#spm_no_address#}</font><br><br><br>
+				<input class="button" type="button" value="{#spm_close#}" onclick="javascript:self.close();">
+			</td>
+		</tr>
+	{/if}
+		
+	</table>
+	</form>
+
+</body>
+</html>

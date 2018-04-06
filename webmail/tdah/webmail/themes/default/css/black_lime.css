@@ -1,0 +1,39 @@
+/* **********************************************************************
+	- File:			black_lime.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Black Mesh sheet: This sheet contents only the change to the default sheet for this skin
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+TABLE.login 	{ background-image: url('../images/skins/black_lime/login.gif'); }	
+.header 		{ background-image: url('../images/skins/black_lime/header.gif'); }
+BODY.body,
+TABLE.background, 
+td.background 	{ background-image: url('../images/skins/black_lime/background.gif'); }
+td.bar 			{ background-image: url('../images/skins/black_lime/bar.gif'); }
+td.hbar 		{ background-image: url('../images/skins/black_lime/hbar.gif'); }
+td.mbar 		{ background-image: url('../images/skins/black_lime/mbar.gif'); }
+td.lmbar 		{ background-image: url('../images/skins/black_lime/lmbar.gif'); }
+td.line 		{ background-image: url('../images/skins/black_lime/line.gif'); }
+	TD.tab_info_visible {
+		cursor: pointer;
+		color: #FFFFFF; 
+		
+		background: url('../images/skins/black_lime/lmbar.gif') repeat
+	}
+.i_frame,
+.innercontent 	{ background-color: #FAFFFA; }
+.hover_color,
+.menu li a:hover,
+#topright li a:hover,
+#topleft li a:hover,
+#topleft div a:hover,
+.trees .tree_hover,
+TD.tab_info_visible { background-color: #C1EEC1; }
+.navbar a 		{ color: #00C100; }
+#calendar .calendarDetail .today a {
+	color:#fff;
+	background-color:#00C100;
+	font-weight:bold;
+}

@@ -1,0 +1,107 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			error.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Template to display errors (Not much used !!!)
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Error"} 
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS}
+	<!-- If we don't want to display an error page but to return to login page 
+	<meta http-equiv="Refresh" content="0,url=index.php">
+
+OR
+
+	{literal}
+		<script language="javascript" type="text/javascript">
+			window.onload = function redirect_error() { window.location.href = "index.php"; }
+		</script>
+	{/literal}
+	-->
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head>
+
+<body class="bodypage">
+
+	<!--"start outer table" -->
+	<table class="tablecollapsed" cellpadding="0" height="99%">
+
+	<!--"BANNER" -->
+	{include file="$umTPath$TPL_BANNER"}
+
+	<!--"TOOLBAR" --> 		       
+	{assign var='umTLB_HELP' value=2}
+	{assign var='umTLB_LOGOFF' value=1}
+	{assign var='umTLB_FOLDERS' value=2}
+	{include file="$umTPath$TPL_TOOLBAR"}
+        
+	<!--"start inner content" -->
+	<tr>
+		<td valign="top">
+		 
+		<!--"start content table" -->
+		<table class="innercontent" cellpadding="0" height="100%">
+		<tr> 
+			<!--"LEFT PANEL" --> 		       
+			{include file="$umTPath$TPL_PANEL"}
+	
+			<!--"start center content" -->
+			<td valign="top" class="content">
+
+			<div class="pagetitle">
+				<div class="title"><font color="#FF0000">{#err_title#}</font></div>
+				<div class="image"><img src="themes/{$umTPath}/images/error.gif" alt=""></div>
+			</div>
+
+			<table class="tablecollapsed">
+			<tr>
+				<td align="center"><br><br>{#err_msg#}<br><br>
+				<small>{#err_system_msg#} 
+				{if $umErrorCode eq "1"}
+					{#error_connect#}
+				{elseif $umErrorCode eq "2"}
+					{#error_retrieving#}
+				{else}
+					{#error_other#}
+				{/if}
+				</small><br><br>
+				<input class="button" type ="button" onclick ="javascript:window.location.href ='logout.php?sid={$umSid}&tid={$umTid}&lid={$umLid}';"value="{#err_exit#}">
+				</td>
+			</tr>
+			</table>
+
+			</td><!--"end center content" -->		
+		</tr>
+		</table><!--"end content table" -->	
+			
+		</td>		
+	</tr><!--"end inner content" -->
+	</table><!--"end outer content" -->
+
+</body>
+</html>

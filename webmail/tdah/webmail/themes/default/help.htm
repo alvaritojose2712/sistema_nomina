@@ -1,0 +1,385 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			help.htm
+	- Developer: 	Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Help pages
+
+************************************************************************* *}
+
+{config_load file=$umLanguageHelp section="Help"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	{$pageMetas}
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="bodypage help" onresize="help_resize();" onload="help_resize();">
+
+	<table class="tablecollapsed" cellpadding="0">
+	<tr>
+		<td class="lmbar" align=center height="20"><b>{#hlp_title#}</b></td>
+	</tr>
+	<tr>
+		<td valign="top" class="innercontent">
+			<center>
+			<!-- Tabs -->
+			<table class="tablecollapsed" cellpadding="0">
+			<tr>
+				<td id="tab_general" class="tab_info_visible">
+					<table  class="tablecollapsed"  cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('general')">
+						<nobr>&nbsp;{#hlp_tab_general#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_inbox" class="tab_info_hidden">
+					<table  class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('inbox')">
+						<nobr>&nbsp;{#hlp_tab_inbox#}&nbsp;</td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_chat" class="tab_info_hidden">
+					<table  class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('chat')">
+						<nobr>&nbsp;{#hlp_tab_chat#}&nbsp;</td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+				
+						<td id="tab_calendar" class="tab_info_hidden">
+					<table  class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('calendar')">
+						<nobr>&nbsp;{#hlp_tab_calendar#}&nbsp;</td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_compose" class="tab_info_hidden">
+					<table class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('compose')">
+						<nobr>&nbsp;{#hlp_tab_compose#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+				
+				<td id="tab_address" class="tab_info_hidden">
+					<table class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('address')">
+						<nobr>&nbsp;{#hlp_tab_addressbook#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_folders" class="tab_info_hidden">
+					<table class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('folders')">
+						<nobr>&nbsp;{#hlp_tab_folders#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_search" class="tab_info_hidden">
+					<table class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('search')">
+						<nobr>&nbsp;{#hlp_tab_search#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_preferences" class="tab_info_hidden">
+					<table class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('preferences')">
+						<nobr>&nbsp;{#hlp_tab_preferences#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td id="tab_credits" class="tab_info_hidden">
+					<table class="tablecollapsed" cellpadding="0">
+					<tr>
+						<td><img src="themes/{$umTPath}/images/tab_left.gif" alt=""></td>
+						<td style="background-image: url('themes/{$umTPath}/images/tab_middle.gif');" onclick="switchHelpTab('credits')">
+						<nobr>&nbsp;{#hlp_tab_credits#}&nbsp;</nobr></td>
+						<td><img src="themes/{$umTPath}/images/tab_right.gif" alt=""></td>
+					</tr>
+					</table>
+				</td>
+
+				<td width='100%'>&nbsp;</td>
+				<td><input class="button" type="button" value="{#bt_close#}" onclick="javascript: self.close();"></td>
+			</tr>
+			</table>
+			
+			<table class="tab">
+			<tr>
+				<td>
+				<!-- First - General-->
+					<div id="general" class="tab_visible">
+						<div class="help_title"> {#hlp_general#}</div>
+						<div class="help_text">
+							<center>
+								<font size="5">{#hlp_text_general#}</font>
+								<br><br><br>
+								<table class="infos">
+									<tr style="height: 10px;"><td></td><td></td></tr>
+									<tr><td><b>{#uebimau_version#}</b><br>&nbsp;</td><td>{$umUebimiauVersion}<br>
+										<a href="http://{$umUebimiauLink}" target="new">{$umUebimiauLink}</a></td></tr>
+									<tr><td><b>{#smarty_version#}</b><br>&nbsp;</td><td>{$smarty.version} - {$umSmartyVersion}<br>
+										<a href="http://{$umSmartyLink}" target="new">{$umSmartyLink}</a></td></tr>
+									<tr><td><b>{#tinymce_version#}</b><br>&nbsp;</td><td>{$umTinyMceVersion}<br>
+										<a href="http://{$umTinyMceLink}" target="new">{$umTinyMceLink}</a></td></tr>
+									<tr><td>&nbsp;</td><td></td><!--<td><b>{#wysiwyg_version#}</b><br>&nbsp;</td><td>{$umWYSIWYGVersion}<br>
+										<a href="http://{$umWYSIWYGLink}" target="new">{$umWYSIWYGLink}</a></td></tr> -->
+									<tr><td colspan="2" height="*">{#license_gpl#}<a href="admin/install/gpl_{$umLid}.html" target="_new"> GPL</a></td>
+									<tr style="height: 80px;"><td></td><td align="right" valign="bottom"><small><i>{#display_opt#}</i></small></td></tr>
+								</table>
+							</center>
+							<br><br>
+							<center><div style="width: 500px; text-align: left; ">{#hlp_text_gen1#}</div></center>
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Second - Inbox -->
+					<div id="inbox" class="tab_hidden">
+						<div class="help_title"> {#hlp_inbox#}</div>
+						<div class="help_text">{#hlp_text_inbox#}
+							<div class="help_section">{#hlp_title_inbox1#}</div>
+							{#hlp_text_inbox1#}
+							<div class="help_section">{#hlp_title_inbox2#}</div>
+							{#hlp_text_inbox2#}
+							<div class="help_section">{#hlp_title_inbox3#}</div>
+							{#hlp_text_inbox3#}
+							<div class="help_section">{#hlp_title_inbox4#}</div>
+							{#hlp_text_inbox4#}
+							<div class="help_section">{#hlp_title_inbox5#}</div>
+							{#hlp_text_inbox5#}
+							<div class="help_section">{#hlp_title_inbox6#}</div>
+							{#hlp_text_inbox6#}
+							<div class="help_section">{#hlp_title_inbox7#}</div>
+							{#hlp_text_inbox7#}
+							<div class="help_section">{#hlp_title_inbox8#}</div>
+							{#hlp_text_inbox8#}
+							<div class="help_section">{#hlp_title_inbox9#}</div>
+							{#hlp_text_inbox9#}
+							<div class="help_section">{#hlp_title_inbox10#}</div>
+							{#hlp_text_inbox10#}
+							<div class="help_section">{#hlp_title_inbox11#}</div>
+							{#hlp_text_inbox11#}
+							<div class="help_section">{#hlp_title_inbox12#}</div>
+							{#hlp_text_inbox12#}
+							<div class="help_section">{#hlp_title_inbox13#}</div>
+							{#hlp_text_inbox13#}
+							<div class="help_section">{#hlp_title_inbox14#}</div>
+							{#hlp_text_inbox14#}
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Third - Chat -->
+					<div id="chat" class="tab_hidden">
+						<div class="help_title"> {#hlp_chat#}</div>
+						<div class="help_text">{#hlp_text_chat#}
+							<div class="help_section">{#hlp_title_chat1#}</div>
+							{#hlp_text_chat1#}
+							<div class="help_section">{#hlp_title_chat2#}</div>
+							{#hlp_text_chat2#}
+							<div class="help_section">{#hlp_title_chat3#}</div>
+							{#hlp_text_chat3#}
+							<div class="help_section">{#hlp_title_chat4#}</div>
+							{#hlp_text_chat4#}
+							<div class="help_section">{#hlp_title_chat5#}</div>
+							{#hlp_text_chat5#}
+							<center><br><img src="themes/{$umTPath}/images/help/smileys.gif" border="0" alt=""></center>
+							<div class="help_section">{#hlp_title_chat6#}</div>
+							{#hlp_text_chat6#}
+							<div class="help_section">{#hlp_title_chat7#}</div>
+							{#hlp_text_chat7#}
+						</div> <!-- end text -->
+					</div>
+					
+							<!-- Third - Calendar -->
+					<div id="calendar" class="tab_hidden">
+						<div class="help_title"> {#hlp_calendar#}</div>
+						<div class="help_text">{#hlp_text_calendar#}
+							<div class="help_section">{#hlp_title_calendar1#}</div>
+							{#hlp_text_calendar1#}
+							<div class="help_section">{#hlp_title_calendar2#}</div>
+							{#hlp_text_calendar2#}
+							<div class="help_section">{#hlp_title_calendar3#}</div>
+							{#hlp_text_calendar3#}
+							<div class="help_section">{#hlp_title_calendar4#}</div>
+							{#hlp_text_calendar4#}
+							<div class="help_section">{#hlp_title_calendar5#}</div>
+							{#hlp_text_calendar5#}
+							
+							
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Fourth - New mail -->
+					<div id="compose" class="tab_hidden">
+						<div class="help_title"> {#hlp_compose#}</div>
+						<div class="help_text">{#hlp_text_compose#}
+							<div class="help_section">{#hlp_title_new1#}</div>
+							{#hlp_text_new1#}
+							<div class="help_section">{#hlp_title_new2#}</div>
+							{#hlp_text_new2#}
+							<div class="help_section">{#hlp_title_new3#}</div>
+							{#hlp_text_new3#}
+							<div class="help_section">{#hlp_title_new4#}</div>
+							{#hlp_text_new4#}
+							<div class="help_section">{#hlp_title_new5#}</div>
+							{#hlp_text_new5#}
+							<div class="help_section">{#hlp_title_new6#}</div>
+							{#hlp_text_new6#}
+							<div class="help_section">{#hlp_title_new7#}</div>
+							{#hlp_text_new7#}
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Fifth - Address book -->
+					<div id="address" class="tab_hidden">
+						<div class="help_title"> {#hlp_addressbook#}</div>
+						<div class="help_text">{#hlp_text_addressbook#}
+							<div class="help_section">{#hlp_title_address1#}</div>
+							{#hlp_text_address1#}
+							<div class="help_section">{#hlp_title_address2#}</div>
+							{#hlp_text_address2#}
+							<div class="help_section">{#hlp_title_address3#}</div>
+							{#hlp_text_address3#}
+							<div class="help_section">{#hlp_title_address4#}</div>
+							{#hlp_text_address4#}
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Sixth - Folders -->
+					<div id="folders" class="tab_hidden">
+						<div class="help_title"> {#hlp_folders#}</div>
+						<div class="help_text">{#hlp_text_folders#}
+							<div class="help_section">{#hlp_title_folders1#}</div>
+							{#hlp_text_folders1#}
+							<div class="help_section">{#hlp_title_folders2#}</div>
+							{#hlp_text_folders2#}
+							<div class="help_section">{#hlp_title_folders3#}</div>
+							{#hlp_text_folders3#}
+							<div class="help_section">{#hlp_title_folders4#}</div>
+							{#hlp_text_folders4#}
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Seventh - Search -->
+					<div id="search" class="tab_hidden">
+						<div class="help_title"> {#hlp_search#}</div>
+						<div class="help_text">{#hlp_text_search#}
+							<div class="help_section">{#hlp_title_search1#}</div>
+							{#hlp_text_search1#}
+						</div> <!-- end text -->
+					</div>
+		
+				<!-- Eighth - Preferences -->
+					<div id="preferences" class="tab_hidden">
+						<div class="help_title"> {#hlp_preferences#}</div>
+						<div class="help_text">{#hlp_text_preferences#}				
+							<div class="help_section">{#hlp_title_pref1#}</div>
+							{#hlp_text_pref1#}
+							<div class="help_section">{#hlp_title_pref2#}</div>
+							{#hlp_text_pref2#}
+							<div class="help_section">{#hlp_title_pref3#}</div>
+							{#hlp_text_pref3#}
+							<div class="help_section">{#hlp_title_pref4#}</div>
+							{#hlp_text_pref4#}
+							<div class="help_section">{#hlp_title_pref5#}</div>
+							{#hlp_text_pref5#}
+							<div class="help_section">{#hlp_title_pref6#}</div>
+							{#hlp_text_pref6#}
+							<div class="help_section">{#hlp_title_pref7#}</div>
+							{#hlp_text_pref7#}
+						</div> <!-- end text -->
+					</div>
+					
+				<!-- Ninth - Credits -->
+					<div id="credits" class="tab_hidden">
+						<div class="help_title"> {#hlp_credits#}</div>
+						<div class="help_text">{#hlp_text_credits#}
+							<div class="help_section">{#hlp_title_auth1#}</div>
+							{#hlp_text_auth1#}
+							{#hlp_text_auth1a#}
+							{#hlp_text_auth1b#}
+							<div class="help_section">{#hlp_title_auth2#}</div>
+							{#hlp_text_auth2#}
+							<div class="help_section">{#hlp_title_auth3#}</div>
+							{#hlp_text_auth3#}
+							<div class="help_section">{#hlp_title_auth4#}</div>
+							{#hlp_text_auth4#}
+							<div class="help_section">{#hlp_title_auth5#}</div>
+							{#hlp_text_auth5#}
+							<br><center>
+							<img src="themes/{$umTPath}/images/help/W3C_html.gif" alt=""> &nbsp; 
+							<img src="themes/{$umTPath}/images/help/W3C_css.gif" alt=""> &nbsp; 
+							<img src="themes/{$umTPath}/images/help/php.gif" alt=""> &nbsp; 
+							<img src="themes/{$umTPath}/images/help/smarty.gif" alt=""></center>
+						</div> <!-- end text -->
+					</div>
+				</td>
+			</tr>
+			</table>
+			
+		</center>
+		</td>
+	</tr>
+	</table>
+
+</body>
+</html>

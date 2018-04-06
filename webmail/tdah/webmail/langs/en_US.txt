@@ -1,0 +1,724 @@
+#
+# English
+# Version 1.2 - may, 2009
+# (note: don't place tab before string otherwise they are not accessible in PHP)
+# File: en_US.txt
+
+# Before the first [tags] are every strings that are either common to several templates OR need to be accessed from PHP
+
+
+# CharSet 
+default_char_set				= UTF-8
+
+
+#**********************************************************#
+# Date & Time Formats											   #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes #
+# for a complete list, see http://www.php.net/strftime     #
+#**********************************************************#
+
+# Times
+
+# Top Header time and date
+header_standard_timeformat			= %l:%M
+header_military_timeformat			= %T
+header_date_format 				= %A, %B %e, %l:%M %p
+
+# Editor time and date
+tiny_mce_time					= %l:%M
+tiny_mce_date					= %A, %B %e, %Y
+
+# Email Messages time and date
+date_format 					= %A, %B %e, %l:%M %p
+
+# Preferences & time zones
+date_timeformat				= h:i A
+timezone_city					= -12|Dateline |International Date Line West|-11|Samoa|Midway Island, Samoa|-10|Hawaiian|Hawaii|-9|Alaskan|Alaska|-8|Pacific|Pacific Time (US and Canada), Tijuana|-7|U.S. Mountain, Mexico 2|Mountain Time (US and Canada), Arizona, Chihuahua, La Paz, Mazatlan|-6|Central, Canada Central, Mexico, Central America|Central Time (US and Canada, Saskatchewan, Guadalajara, Mexico City, Monterrey,Central America|-5|Eastern, U.S.(CDT) Eastern, S.A. Pacific|Eastern Time (US and Canada), Indiana (East), Bogota, Lima, Quito|-4|Atlantic, S.A. Western, Pacific S.A.|Atlantic Time (Canada), Caracas, La Paz, Santiago|-3.5|Newfoundland and Labrador|Newfoundland and Labrador|-3|E. South America, S.A. Eastern, Greenland|Brasilia, Buenos Aires, Georgetown, Greenland|-2|Mid-Atlantic|Mid-Atlantic|-1|Azores, Cape Verde|Azores, Cape Verde Islands|0|GMT, Greenwich|Greenwich Mean Time: Dublin, Edinburgh, Lisbon, London, Casablanca, Monrovia|1|Central Europe, Central European, Romance, W. Europe, W. Central Africa|Belgrade, Bratislava, Budapest, Ljubljana, Prague, Sarajevo, Skopje, Warsaw, Zagreb, Brussels, Copenhagen, Madrid, Paris, Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna, West Central Africa|2|E. Europe, Egypt, FLE, GTB|Bucharest, Cairo, Helsinki, Kiev, Riga, Sofia, Tallinn, Vilnius, Athens, Istanbul, Minsk|2|Israel, South Africa|Jerusalem, Harare, Pretoria|3|Russian, Arab, E. Africa, Arabic, Iran|Moscow, St. Petersburg, Volgograd, Kuwait, Riyadh, Nairobi, Baghdad, Tehran|4|Arabian, Causasus|Abu Dhabi, Muscat, Baku, Tbilisi, Yerevan|4.5|Transitional Islamic State of Afghanistan|Kabul|5|Ekaterinburg, West Asia|Ekaterinburg, Islamabad, Karachi, Tashkent|5.5|India|Chennai, Kolkata, Mumbai, New Delhi|5.75|Nepal|Kathmandu|6|Central Asia, Sri Lanka, N. Central Asia|Astana, Dhaka, Sri Jayawardenepura, Almaty, Novosibirsk|6.5|Myanmar|Yangon Rangoon|7|S.E. Asia, North Asia|Bangkok, Hanoi, Jakarta, Krasnoyarsk|8|China, Singapore, Taipei, W. Australia, North Asia East|, TaipeiBeijing, Chongqing, Hong Kong SAR, Urumqi, Kuala Lumpur, Singapore, Perth, Irkutsk, Ulaanbaatar|9|Korea, Tokyo, Yakutsk|Seoul, Osaka, Sapporo, Tokyo, Yakutsk|9.5|A.U.S. Central, Cen. Australia|Darwin, Adelaide|10|A.U.S. Eastern, E. Australia, Tasmania, Vladivostok, West Pacific|Canberra, Melbourne, Sydney, Brisbane, Hobart, Vladivostok, Guam, Port Moresby|11|Central Pacific|Magadan, Solomon Islands, New Caledonia|12|Fiji Islands, New Zealand|Fiji Islands, Kamchatka, Marshall Islands, Auckland, 
+
+
+#**********************************************************#
+
+# Miscellaneous 
+
+empty_folder					= Empty folder
+pages						= Page
+# Reminder: B=Bytes and b=bits
+bytes						= B
+
+chat_members					= users
+adr_new_entry					= New Contact
+adr_address_entry				= Do you want to Save this address in your address book?	
+
+bt_OK						= &nbsp; OK &nbsp;
+bt_close					= Close
+bt_back					= Back
+bt_continue					= Continue
+bt_resend					= Resend
+bt_clear					= Clear
+
+sw_name					= T-dah Webmail
+sw_version					= version
+log_time_date					= Logged at
+
+up_download					= Download attachment
+up_information_photo				= Upload a photo
+up_deleteimage				= Remove
+up_notimage					= This file is not a valid image format.
+up_delete_photo				= Ok to remove the contact's photo?
+up_error_upload				= Cannot upload the photo!
+up_error_dir					= Cannot create the photo folders!
+up_size_upload				= Photo maximum size: 200 x 200 pixels!
+up_size_0					= This file is empty (size 0Kb)!
+
+fld_empty_validate				= Are you sure to empty the 
+fld_delete_validate				= All message filters to this folder will also be removed.\nAre you sure you want to delete the folder?
+adr_delete_validate				= Are you sure you want to delete the contact?
+prf_delfilter					= Are you sure you want to delete the filter(s)?
+
+
+
+
+# System messages
+atleastserver					= You must set at least one server in $mail_servers,<br> please review your config.php
+modeserverunknow				= Unknown server mode,<br> please see config.php
+atleastlanguage				= You must provide at least one language, please see config.languages.php
+atleasttheme					= You must provide at least one theme in config.themes.php
+adr_photo_msg					= You must have previously entered this contact e-mail address!
+
+
+# User-friendly names to system folders
+inbox_extended				= Inbox
+sent_extended					= Sent 
+trash_extended				= Trash 
+spam_extended					= Spam
+
+
+# Navigation texts
+previous_text					= Previous
+next_text					= Next
+
+
+# Mail Server Errors
+error_connect					= Error connecting to the server
+error_retrieving				= Error getting your messages, your Inbox has changed
+error_other					= System failure, please contact your network administrator
+
+
+# Invalid name of mailbox
+error_invalid_name				= Invalid folder name - Use only the following characters  A-Z, a-z, 0-9 and -
+
+
+# Validations when sending mails
+error_no_recipients				= Error: You must have at least one recipient!
+error_compose_invalid_mail1_s		= Error: This email address seems to be invalid
+error_compose_invalid_mail1_p		= Error: These email addresses seem to be invalid
+error_compose_invalid_mail2_s		= Check the email address before resending this email.
+error_compose_invalid_mail2_p		= Check your addresses before resending this email.
+
+
+# Confirmation of delete
+confirm_delete				= Do you really want to delete the selected message(s)?
+confirm_spam				= Do you really want to spam the selected message(s)?
+
+
+# If the message no have a subject or sender
+no_subject_text				= [No subject]
+no_sender_text				= [Sender unknown]
+no_recipient_text				= [Recipient unknown]
+
+
+# If the quota limit was exceeded
+quota_exceeded				= Not enough space in your inbox to complete this action\nPlease delete some messages to continue
+quota_usage_info				= Quota limit:
+quota_usage_used				= Used
+quota_usage_of				= of
+quota_usage_avail				= available
+
+
+ 
+
+
+# Page_Titles
+in_title					= In Box
+new_title					= Compose
+adr_title					= Address book
+fld_title					= Folders
+ser_title					= Search
+prf_title					= Preferences
+
+
+# Menu
+messages_mnu					= Inbox
+read_menu					= Read Email(s)
+compose_mnu					= New Email
+refresh_mnu					= Check Email
+folders_mnu					= Folders
+chat_mnu					= Chat
+menu_mnu					= Menu
+search_mnu					= Search
+calendar_mnu					= Calendar
+address_mnu					= Address book
+empty_trash_mnu				= Empty trash
+prefs_mnu					= Preferences
+logoff_mnu 					= Log out
+actions_mnu 					= Actions
+help_mnu					= Help
+main_mnu					= Home
+
+# Reply
+reply_prefix					= Re:
+forward_prefix				= Fw:
+reply_delimiter				= --------- Original Message --------
+reply_from_hea				= From:
+reply_to_hea					= To:
+reply_cc_hea					= Cc:
+reply_date_hea				= Date:
+reply_subject_hea				= Subject:
+
+
+# String for Admin pages
+admin_hello					= Hello
+admin_page					= Administration
+admin_title					= T-dah Webmail Admin System
+admin_copyright				= T-dah Webmail Admin System
+admin_prompt					= Site login
+admin_username				= User name:
+admin_password				= Password:
+admin_confirm_pwd				= Confirm password:
+admin_login_result				= Login result
+admin_bt_login				= Login
+admin_bt_register				= Register
+admin_bt_delete				= Remove
+admin_bt_continue				= Continue
+admin_pwd_notidentical			= Passwords are not the same!
+admin_pwd_tooshort				= Password is too short!
+admin_userexist				= The selected user name is taken
+admin_invalid					= Invalid username or password!
+admin_invalid_email				= Invalid email address!
+admin_opt_ok					= Operation successful
+admin_edit_config 				= The Config configuration file
+admin_edit_pop 				= The POP3-IMAP configuration file
+admin_edit_langs 				= The Languages configuration file
+admin_edit_themes 				= The Themes configuration file
+admin_writemods 				= Written modifications to
+admin_remote_edit 				= This allows for remote editing of config files
+admin_write2file 				= Write to file
+admin_refresh					= Refresh
+admin_edit_paths				= Edit Paths
+admin_edit_help				= Admin Help
+admin_edit_config				= Edit Config
+admin_view_log				= View Admin Logs
+admin_edit_languages				= Edit Languages
+admin_backup_site				= Backup Webmail Site
+admin_edit_chat				= Edit Chat
+admin_edit_backup				= Edit Backup
+admin_view_backups				= View backups
+admin_edit_calendar				= Edit Calendar
+admin_edit_viewer       			= Edit Backup Viewer
+admin_chat_reset				= Reset Chat room
+admin_edit_themes				= Edit Themes
+admin_register				= Manage Admins
+admin_filemanager				= File Manager
+admin_edit_pop				= Edit POP3-IMAP
+admin_logout					= To log out, click here
+admin_chat_msg				= Are you sure you want to reset the Chat room?
+admin_backup_msg				= Are you sure you want to backup?
+admin_chat_reset_admin			= Chat room was reset by the Administrator
+admin_log_cleared				= Log file erased by
+admin_register_result			= Registration result:
+admin_reg_user				= Add/delete user and change passwords
+admin_add_new					= Add new Admin
+admin_add_new_email				= Admin email
+admin_add_new_name				= New user name
+admin_last					= Cannot delete last Admin
+admin_editor					= Uebimiau Editor : 
+
+
+# page-specific vars
+# ------------------------------------------------------------
+
+[Admin]
+
+admin_page					= Administration
+
+
+[Headers]
+
+key_hea					= Key
+value_hea					= Value
+mail_header					= Email header						
+
+
+
+[Folders]
+
+fld_name_hea					= Folder
+fld_messages_hea				= Messages
+fld_size_hea					= Size
+fld_empty_hea					= Empty
+fld_delete_hea				= Delete
+fld_total					= Total:
+fld_make_new					= Type the folder Name
+folders_to					= Folders to
+folders_new					= Create New Folder
+fld_created					= Folder successfully created!
+fld_notcreated				= Folder cannot be created<br>Please check for an existing one or incorrect spelling.
+fld_deleted					= Folder has been deleted.
+fld_error					= An errot has occured during this operation!
+fld_filter_delete				= Number of filters also deleted:
+
+
+
+[MessageList]
+
+messages_to					= Messages to 
+no_messages					= No new messages in your 
+delete_selected_mnu				= Delete 
+spam_selected_mnu				= Spam 
+move_selected_mnu				= Move to
+mark_selected_mnu         			= Read
+unmark_selected_mnu      			= Unread
+move_selected_to_trash_mnu			= Move to Trash
+block_selected_mnu				= Block Message
+spam_selected_mnu				= Spam
+
+actions_mnu					= Actions
+folder						= folder
+
+delete_mnu					= Delete
+move_mnu					= Move to
+subject_hea					= Subject
+from_hea					= From
+to_hea						= To
+date_hea					= Date
+size_hea					= Size
+have_spam					= You have received spam (Please check your Spam folder)
+
+msg_you_have					= You have
+msg_message					= message
+msg_messages					= messages
+
+msg_more_unread				= unread
+msg_one_unread				= unread
+msg_none_unread				= none to read
+msg_in_the_folder				= in the folder
+flag_selected_mnu				= Check 
+deflag_selected_mnu				= Uncheck
+msg_sort					= Sort (ascending/descending)
+
+
+
+[Login]
+
+lgn_title					= Login
+lgn_welcome_msg				= Welcome, please login into your account
+lng_user_email				= Email
+lng_user_name					= Username
+lng_user_pwd					= Password
+lng_server					= Server
+lng_theme					= Theme
+lng_language					= Language
+lng_login_btn					= Login &gt;&gt;
+
+
+
+[Newmessage]
+
+to_hea						= To:
+cc_hea						= Cc:
+bcc_hea					= Bcc:
+subject_hea					= Subject:
+address_tip					= Insert Contact From Address Book
+
+attach_hea					= Attachment(s):<br>
+attch_add_new					= Attach new file
+attch_name_hea				= Name
+attch_size					= Size
+attch_type_hea				= Type
+attch_dele_hea				= Delete
+attch_no_hea					= No attachments
+
+add_signature					= Add signature
+send_text					= Send
+require_receipt				= Require read receipt
+
+result_error					= It was not possible to send this Email,<br>Check the Address and Try again.
+result_success				= This Email has been sent
+nav_continue					= <b>Continue</b>
+nav_back					= Back
+
+up_title 					= Add file
+up_information_text				= Select File
+up_button_text				= Add to Message
+
+priority_text					= Priority
+priority_low					= Low
+priority_normal				= Normal
+priority_high					= High
+
+att_delete					= Delete attached document
+bt_upload					= Upload
+attach_delete					= Are you sure you want to delete the attachment?
+msg_sending					= Your message is being sent...<br>Please wait
+
+
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Please uncheck an option
+adv_warning_text_mode2			= to use the toolbar
+
+adv_type_path					= Write the URL:
+
+format_paragraph				= Paragraph
+format_h1					= Style 1 <H1>
+format_h2					= Style 2 <H2>
+format_h3					= Style 3 <H3>
+format_h4					= Style 4 <H4>
+format_h5					= Style 5 <H5>
+format_h6					= Style 6 <H6>
+format_pre					= Formatted <PRE>
+format_clear_all				= Clear all
+
+format_font					= Font
+format_size					= Size
+
+format_color					= Color
+format_back					= Background
+color_red					= Red
+color_blue					= Blue
+color_green					= Green
+color_black					= Black
+color_yellow					= Yellow
+color_white					= White
+
+view_source					= View HTML source
+
+view_source					= WYSIWYG editor 
+text_mode					= Text mode
+clear_format					= Clear format
+
+priority_text					= Priority
+
+
+
+[BadLogin]
+
+bdl_title					= Login Error
+bdl_msg					= <b><font color="red">Login Error</font> - You cannot Login with the Username and Password Entered.<br><br>Please check the Username and Password and try again.</b>
+bdl_back					= <b>Back</b>
+
+
+
+[Error]
+
+err_title					= Error
+err_msg					= There were errors in the process<br><br>Please login again
+err_system_msg				= System message: 
+err_exit					= Logout
+
+
+
+[Preferences]
+
+prf_title 					= Preferences
+prf_general_title				= General information
+prf_name					= Name
+
+prf_nickname					= Nickname (chat)			
+prf_admin					= Administration (Restricted access)
+prf_skin_default				= Default Skin
+prf_skin_blue					= Business Blue
+prf_skin_red					= Business Red
+prf_skin_pastel_blue				= Pastel Blue
+prf_skin_gold2				= Gold 2 Tone
+prf_skin_lime2				= Lime 2 Tone
+prf_skin_purple2				= Purple 2 Tone
+prf_skin_red2					= Red 2 Tone
+prf_skin_blue2				= Blue 2 Tone
+prf_skin_black				= Black Mesh
+prf_skin_black2				= Black 2 Tone
+prf_skin_xp_blue			  	= XP Blue
+prf_skin_xp_silver				= XP Silver
+
+prf_reply_to					= Reply to
+prf_time_zone					= Time zone
+prf_trash_title				= Trash
+prf_save_to_trash				= When you <b>Delete</b> a message, move it to 
+prf_save_to_spam				= When you <b>Spam</b> a message, move it to 
+prf_save_only_read				= Save only <b>read messages</b> in the 
+prf_empty_on_exit				= <b>Empty</b> Trash folder when you logout
+prf_empty_spam_on_exit			= <b>Empty</b> Spam folder when you logout
+prf_unmark_read_on_exit			= Reset READ messages as UNREAD when you logout
+prf_sent_title				= Sent items
+prf_save_sent					= Save <b>sent messages</b> in 
+prf_messages_title				= Messages
+prf_page_limit				= Maximum number of messages/contacts per page
+prf_signature_title				= Signature
+prf_signature					= Write your signature
+prf_auto_add_sign				= Add your signature to all the outgoing messages 
+prf_save_button				= Save
+prf_block_images				= Block external images in read mail 
+prf_display_images				= Show attached images in read mail
+prf_default_editor_mode			= Default edit mode
+prf_default_editor_mode_text		= Plain text
+prf_default_editor_mode_html		= HTML editor
+prf_default_editor_mode_wyswyg		= WYSIWYG editor (experimental)
+prf_time_to_refesh				= Automatically check for new mail (minutes)
+prf_auto_require_receipt			= Require read receipt by default
+
+prf_mgs_saved					= Preferences saved
+
+
+# skin
+skin_title					= Skin
+
+
+# filters
+filter_title					= Filters
+
+filter_new					= Create a filter
+filter_desc					= Choose the search criteria and the action for the incoming messages
+filter_list					= Current filters
+
+filter_field_from				= From
+filter_field_to				= To
+filter_field_subject				= Subject
+filter_field_header				= Header
+filter_field_strbody				= Body
+
+filter_type_move				= Move
+filter_type_delete				= Delete
+filter_type_spam				= Spam 
+filter_type_mark				= Mark read
+
+filter_add					= Add filter
+filter_delete					= Delete
+filter_delete_selected			= Delete selected filters
+
+filter_field					= Filter on field
+filter_match					= Search for
+filter_type					= Action
+filter_folder					= Destination folder
+
+filter_msg_nofilters				= No filters available.
+filter_msg_added				= Filter added
+filter_msg_deleted				= Filter deleted
+
+
+
+[Catch]
+
+ctc_title					= Add to address book
+ctc_information				= Add which Email Address(es) to Your Address Book?
+ctc_name					= Name
+ctc_email					= Email
+ctc_no_address				= No address available or already in your Address Book!
+ctc_close					= Close
+ctc_save					= Save
+
+
+
+[Readmsg]
+
+next_mnu					= Next Msg
+previous_mnu					= Previous Msg
+back_mnu					= Inbox
+reply_mnu					= Reply
+reply_all_mnu					= Reply all
+forward_mnu					= Forward
+headers_mnu					= Headers
+move_mnu					= Move to
+move_to_trash_mnu				= Move to Trash
+delete_mnu					= Delete
+spam_mnu					= Spam
+spam_message_mnu				= Mark this message as Spam
+print_mnu					= Print
+
+from_hea					= From:
+to_hea						= To:
+cc_hea						= Cc:
+date_hea					= Date:
+subject_hea					= Subject:
+attach_hea					= Attachment:
+msg_folder					= Folder
+
+attch_name_hea				= Name
+attch_force_hea				= Download
+attch_type_hea				= Type
+attch_size_hea				= Size
+catch_address					= Add to Address Book
+block_address					= Block Address
+spam_address					= Mark as Spam
+
+
+[Search]
+
+sch_information_text				= <center>Enter a phrase or a word that you are looking for.<br> </center>
+sch_button_text				= Search &gt;&gt;
+sch_subject_hea				= Subject
+sch_from_hea					= From
+sch_date_hea					= Date
+sch_body_hea					= Message Body
+sch_folder_hea				= Folder
+sch_no_results				= No message matching your criteria has been found
+sch_size_hea					= Size
+
+
+
+[QuickAddress]
+
+qad_title 					= Address book
+qad_select_address				= Select a Contact
+qad_to						= To
+qad_cc						= Cc
+qad_bcc					= Bcc
+quad_close					= Close
+
+
+
+[AddressBook]
+
+# edit/display
+adr_title					= Address book
+qik_title					= Quick Address
+
+adr_name					= Name
+adr_email					= Preferred Email
+adr_phone					= Home Phone
+adr_cell					= Cell Phone
+adr_street					= Street
+adr_apt					= Number
+adr_city					= City
+adr_state					= State
+adr_zip					= Zip / Postal Code
+adr_country					= Country
+
+adr_work					= Company
+adr_wemail					= Work Email
+adr_wphone					= Work Phone
+adr_wfax					= Work Fax
+adr_wstreet					= Work Street
+adr_wcity					= Work City
+adr_wstate					= Work State
+adr_wzip					= Work Zip
+
+adr_aemail					= Alternate Email
+adr_bday					= Birthday
+adr_anniv					= Anniversary
+adr_aim					= AIM
+adr_icq					= ICQ
+adr_msn					= MSN
+adr_yahoo					= YIM
+adr_jabber					= Jabber
+adr_google					= Google Talk
+adr_website					= Web Site
+adr_notes					= Notes
+
+adr_upload					= Upload photo 
+adr_picturename				= Picture Caption
+adr_picturepath				= Picture file
+adr_picturesize				= The maximum size a photo can be is 200 x 200 pixels 
+
+adr_detail					= Edit Details
+adr_delete					= Delete Contact
+adr_no_contact				= No contacts in your <b>Address book</b>
+adr_alreadyexists				= The contact below already uses this address!
+adr_nameneeded				= You must enter the contact's name and Email address!
+adr_edit					= Edit
+adr_nophoto					= Once the contact is created, a photo may be attached.
+
+
+# list
+adr_name_hea					= Name
+adr_email_hea					= Email
+adr_city_hea					= City
+adr_state_hea					= State
+adr_zip_hea					= Zip
+adr_phone_hea					= Phone
+
+adr_back					= Back
+adr_advanced					= Advanced
+adr_edit_hea					= Edit
+adr_expo_hea					= Export
+adr_dele_hea					= Delete
+adr_continue					= Continue
+adr_save					= Save
+addr_saved					= Contact updated and saved
+addr_added					= New Contact has been added
+addr_deleted					= This Contact has been deleted
+
+
+# tabs
+adr_home_title				= Home Addresses                                     
+adr_work_title				= Work Addresses 
+adr_extra_title				= Extra Addresses 
+adr_picture_title				= Picture
+adr_notes_title				= Notes
+
+
+
+[BlockSender]
+
+blk_title					= Block Sender
+blk_information				= Check the Email Address(es) you want to Block
+blk_ask					= <b>Do you really want to Block the Address(es)</b>
+blk_email					= Email Address
+blk_no_address				= You have already blocked this address 
+blk_close					= Close
+blk_save					= Save
+blk_warn					= <b>Warning!</b> All future Blocked Emails are sent directly to your Trash folder. You can undo this filter in preferences, filters tab, current filters
+
+
+
+[SpamSender]
+
+spm_title					= Spam Sender
+spm_ask					= <b>Do you really want to classify this Email as Spam?</b>
+spm_information				= Check or uncheck Address(es) you want to mark as Spam.
+spmk_email					= Email Address
+spm_no_address				= You have already marked this address as Spam
+spm_close					= Close
+spm_save					= Save
+spm_warn					= <b>Warning!</b> All future Spammed emails are sent directly to your Spam folder. You can undo this filter in preferences, filters tab, current filters.
+spm_close					= Close
+
+
+
+[Chat]
+
+chat_room					= Chat
+chat_clear					= Clear
+chat_tclear					= Clear all the room's (text &amp; files)
+chat_update					= Update
+chat_tupdate					= Reload messages and the list of uploaded files
+chat_upload					= Send file
+chat_tupload					= Upload a file to be shared with the room
+chat_login					= Start a new chat
+chat_logout					= Quit
+chat_tlogout					= Log out of chat
+chat_send					= &nbsp;Send&nbsp;
+chat_text					= Your message:
+chat_status					= Status!
+chat_online					= Online
+chat_away					= Away
+chat_busy					= Busy
+chat_beback					= Be Right Back
+chat_users					= Online User(s)
+chat_welcome					= Welcome
+chat_warning					= While connected to this Chat, please be responsible and respect other participatants. Your conduct should be guided by common sense, basic "netiquette", and general chat rules.<br><br>You can change your Nickname in <i>Preferences</i>.
+chat_files					= Uploaded file(s)
+chat_btclose					= Cancel
+chat_btupload					= Upload
+chat_upload_text				= Select file to send
+chat_file_size				= Max. document size:
+chat_clear_validate				= Are you sure you want to clear this chat?
+chat_room_tab					= Chat room
+
+
+
+[Admin]
+adm_title					= T-dah Webmail Admin System
+adm_login_msg					= Login System Admin
+adm_welcome					= Hello
+adm_logout_bt					= Log out

@@ -1,0 +1,109 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			quick-address.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Pop-up to select To/Cc/Bcc recipient addresses
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="QuickAddress"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<script language="javascript" type="text/javascript">
+		var qad_select_address = '{#qad_select_address#}';
+	</script>
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="innercontent" onload="javascript: window.document.forms[0].contacts.focus();">
+  
+	<form name="form1">
+	<table class="tablecollapsed popup">
+		<tr height="20">
+			<td colspan="2"class="lmbar" align=center><b>{#qad_title#}</b></td>
+		</tr>
+		<tr>
+			<td width="80" align="center">
+				<input type=button value="{#bt_OK#}" onClick="AddAndExit()" class=button><br><br>
+				<input type="button" class="button" value="{#quad_close#}" onclick="javascript:self.close();">
+			</td>
+			<td valign="top" style="padding-top: 10px;">{$umContacts}</td>
+		</tr>
+		
+		<tr>
+			<td align="center"><b>{#qad_to#}</b></td><td></td>
+		</tr>
+		<tr>
+			<td valign="top" align="center">
+				<input type="button" value="&gt;&gt;" class="button" onClick="Add('to')"><br>
+				<input type="button" value="&lt;&lt;" class="button" onClick="Dele('to')"><br>
+			</td>
+			<td valign="top">
+				<select name="to" size="3" class='quicklist' onDblClick="Dele('to')">
+				<option value="">
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="center"><b>{#qad_cc#}</b></td><td></td>
+		</tr>
+		<tr>
+			<td valign="top" align="center">
+				<input type="button" value="&gt;&gt;" class="button" onClick="Add('cc')"><br>
+				<input type="button" value="&lt;&lt;" class="button" onClick="Dele('cc')"><br>
+			</td>
+			<td valign="top" >
+				<select name="cc" size="3" class='quicklist' onDblClick="Dele('cc')">
+				<option value="">
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="center"><b>{#qad_bcc#}</b></td><td></td>
+		</tr>
+		<tr>
+			<td valign="top" align="center">
+				<input type="button" value="&gt;&gt;" class="button" onClick="Add('bcc')"><br>
+				<input type="button" value="&lt;&lt;" class="button" onClick="Dele('bcc')"><br>
+			</td>
+			<td valign="top">
+				<select name="bcc" size="3" class='quicklist' onDblClick="Dele('bcc')">
+				<option value="">
+				</select>
+			</td>
+		</tr>
+	</table>
+	</form>
+	
+	<script>
+		// clean the spaces in selects, its fix width in netscape
+		ns_clean();
+	</script>
+	
+</body>
+</html>	

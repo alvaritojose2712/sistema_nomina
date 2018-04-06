@@ -1,0 +1,45 @@
+/* **********************************************************************
+	- File:			css_red.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Business Red sheet: This sheet contents only the change to the default sheet for this skin
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+TABLE.login 		{ background-image: url('../images/skins/css_red/login.gif'); }	
+.header {
+	background-image: none;
+	background-color :#96181C
+}
+BODY.body,
+TABLE.background,
+td.background {
+	background-image: none;
+}	
+td.bar,
+td.hbar {
+	background-image: none;
+	background-color: #EFEFEF 
+}
+td.mbar {
+	background-image: none;
+	background-color: #FAFAFA;
+}
+td.lmbar {
+	background-image: none;
+	background-color: #96181C
+}
+td.line {
+	background-image: none;
+	background-color: #CCCCCC
+}
+.i_frame,
+.innercontent 	{ background-color: #FFFFFF; }
+.hover_color,
+.menu li a:hover,
+#topright li a:hover,
+#topleft li a:hover,
+#topleft div a:hover,
+.trees .tree_hover,
+TD.tab_info_visible { background-color: #EEC1C1; }
+.navbar a 		{ color: #C10000; }

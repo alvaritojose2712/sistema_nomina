@@ -1,0 +1,76 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			upload-photo.htm
+	- Developer: 	Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Poop-up for contact's photo upload and return errors
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Newmessage"}
+{$umDocType}
+<html>
+<head>
+	{$pageMetas}
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="innercontent">
+
+	<form name="form2" enctype="multipart/form-data"  action="uploadphoto.php" method="post"> 
+	<input type="hidden" name="picturepath" value="{$umAddrPicturepath}">
+	{$umForms}
+
+	<table class="popup">
+	<tr height="20">
+		<td class="lmbar" align=center><b>{#up_information_photo#}</b></td>
+	</tr>
+
+	{if $umServerResponse eq 0}
+			<tr>
+				<td align="center"><br><input class="button" type="file" name="upfile" size="45"></td>
+			</tr>
+			<tr>
+				<td valign="top" align="center"><br>
+					<input class="button" type="submit" name="submitBtn" value="{#bt_upload#}">&nbsp; 
+					<input class="button" type="button" value="{#bt_close#}" onclick="javascript:self.close();">
+				</td>
+			</tr>
+	{else}
+		<tr>
+			<td style="text-align: center; color: #FF0000;">
+				{if $umServerResponse eq 1}{#up_notimage#}
+				{elseif $umServerResponse eq 2}{#up_error_dir#}
+				{elseif $umServerResponse eq 3}{#up_error_upload#}
+				{elseif $umServerResponse eq 4}{#up_size_upload#}
+				{/if}
+				<br><br>
+				<input class="button" type="button" onClick="javascript:history.go(-1)" value="{#bt_back#}">
+			</td>
+		</tr>
+	{/if}
+	</table>
+	</form>
+
+</body>
+</html>

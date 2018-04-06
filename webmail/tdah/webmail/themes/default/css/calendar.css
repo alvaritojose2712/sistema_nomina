@@ -1,0 +1,232 @@
+/* ************************************************************************
+	- File:			calendar.css
+	- Developer: 	Todd Henderson
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Styles for the calendar (IFRAME)
+************************************************************************* */
+/* Frame page
+   ======================================================================*/ 
+
+#calendar {
+	text-align:center;
+	font:bold 10px Verdana, Arial, Helvetica, sans-serif;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	float : left;
+	border-collapse: collapse;
+	border-right: 1px solid #E4E4E4;
+	background: #FFFFFF;
+	overflow: auto;
+	padding: 0;
+	
+}
+
+/* Layer inside 
+   ======================================================================*/ 
+
+#calendar .calendarDetail {
+	
+	text-align:center;
+	font:bold 10px Verdana, Arial, Helvetica, sans-serif;
+	width: 100%;
+	margin: auto;
+	float : left;
+	border-collapse: collapse;
+	background: #FFFFFF;
+	overflow: auto;
+	padding: 0;
+	
+	}
+
+/* title Heading
+   ======================================================================*/ 
+#calendar .calendarDetail .title td{
+		
+	color: #eee;
+	font-style: normal;
+	background: url('../images/skins/default/bar.gif') repeat-x;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	line-height: 25px;
+}
+
+#calendar .calendarDetail .title a {
+		
+	color:#003366;
+	text-decoration:none;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 14px;
+}
+
+/* Weeks Heading
+   ======================================================================*/ 
+ 
+#calendar .calendarDetail .title1 td {
+	border-bottom:1px solid #ddd;
+	padding:13px;
+	font-size: 12px;
+}
+
+/* Weeks cell
+   ======================================================================*/ 
+#calendar .calendarDetail .week td{
+	 padding-left: 25px;
+	 padding-right: 25px;
+	 background: #FFFFFF;
+   height: 85px;
+   width: 85px;
+   border-bottom: solid 1px #ddd;
+	 border-top: solid 1px #ddd;
+	 border-left: solid 1px #ddd;
+   border-right: solid 1px #ddd;
+   margin: auto;
+}
+
+/* days
+   ======================================================================*/ 
+#calendar .calendarDetail .week a {
+	 padding-left: 2px;
+	 padding-right: 2px;
+	 padding-top: 2px;
+	 padding-bottom: 2px;
+	 font-size: 14px;
+	 text-align:center;
+	 margin: auto;
+   text-decoration: none;
+   color:#000;
+}
+
+/* mouseover days
+   ======================================================================*/ 
+
+#calendar .calendarDetail .week a:hover {
+	color:#000;
+	background-color:#EFEFEF;
+}
+
+#calendar .calendarDetail .lastMonth a, 
+
+#calendar .calendarDetail .nextMonth a {
+	color:#aaa;
+	background-color:#eee;
+}
+
+
+
+#calendar .calendarDetail .weekend a {
+	color:#000000;
+	background-color:#EFEFEF;
+}
+
+#calendar .calendarDetail .event a {
+	font-weight:bold;
+	color:red;
+	background-color:inherit;
+	text-decoration:underline;
+}
+
+#calendar .calendarDetail .today a {
+	color:#fff;
+	background-color:#3D77CB;
+	font-weight:bold;
+}
+
+/* Event Popup Popup Form 
+   ======================================================================*/ 
+
+#calendar .calendarDetail .calendarEvent {
+	display:none;
+	margin:0 0 0 -80px;
+	padding:0.4em;
+	position:absolute;
+	width:180px;
+	color:#3D77CB;
+	background-color:#fff;
+	text-align:left;
+	border:1px solid #ddd;
+	font-weight:bold;
+}
+
+/* Event Popup Date*/
+#calendar .calendarDetail .calendarEvent .date {
+	font-style:italic;
+	color:#000;
+}
+
+/* Event Popup Edit Position*/
+#calendar .calendarDetail .calendarEvent .edit {
+		
+	float:right;
+}
+/* Event Popup Edit*/
+#calendar .calendarDetail .calendarEvent a {
+	font-weight:bold;
+	color:#ddd;
+	background-color:#fff;
+}
+
+/* Event Popup Box Height*/
+#calendar .calendarDetail .calendarEvent li {
+	margin:1em 1em  1em;
+	list-style:disc inside none;
+	
+}
+
+#calendar .calendarDetail td:hover > .calendarEvent {
+	display:block;
+	
+}
+
+/* Popup Form Detail
+   ======================================================================*/ 
+
+#calendarForm {
+	font:normal 11px Verdana, Arial, Helvetica, sans-serif;
+  text-align:left;
+	background: #ffffff; 
+	color:#fff;
+	
+}
+#calendarForm .title {
+	text-align:center;
+	color:#003366;
+	
+	background: url('../images/skins/default/bar.gif') repeat-x;
+  border-bottom: solid 1px #ddd;
+	font-weight:bold;
+	padding-left: 10px;
+	padding-right: 10px;
+	line-height: 25px;
+}
+#calendarForm .credit {
+	text-align:right;
+	margin:0;
+	padding:0 1em 0.5em 0;
+	color:#000;
+	background-color:inherit;
+}
+#calendarForm .credit a {
+	color:#000;
+	background-color:inherit;
+	text-decoration:underline;
+}
+#calendarForm .credit a:hover {
+	text-decoration:none;
+}
+#calendarForm form {
+	margin:0;
+	padding:0 0.5em;
+	color:#000;
+	background-color:inherit;
+}
+#calendarForm form br {
+	clear:both;
+}
+#calendarForm input, #calendarForm select, #calendarForm textarea {
+	font:normal 12px Verdana, Arial, Helvetica, sans-serif;
+	margin:0 0 0.5em 0;
+}

@@ -1,0 +1,13 @@
+
+# yarn
+yarn install
+yarn upgrade xxx@1.2.3
+
+# transifex
+tx pull -a
+
+# dependencies checker (checking only)
+yarn outdated
+
+# webpack
+webpack --color --watch

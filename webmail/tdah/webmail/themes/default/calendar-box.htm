@@ -1,0 +1,389 @@
+<?php
+
+ /*-----------
+  templates
+ ------------*/
+
+//-- header --//
+$cal_cfg['popup']['header'] = <<<EOT
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset={CHARSET}" />
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/calendar.css" />
+		<title>Calendar</title>
+		<style type="text/css"><!--
+		body {  }
+		--></style>
+	</head>
+	<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">	
+EOT;
+
+//-- footer --//
+$cal_cfg['popup']['footer'] = '</body></html>';
+
+//-- notices --//
+$cal_cfg['popup']['notices'] = array (
+								'access'  => 'Unauthorised access',
+								'invalid' => 'Invalid input',
+								'add'     => 'The event has been added.\nWould you like to reload the calendar?',
+								'del'     => 'The event has been deleted.\nWould you like to reload the calendar?',
+								'edit'    => 'The event has been edited.\nWould you like to reload the calendar?'
+								);
+
+//-- javascript stuff --//
+$cal_cfg['popup']['js']['alert'] = <<<EOT
+{ALERT}
+<script type="text/javascript"><!--//
+opener.alert("{ALERT}");
+window.close();
+//--></script>
+EOT;
+
+$cal_cfg['popup']['js']['confirm'] = <<<EOT
+{CONFIRM}
+<script type="text/javascript"><!--//
+if (opener.confirm("{CONFIRM}")) {
+	reloadCalendar();
+	closing();
+} else {
+	window.close();
+}
+function closing() {
+	if (!opener.Calendar.loaded) {
+		setTimeout("closing()", 200);
+	} else {
+		window.close();
+	}
+}
+function reloadCalendar() {
+	var rows = opener.document.getElementById("calendar").getElementsByTagName("tr");
+	for (var i=0; i<rows.length; i++) {
+		if (rows[i].className=="title") {
+			var dates = rows[i].getElementsByTagName("td")[1].id.substring(1).split("-");
+			opener.Calendar.requestCalendar(dates[0], dates[1]);
+			break;
+		}
+	}
+}
+//--></script>
+EOT;
+
+
+//-- calendar body --//
+$cal_cfg['template']['body'] = <<<EOT
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">		
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/calendar.css" />
+		<title>Calendar</title>
+		<style type="text/css"><!--
+		
+		--></style>
+		
+	</head>
+	
+<table class="calendarDetail" cellspacing="0" cellpadding="0">
+
+	<tr class="title">
+		<td id="l{LAST_MON}-{LAST_YEAR}"><a href="#" title="{LAST_MON}-{LAST_YEAR}">&laquo;</a></td>
+		<td id="c{MON}-{YEAR}" colspan="5"><a href="#" title="Reload this month">{MONTH} {YEAR}</a></td>
+		<td id="n{NEXT_MON}-{NEXT_YEAR}"><a href="#" title="{NEXT_MON}-{NEXT_YEAR}">&raquo;</a></td>
+	</tr>
+	<tr class="title1">
+		<!-- BEGIN1 -->
+		<td>{DAY}</td>
+		<!-- END1 -->
+	</tr>
+	<!-- BEGIN -->
+	<tr class="week">
+		<td id="{ID_0}" class="{WHICH_0}"><a href="#">{DAY_0}</a>{EVENT_0}</td>
+		<td id="{ID_1}" class="{WHICH_1}"><a href="#">{DAY_1}</a>{EVENT_1}</td>
+		<td id="{ID_2}" class="{WHICH_2}"><a href="#">{DAY_2}</a>{EVENT_2}</td>
+		<td id="{ID_3}" class="{WHICH_3}"><a href="#">{DAY_3}</a>{EVENT_3}</td>
+		<td id="{ID_4}" class="{WHICH_4}"><a href="#">{DAY_4}</a>{EVENT_4}</td>
+		<td id="{ID_5}" class="{WHICH_5}"><a href="#">{DAY_5}</a>{EVENT_5}</td>
+		<td id="{ID_6}" class="{WHICH_6}"><a href="#">{DAY_6}</a>{EVENT_6}</td>
+	</tr>
+	<!-- END -->
+</table>
+</body
+EOT;
+
+//-- float event window --//
+$cal_cfg['template']['event'] = <<<EOT
+<br />
+<ul class="calendarEvent" id="e{DAY}-{MONTH}-{YEAR}">
+	<!-- BEGIN -->
+	<li><span class="date">{YEAR}-{MONTH}-{DAY}, {HR}:{MIN}</span>
+		<div class="edit"><a href="#" onclick="return Calendar.edit('{ID}')">[edit]</a></div>
+		<div>{MESSAGE}</div>
+	</li>
+	<!-- END -->
+</ul>
+EOT;
+
+//-- add/edit event form --//
+$cal_cfg['template']['form'] = <<<EOT
+<div id="calendarForm">
+	<div class="title">Add / Edit an event</div>
+	<form action="./calendar_handle.php" method="post">
+		<div>
+		<input type="hidden" name="do" value="{DO}" />
+		<input type="hidden" name="id" value="{ID}" />
+		<div style="float:left; width:7em">Date:</div>
+		<select name="day">
+			<option value="da1">1</option>
+			<option value="da2">2</option>
+			<option value="da3">3</option>
+			<option value="da4">4</option>
+			<option value="da5">5</option>
+			<option value="da6">6</option>
+			<option value="da7">7</option>
+			<option value="da8">8</option>
+			<option value="da9">9</option>
+			<option value="da10">10</option>
+			<option value="da11">11</option>
+			<option value="da12">12</option>
+			<option value="da13">13</option>
+			<option value="da14">14</option>
+			<option value="da15">15</option>
+			<option value="da16">16</option>
+			<option value="da17">17</option>
+			<option value="da18">18</option>
+			<option value="da19">19</option>
+			<option value="da20">20</option>
+			<option value="da21">21</option>
+			<option value="da22">22</option>
+			<option value="da23">23</option>
+			<option value="da24">24</option>
+			<option value="da25">25</option>
+			<option value="da26">26</option>
+			<option value="da27">27</option>
+			<option value="da28">28</option>
+			<option value="da29">29</option>
+			<option value="da30">30</option>
+			<option value="da31">31</option>
+		</select> -
+		<select name="month">
+			<option value="mo0">Every month</option><option>-----------</option>
+			<option value="mo1">January</option>
+			<option value="mo2">February</option>
+			<option value="mo3">March</option>
+			<option value="mo4">April</option>
+			<option value="mo5">May</option>
+			<option value="mo6">June</option>
+			<option value="mo7">July</option>
+			<option value="mo8">August</option>
+			<option value="mo9">September</option>
+			<option value="mo10">October</option>
+			<option value="mo11">November</option>
+			<option value="mo12">December</option>
+		</select> -
+		<select name="year">
+			<option value="0">Every year</option><option>-----------</option>
+			{YEAR}
+		</select><br />
+		<div style="float:left; width:7em">Time:</div>
+		<select name="hr">
+			<option value="hr0">00</option>
+			<option value="hr1">01</option>
+			<option value="hr2">02</option>
+			<option value="hr3">03</option>
+			<option value="hr4">04</option>
+			<option value="hr5">05</option>
+			<option value="hr6">06</option>
+			<option value="hr7">07</option>
+			<option value="hr8">08</option>
+			<option value="hr9">09</option>
+			<option value="hr10">10</option>
+			<option value="hr11">11</option>
+			<option value="hr12">12</option>
+			<option value="hr13">13</option>
+			<option value="hr14">14</option>
+			<option value="hr15">15</option>
+			<option value="hr16">16</option>
+			<option value="hr17">17</option>
+			<option value="hr18">18</option>
+			<option value="hr19">19</option>
+			<option value="hr20">20</option>
+			<option value="hr21">21</option>
+			<option value="hr22">22</option>
+			<option value="hr23">23</option>
+		</select> :
+		<select name="min">
+			<option value="mi0">00</option>
+			<option value="mi1">01</option>
+			<option value="mi2">02</option>
+			<option value="mi3">03</option>
+			<option value="mi4">04</option>
+			<option value="mi5">05</option>
+			<option value="mi6">06</option>
+			<option value="mi7">07</option>
+			<option value="mi8">08</option>
+			<option value="mi9">09</option>
+			<option value="mi10">10</option>
+			<option value="mi11">11</option>
+			<option value="mi12">12</option>
+			<option value="mi13">13</option>
+			<option value="mi14">14</option>
+			<option value="mi15">15</option>
+			<option value="mi16">16</option>
+			<option value="mi17">17</option>
+			<option value="mi18">18</option>
+			<option value="mi19">19</option>
+			<option value="mi20">20</option>
+			<option value="mi21">21</option>
+			<option value="mi22">22</option>
+			<option value="mi23">23</option>
+			<option value="mi24">24</option>
+			<option value="mi25">25</option>
+			<option value="mi26">26</option>
+			<option value="mi27">27</option>
+			<option value="mi28">28</option>
+			<option value="mi29">29</option>
+			<option value="mi30">30</option>
+			<option value="mi31">31</option>
+			<option value="mi32">32</option>
+			<option value="mi33">33</option>
+			<option value="mi34">34</option>
+			<option value="mi35">35</option>
+			<option value="mi36">36</option>
+			<option value="mi37">37</option>
+			<option value="mi38">38</option>
+			<option value="mi39">39</option>
+			<option value="mi40">40</option>
+			<option value="mi41">41</option>
+			<option value="mi42">42</option>
+			<option value="mi43">43</option>
+			<option value="mi44">44</option>
+			<option value="mi45">45</option>
+			<option value="mi46">46</option>
+			<option value="mi47">47</option>
+			<option value="mi48">48</option>
+			<option value="mi49">49</option>
+			<option value="mi50">50</option>
+			<option value="mi51">51</option>
+			<option value="mi52">52</option>
+			<option value="mi53">53</option>
+			<option value="mi54">54</option>
+			<option value="mi55">55</option>
+			<option value="mi56">56</option>
+			<option value="mi57">57</option>
+			<option value="mi58">58</option>
+			<option value="mi59">59</option>
+		</select><br />
+		
+		<div style="float:left; width:7em">Message:</div><textarea name="message" rows="15" cols="50" style="width:35em">{MESSAGE}</textarea><br />
+		
+		<input type="{ADD}" name="add" value=" Add " />
+		<input type="{EDIT}" name="edit" value=" Edit " />
+		<input type="{EDIT}" name="del" value="Delete" onclick="return confirm('Are you sure to delete this event?')" />
+		</div>
+	</form>
+	<div class="credit"><small><small>Calendar by
+		<a href="http://winged.info" onclick="opener.open(this.href, '_blank'); return false">winged.info</a></small></small>
+	</div>
+</div>
+EOT;
+
+//-- javascript stuff --//
+$cal_cfg['template']['js'] = <<<EOT
+<script type="text/javascript"><!--//
+var Calendar = {
+	loaded : false,
+
+	edit : function(id) {
+		var url = "./calendar_handle.php?edit=" + id;
+		window.open(url, "Calendar", "width=550, height=350, scrollbars=1, resizable=1");
+		return false;
+	},
+
+	requestCalendar : function (month, year) {
+		var request = false;
+		Calendar.loaded = false;
+		if (window.XMLHttpRequest) {
+			try {
+				request = new XMLHttpRequest();
+			} catch (e) {
+				request = false;
+			}
+		} else if (window.ActiveXObject) {
+			try {
+				request = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				try {
+					request = new ActiveXOjbject("Microsoft.XMLHTTP");
+				} catch (e) {
+					request = false;
+				}
+			}
+		}
+		if (request) {
+			document.getElementById("calendar").innerHTML = "Loading...";
+			request.onreadystatechange = function() {
+				if (request.readyState==4) {
+					if (request.status==200) {
+						Calendar.loaded = true;
+						document.getElementById("calendar").innerHTML = request.responseText;
+						Calendar.addListeners();
+					}
+				}
+			};
+			request.open("GET", "./calendar_handle.php?date=" + month + "-" + year, true);
+			request.send("");
+		} else {
+			alert("AJAX isn't supported.");
+		}
+	},
+
+	addListeners : function() {
+		var isIE = navigator.userAgent.indexOf("MSIE")>-1;
+		var rows = document.getElementById("calendar").getElementsByTagName("tr");
+		for (var i=0; i<rows.length; i++) {
+			if (rows[i].className=="title") {
+				var cols = rows[i].getElementsByTagName("td");
+				for (var j=0; j<cols.length; j++) {
+					cols[j].getElementsByTagName("a")[0].onclick = function() {
+						var dates = this.parentNode.id.substring(1).split("-");
+						Calendar.requestCalendar(dates[0], dates[1]);
+						return false;
+					}
+				}
+			} else if (rows[i].className=="week") {
+				var cols = rows[i].getElementsByTagName("td");
+				for (var j=0; j<cols.length; j++) {
+					cols[j].getElementsByTagName("a")[0].onclick = function() {
+						var url = "./calendar_handle.php?add=" + this.parentNode.id.substring(1);
+						window.open(url, "Calendar", "width=550, height=350, scrollbars=1, resizable=1");
+						return false;
+					}
+					var event = document.getElementById("e" + cols[j].id.substring(1));
+					if (isIE && event!=null) {
+						cols[j].onmouseover = function() {
+							document.getElementById("e" + this.id.substring(1)).style.display = "block";
+						}
+						cols[j].onmouseout = function() {
+							document.getElementById("e" + this.id.substring(1)).style.display = "none";
+						}
+						event.onmouseover = function() {
+							document.getElementById(this.id).style.display = "block";
+						}
+						event.onmouseout = function() {
+							document.getElementById(this.id).style.display = "none";
+						}
+					}
+				}
+			}
+		}
+	}
+};
+Calendar.addListeners();
+//--></script>
+EOT;
+
+	
+?>

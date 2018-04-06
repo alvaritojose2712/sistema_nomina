@@ -1,0 +1,35 @@
+/* **********************************************************************
+	- File:			purple-2_tone.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Purple 2 Tone sheet: All common styles are in this stylesheet
+					All common styles are in the common.css stylesheet
+************************************************************************* */
+TABLE.login 	{ background-image: url('../images/skins/purple_2_tone/login.gif'); }	
+.header 		{ background-image: url('../images/skins/purple_2_tone/header.gif'); }
+BODY.body,
+TABLE.background,
+td.background 	{ background-image: url('../images/skins/purple_2_tone/background.gif'); }
+td.bar 			{ background-image: url('../images/skins/purple_2_tone/bar.gif'); }
+td.hbar 		{ background-image: url('../images/skins/purple_2_tone/hbar.gif'); }
+td.mbar 		{ background-image: url('../images/skins/purple_2_tone/mbar.gif'); }
+td.lmbar 		{ background-image: url('../images/skins/purple_2_tone/lmbar.gif'); }
+td.line 		{ background-image: url('../images/skins/purple_2_tone/line.gif'); }
+	TD.tab_info_visible {
+		cursor: pointer;
+		color: #FFFFFF; 
+		
+		background: url('../images/skins/purple_2_tone/lmbar.gif') repeat
+	}
+
+.i_frame,
+.innercontent 	{ background-color: #FFFAFF; }
+.hover_color,
+.menu li a:hover,
+#topright li a:hover,
+#topleft li a:hover,
+#topleft div a:hover,
+.trees .tree_hover,
+TD.tab_info_visible { background-color: #EEC1EE; }
+.navbar a 		{ color: #C100C1; }

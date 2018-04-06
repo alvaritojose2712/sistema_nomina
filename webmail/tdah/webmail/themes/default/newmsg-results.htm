@@ -1,0 +1,90 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			newmsg-results.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Display results of new message sending
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Newmessage"} 
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	{$pageMetas}
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	{if $umSendIt eq 1}
+		{literal}
+		<script language="javascript" type="text/javascript">
+			window.onload = function redirect_error() { document.composeForm.submit() } // This is OK to send e-mail
+			// window.location.href='newmsg.php?sid={$umSid}&tid={$umTid}&lid={$umLid}&tipo=send&opt=1'; //May be used too? TBC
+		</script>
+		{/literal}
+	{/if}
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head>
+
+<body class="bodypage" >
+
+	<form name=composeForm method=post action="newmsg.php" onSubmit="return false;">
+	{$umForms}
+
+	<!--"start outer table" -->
+	<table class="tablecollapsed" cellpadding="0" height="99%">
+
+	<!--"BANNER" -->
+	{include file="$umTPath$TPL_BANNER"}
+
+	<!--"TOOLBAR" --> 		       
+	{assign var='umTLB_HELP' value=2}
+	{assign var='umTLB_LOGOFF' value=1}
+	{assign var='umTLB_FOLDERS' value=1}
+	{assign var='umTLB_REFRESH' value=1}
+	{assign var='umTLB_COMPOSE' value=2}
+ {include file="$umTPath$TPL_TOOLBAR"}
+        
+	<!--"start inner content" -->
+	<tr>
+		<td valign="top">
+		 
+		<!--"start content table" -->
+		<table class="innercontent" cellpadding="0" height="100%">
+		<tr> 
+			<!--"LEFT PANEL" --> 		       
+			{include file="$umTPath$TPL_PANEL"}
+	
+			<!--"start center content" -->
+			<td valign="middle" align="center" class="content">
+
+			{include file="$umTPath$TPL_NEWRESULTS"}
+			</td><!--"end center content" -->		
+		</tr>
+		</table><!--"end content table" -->	
+			
+		</td>		
+	</tr><!--"end inner content" -->
+	</table><!--"end outer content" -->
+	</form>
+
+</body>
+</html>

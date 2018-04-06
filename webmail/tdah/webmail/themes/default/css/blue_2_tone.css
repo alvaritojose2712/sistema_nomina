@@ -1,0 +1,22 @@
+/* **********************************************************************
+	- File:			blue_2_tone.css
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			October 11, 2009
+	- version:		(3.2.2 Beta1)
+	- Description:  Blue 2 Tone sheet: This sheet contents only the change to the default sheet for this skin
+					All common styles are in the common.css stylesheet
+
+************************************************************************* */
+TABLE.login		{ background-image: url('../images/skins/blue_2_tone/login.gif'); }	
+.header 		{ background-image: url('../images/skins/blue_2_tone/header.gif'); }
+BODY.body
+TABLE.background,
+td.background 	{ background-image: url('../images/skins/blue_2_tone/background.gif'); }	
+td.bar 			{ background-image: url('../images/skins/blue_2_tone/bar.gif'); }
+td.hbar 		{ background-image: url('../images/skins/blue_2_tone/hbar.gif'); }
+td.mbar 		{ background-image: url('../images/skins/blue_2_tone/mbar.gif'); }
+td.lmbar 		{ background-image: url('../images/skins/blue_2_tone/lmbar.gif'); }
+td.line 		{ background-image: url('../images/skins/blue_2_tone/line.gif'); }
+.i_frame,
+.innercontent 	{ background-color: #FAFAFF; }
+

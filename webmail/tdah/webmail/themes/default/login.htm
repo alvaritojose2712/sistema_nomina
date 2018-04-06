@@ -1,0 +1,110 @@
+{* **********************************************************************
+	UebiMiau is a GPL'ed software developed by 
+	 - Aldoir Ventura - aldoir@users.sourceforge.net
+	 - http://uebimiau.sourceforge.net São Paulo - Brasil
+   		
+	***********************************************************************
+	Version 3.2.0 Upgrades and templates developed by
+	 - Todd Henderson - Lead Developer - http://tdah.us 
+	 - Dave Rodgers - Developer - http://www.manvel.net 
+	 - Laurent (AdNovea) - Developer - http://adnovea.free.fr
+	 
+	***********************************************************************
+	 - Special thanks to the developers at 
+	codeworxtech.com, tinymce.moxiecode.com
+	telaen.org, phptoys.com, winged.info, ngcoders.com
+	without help this project wouldn't be possible 
+	
+	***********************************************************************
+	- File:			address-display.htm
+	- Developer: 	Todd Henderson / Mods by Laurent (AdNovea)
+	- Date:			November 4, 2008
+	- version:		(3.2.0) 1.0
+	- Description:  Login page
+
+************************************************************************* *}
+
+{config_load file=$umLanguageFile section="Login"}
+{$umsyslib}
+{$umDocType}
+<html>
+<head>
+	<!--"HEADER" --> 		       
+	{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+	<title>{$umUserEmail} - {$umCompany}</title>
+</head> 
+
+<body class="login_body" OnLoad="document.forms[0].elements[0].focus();">
+	
+	<form name="form1" action="process.php?lid={$umLid}&tid={$umTid}" method="post">
+	<table height="100%" class="tablecollapsed">
+	<tr>
+		<td width="100%" height="100%">
+		<div align="center">
+		
+			<table border="0" cellpadding="0" cellspacing="0" >
+			<tr>
+				<td>
+				<table class="container">
+				<tr>
+					<td>
+							<table class="box">
+							<tr>
+								<td colspan="2" class="title">{$umCompany}</td>
+							</tr>
+								{if $umServerType neq "ONE-FOR-EACH"}
+									<tr>
+										<td width="40%" align="right" nowrap><b>{#lng_user_email#}:</b>&nbsp;</td>
+										<td><input type=text size=5 name="f_email" value="{$umEmail}" class="textbox"></td>
+									</tr>
+								{else}
+									<tr>
+										<td width="40%" align="right" valign="middle" nowrap>
+										<b>{#lng_user_name#}:</b>&nbsp;</td>
+										<td><input type=text size=5 name="f_user" value="{$umUser}" class="textbox">
+										{if $umAvailableServers neq 0}
+											<tr><td></td><td><font class="server">{$umServer}</font></td></tr>
+										{/if}
+										</td>
+									</tr>
+								{/if}
+								<tr>
+									<td align="right" width="40%"><b>{#lng_user_pwd#}:</b>&nbsp;</td>
+									<td><input type=password size=5 name="f_pass" value="" class="textbox"></td>
+								</tr>
+								{if $umAllowSelectLanguage}
+									<tr>
+										<td align="right"><b>{#lng_language#}:</b>&nbsp;</td>
+										<td>{$umLanguages}</td>
+									</tr>
+								{/if}
+								
+								{if $umAllowSelectTheme}
+									<tr>
+										<td align="right"><b>{#lng_theme#}:</b>&nbsp;</td>
+										<td>{$umThemes}</td>
+									</tr>
+									
+								{/if}
+							<tr>
+								<td>&nbsp;</td><td>
+								<input type="submit" name="submit" value="{#lng_login_btn#}"></td>
+							</tr>
+							</table>
+					</td>
+				<tr>
+					<td class="info">{#sw_name#} v{$umVersion}</td>
+				</tr>
+				</table><!--"end container table"-->
+				</td>
+			</tr>
+			</table>
+		</div>
+		</td>  
+	</tr>  
+	</table>
+	</form>
+	
+</body>
+</html>

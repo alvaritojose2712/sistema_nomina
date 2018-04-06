@@ -1,0 +1,26 @@
+
+ejemplo 1---->	Beneficio para los 'Estatus = alto nivel' que tengan tres o mas hijos menores de 6 años; consiste en aumentar su sueldo integral cada mes en un 15% mas un 5% adicional si al menos uno de sus hijos es discapacitado.
+
+Operaciones...
+
+-	Filtrar al personal de estatus = alto nivel en la tabla 'personal_upt'.
+-	Si el filtro obtuvo resultado.
+-	Buscar en la tabla 'hijos_personal_upt' y obtener el número de hijos.
+-	Filtrar los hijos menores de 6 años (3). 
+-	Si el filtro obtiene 3 o mas resultados (1).
+-	Filtrar los hijos con discapacidad.
+- 	Si ambos filtros capturan al menos un resultado. 
+-	Buscar en la tabla de 'sueldos' el sueldo correspondiente al estatus = alto nivel.
+-	Calcular el sueldo integral.
+-	Multiplicar el sueldo integral por 0.15
+-	Multiplicar el sueldo integral por 0.05
+-	Sumar ambos resultados con el sueldo integral y mostrar lo en pantalla.
+
+<<<<<<	Sintáxis	>>>>>>
+
+< Tipos de acciones >
+_- Busqueda ()
+_- Condición []
+_- Operación {}
+
+Ejemplo de formula->	q , "tabla" : "hijos_personal_upt" , "seleccionar" : "numero" , "condicion" : "si es igual o mayor a 3, "condicion" : "menores a 6 años" , "":"" }

@@ -1,0 +1,77 @@
+{config_load file=$umLanguageFile section="MessageList"}
+{$umDocType}
+{$umsyslib}
+<html>
+<head>
+  
+	{$pageMetas}
+	{$umRefresh}
+	<!--"HEADER" -->	       
+{include file="$umTPath$TPL_HEADER"}
+	{$umJS} 
+
+	<title>{$umBoxName} - {$umNumUnread} New - {$umUserEmail} - {$umCompany}</title>
+</head>
+
+<body class="bodypage messagelist">
+
+	<form name="form1" action="process.php" method="post"> 
+	<input type="hidden" name="aval_folders" value="">
+	{$umForms}
+	{$umSpamForm}
+	<!--"start outer table" -->
+	<table class="tablecollapsed" cellpadding="0" height="99%">
+
+	<!--"Action form" -->
+	
+	<!--"BANNER" -->
+{include file="$umTPath$TPL_BANNER"}
+
+	<!--"TOOLBAR" --> 		       
+	{assign var='umTLB_HELP' value=2}
+	{assign var='umTLB_LOGOFF' value=1}
+	{assign var='umTLB_FOLDERS' value=1}
+	{assign var='umTLB_REFRESH' value=1}
+	{assign var='umTLB_COMPOSE' value=1}
+	{assign var='umTLB_DEL_SELECT' value=1}
+	{assign var='umTLB_SPAM_SELECT' value=1}
+	{assign var='umTLB_MOVE' value=1}
+	{assign var='umTLB_MARK_FLAG' value=1}
+	{assign var='umTLB_NEW_ENTRY' value=2}
+	
+{include file="$umTPath$TPL_TOOLBAR"}
+
+	<!--"start inner content" -->
+	<tr>
+		<td valign="top">
+		 
+		<!--"start content table" -->
+		<table class="innercontent" cellpadding="0" height="100%">
+		<tr> 
+			<!--"LEFT PANEL" --> 		       
+{include file="$umTPath$TPL_PANEL"}
+	
+			<!--"start center content" -->
+			<td valign="top" class="content">
+
+			<div class="pagetitle">
+				<div class="title">{$umBoxName}</div>
+				<div class="image"><img src="themes/{$umTPath}/images/inbox.gif" alt=""></div>
+			</div>
+			
+
+			
+{include file="$umTPath$TPL_search"}
+			
+
+			</td><!--"end center content" -->		
+		</tr>
+		</table><!--"end content table" -->	
+			
+		</td>		
+	</tr><!--"end inner content" -->
+	</table><!--"end outer content" -->
+	</form><!--"close form" -->
+
+</body>
+</html>
