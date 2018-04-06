@@ -87,7 +87,9 @@
 	</style>
 </head>
 <body>
+
 	<div class="w3-display-middle">
+		<center><h1 class="text-danger">Bienvenido</h1></center>
 		<div id="notificacion" class="w3-padding" style="display: none;cursor: pointer;" onclick="$(this).hide(200).empty()"></div>
 		<div id="contenedor" class="container w3-padding w3-margin-top w3-animate-top">	
 			
