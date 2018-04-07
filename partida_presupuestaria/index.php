@@ -107,6 +107,9 @@
 		$(document).on("click",".cerrar-card-condicion",function () {
 			$(this).parent(".card-condicion").remove()
 		})
+		$(document).on("click",".campo-especifico",function () {
+			$(this).remove()
+		})
 		$(document).on("click",".li_campo",function () {
 			$(this).toggleClass("w3-blue")
 			if (c_existencia(".campo-condicionado",$(this).text())) {
@@ -146,50 +149,250 @@
 			}
 		})
 		$(document).on("keyup",".input_partidas",function () {
+
 			var index = $(this).index()+1
+			
+			if ($(this).val().length==2) {
+				$($(".input_partidas")[index]).focus()
+			}
 
 			for(var e = index; e<=4; e++){
 				$($(".input_partidas")[e]).val("")
 			}
-			 index = $(this).index()-1
+			index = $(this).index()-1
 			for(var e = index; e>=0; e--){
 				if($($(".input_partidas")[e]).val()==""){
 					$(this).val("")
 				}
 			}
+
+			var arr_dirty = $(".input_partidas").toArray()
+			var arr = []
+			for(i in arr_dirty){
+				if($(arr_dirty[i]).val()!=""){
+					arr.push(arr_dirty[i])
+				}
+			}
+			if ($(".input_partidas")[0].value!="") {
+				var string = ""
+				for(i in arr){
+					var val = $(arr[i]).val()
+					
+					var add = "['"+val+"']['hijos']"
+					string += add
+					try{
+						
+						if (arr.length==(Number(i)+1)) {
+							string = string.slice(0,-9)
+							var json = eval("json_partidas_disponibles"+string)
+							json['nombre']
+							$("body").animate({"backgroundColor":"#FFE9C1"},250)
+							$(".input_partidas").animate({"borderColor":"#AB6F03"},250)
+							$(".modo-actual").text("Alerta: Ya existe").animate({"color":"#FF9E21"},250)
+						}
+					}catch(err){
+						try {
+							string = string.slice(0,-(4+val.length))
+							var json = eval("json_partidas_disponibles"+string)
+							$("body").animate({"backgroundColor":"#C1FFD0"},250)
+							$(".input_partidas").animate({"borderColor":"#008E22"},250)
+							$(".modo-actual").text("Espacio disponible").animate({"color":"#1CFF1C"},250)
+							
+						}catch(err){
+							$("body").animate({"backgroundColor":"#FFC1C4"},250)
+							$(".input_partidas").animate({"borderColor":"#9F0008"},250)
+							$(".modo-actual").text("No se puede crear").animate({"color":"#FE3434"},250)
+						}
+					}
+				}
+			}else{
+				$("body").animate({"backgroundColor":"#f2f2f2"},250)
+				$(".input_partidas").animate({"borderColor":"#594747"},250)
+				$(".modo-actual").animate({"color":"#594747"},250).text("Neutro")
+			}
+
+			var str_inp_class = ""
+			for(i in arr){
+				str_inp_class += $(arr[i]).val()+"_"
+			}			
+			str_inp_class = str_inp_class.slice(0,-1)
+			$(".tr_resul_partidas")
+			.removeClass("text-white")
+			.removeClass("bg-warning")
+			$("."+str_inp_class)
+			.addClass("bg-warning")
+			.addClass("text-white")
 		})
 		$(document).on("click",".guardar_partida",function () {
 			if($(".input_partidas")[0].value!="" && $("#nombre_partida").val()!=""){
-				try{
-					var arr = $(".input_partidas").toArray()
-					var string = ""
-					for(i in arr){
-						if ($($(".input_partidas")[i]).val()!="") {
-							string+="['"+$($(".input_partidas")[i]).val()+"']['hijos']"
+
+					var arr_dirty = $(".input_partidas").toArray()
+					var arr = []
+					for(i in arr_dirty){
+						if($(arr_dirty[i]).val()!=""){
+							arr.push(arr_dirty[i])
 						}
 					}
-					string = string.slice(0,-9)
 					
-						var json = eval("json_partidas_disponibles"+string)
-						json = {
-							nombre: $("#nombre_partida").val(),
-							condiciones: function () {
-
-							},
-							conceptos: function () {
-								
-							},
-							hijos: new Object()
+					var name = $("#nombre_partida").val()
+					var condiciones = function () {
+						let json = new Object()
+						let arr  = $(".card-condicion").toArray()
+						for(i in arr){
+							let n = $(arr[i]).find(".campo-condicionado").text()
+							var s_arr =  $(arr[i]).find(".campo-especifico").toArray()
+							if (s_arr.length!=0) {
+								json[n] = new Object()
+								for(ii in s_arr){
+									json[n][$(s_arr[ii]).text()] = ""
+								}
+							}
 						}
-						alert(JSON.stringify(obj))
-				}catch(err){
-					alert("Error: Partida padre no se ha creado. "+err)
-				}				
+						return json  
+					}
+				    var	conceptos = function () {
+						let json = {}
+						let arr = $(".id_formula_ready").toArray()
+						for(i in arr){
+							json[$(arr[i]).text()] = ""
+						}
+						return json
+					}
+
+					var nueva = {
+							nombre: name,
+							condiciones: condiciones(),
+							conceptos: conceptos(),
+							hijos: new Object()
+					}
+					var string = ""
+
+					for(i in arr){
+						var val = $(arr[i]).val()
+						
+						var add = "['"+val+"']['hijos']"
+						string += add
+						try{
+							
+							if (arr.length==(Number(i)+1)) {
+								string = string.slice(0,-9)
+								var json = eval("json_partidas_disponibles"+string)
+								json['nombre'] = name 
+								json['condiciones'] = condiciones()
+								json['conceptos'] = conceptos()
+								alert("Renombrado!")
+							}
+						}catch(err){
+							try {
+								string = string.slice(0,-(4+val.length))
+								var json = eval("json_partidas_disponibles"+string)
+								json[val] = nueva
+								alert("Agregado!")
+								
+							}catch(err){
+								alert("Error: Partida padre no se ha creado. "+err.messaje)
+							}
+						}
+					}
+
+				cargar_partidas(json_partidas_disponibles)
+				$($(".input_partidas")[4]).keyup()
 			}else{
 				alert("Error: Campos vacíos");
 			}
 		})
+		$(document).on("click",".borrar_partida",function () {
+			if($(".input_partidas")[0].value!=""){
+
+					var arr_dirty = $(".input_partidas").toArray()
+					var arr = []
+					for(i in arr_dirty){
+						if($(arr_dirty[i]).val()!=""){
+							arr.push(arr_dirty[i])
+						}
+					}
+
+					var string = ""
+
+					for(i in arr){
+						var val = $(arr[i]).val()
+						
+						var add = "['"+val+"']['hijos']"
+						string += add
+						try{
+							if (arr.length==(Number(i)+1)) {
+								string = string.slice(0,-9)
+								
+								 if (window.confirm("ALERTA: Es una acción peligrosa!. ¿Realmente desea borrar?.")) {
+								 	eval("delete json_partidas_disponibles"+string)
+								 }
+							}
+						}catch(err){
+							alert("Error: Partida no encontrada. "+err)
+						}
+					}
+
+				cargar_partidas(json_partidas_disponibles)
+
+			}else{
+				alert("Introduzca una partida!");
+			}
+		})
+		$(document).on("click",".tr_resul_partidas",function () {
+			var v = $(this).attr("title")
+			var arr = v.split("_")
+			var str = ""
+			for(i in arr){
+				$(".input_partidas")[i].value=arr[i]
+				$($(".input_partidas")[i]).keyup()
+				str += "['"+arr[i]+"']['hijos']"
+			}
+
+			str = str.slice(0,-9)
+			var json = eval("json_partidas_disponibles"+str)
+			$("#nombre_partida").val(json["nombre"])
+			
+			var concep = json["conceptos"]
+			$(".list_agregados_formulas").empty()
+			for(i in concep){
+				$(".id_formula").filter(function () {
+					if($(this).text()===i){
+						$(this).parents(".select_formula").click()
+					}
+				})
+			}
+			
+			var condi = json["condiciones"]
+			$(".contenedor-card-condiciones").empty()
+			for(i in condi){
+				var html_condi = '<div class="col-md-5 w3-margin w3-padding-16 card bg-warning text-white card-condicion">\
+						<i class="w3-display-topright btn btn-warning cerrar-card-condicion fa fa-close"></i>\
+					<div>\
+						<span class="h2 campo-condicionado">'+i+'</span>\
+						<i class="fa fa-plus add-valor-condicion"></i>\
+					</div><hr>\
+					<div>\
+						<ul class="grupo-condiciones-especificas w3-ul">';						
+							for(ii in condi[i]){
+								html_condi += '<li class="campo-especifico">'+ii+'</li>';			
+							}
+					html_condi += '</ul>\
+						</div>\
+					</div>';
+				$(".contenedor-card-condiciones").append(html_condi)
+			}
+			
+
+		})
 		$(document).ready(ver_partidas_registradas)
+		$(document).on("keyup",".solicitar_personal",function () {
+			if ($(this).val()!="") {
+				$(".datos-f-disponibles").find('tr').css('display','none')
+				$(".datos-f-disponibles").find('td:contains("'+$(this).val()+'")').parents('tr').css('display','')
+			}else{
+				$(".datos-f-disponibles").find('tr').css('display','')
+			}
+		})
 		function f_disponibles(){
 		   	$.ajax({
 		        url:"../operaciones_parametros_nomina/proceso.php",
@@ -217,9 +420,6 @@
 		        				temple+='</tr>'
 		        				incluido = element.tipo_concepto
 		        		}
-		        		
-
-		        	 
 		        			temple+='<tr class="select_formula">'
 			        			temple+='<td><span class="id_formula">'+ element.id +'</span></td>'
 			        			temple+='<td><span class="descripcion_formula">'+ element.descripcion +'</span></td>'
@@ -253,83 +453,150 @@
 				success: function (res) {
 					json_partidas_disponibles = JSON.parse(res)	
 
-					var html_partida = '<table class="table table-hover table-bordered">\
-													<thead>\
-														<tr>\
-															<th>Código</th>\
-															<th>Denominación</th>\
-														</tr>\
-													</thead>\
-													<tbody>'
+					cargar_partidas(json_partidas_disponibles)
+				}
+			})
+		}
+		function cargar_partidas(json_partidas_disponibles) {
+			var html_partida = '<table class="table table-hover table-bordered">\
+									<thead>\
+										<tr>\
+											<th></th>\
+											<th>Partida</th>\
+											<th>Genérica</th>\
+											<th>Específica</th>\
+											<th>Sub-Específica</th>\
+											<th>Denominación</th>\
+										</tr>\
+									</thead>\
+									<tbody>'
 														
-							var obj_global = json_partidas_disponibles			
-							for(i in obj_global){
-								html_partida += '<tr class="font-weight-bold">\
-													<td>\
-														'+i+".00"+".00"+".00"+".00"+'\
+			var obj_global = json_partidas_disponibles			
+			for(i in obj_global){
+				html_partida += '<tr title="'+i+'" class="tr_resul_partidas '+i+'">\
+									<td class="h1">\
+										<b>'+i+'</b>\
+									</td>\
+									<td class="h1">\
+										00\
+									</td>\
+									<td class="h1">\
+										00\
+									</td>\
+									<td class="h1">\
+										00\
+									</td>\
+									<td class="h1">\
+										00\
+									</td>\
+									<td>\
+										'+obj_global[i]['nombre']+'\
+									</td>\
+								</tr>'
+				if (obj_global[i]['hijos']!=undefined) {
+					var obj_partida = obj_global[i]['hijos']
+					for(ii in obj_partida){
+						html_partida += '<tr title="'+i+"_"+ii+'" class="tr_resul_partidas '+i+"_"+ii+'">\
+									<td class="h2">\
+										<b>'+i+'</b>\
+									</td>\
+									<td class="h2">\
+										<b>'+ii+'</b>\
+									</td>\
+									<td class="h2">\
+										00\
+									</td>\
+									<td class="h2">\
+										00\
+									</td>\
+									<td class="h2">\
+										00\
+									</td>\
+									<td>\
+										'+obj_partida[ii]['nombre']+'\
+									</td>\
+								</tr>'
+						if (obj_partida[ii]['hijos']!=undefined) {
+							var obj_generico = obj_partida[ii]['hijos']
+							for(iii in obj_generico){
+								html_partida += '<tr title="'+i+"_"+ii+"_"+iii+'" class="text-primary tr_resul_partidas '+i+"_"+ii+"_"+iii+'">\
+											<td class="h3">\
+												<b>'+i+'</b>\
+											</td>\
+											<td class="h3">\
+												<b>'+ii+'</b>\
+											</td>\
+											<td class="h3">\
+												<b>'+iii+'</b>\
+											</td>\
+											<td class="h3">\
+												00\
+											</td>\
+											<td class="h3">\
+												00\
+											</td>\
+											<td>\
+												'+obj_generico[iii]['nombre']+'\
+											</td>\
+										</tr>'
+								if (obj_generico[iii]['hijos']!=undefined) {
+									var obj_especifico = obj_generico[iii]['hijos']
+									for(iiii in obj_especifico){
+										html_partida += '<tr title="'+i+"_"+ii+"_"+iii+"_"+iiii+'" class="tr_resul_partidas '+i+"_"+ii+"_"+iii+"_"+iiii+'">\
+													<td class="h4">\
+														<b>'+i+'</b>\
+													</td>\
+													<td class="h4">\
+														<b>'+ii+'</b>\
+													</td>\
+													<td class="h4">\
+														<b>'+iii+'</b>\
+													</td>\
+													<td class="h4">\
+														<b>'+iiii+'</b>\
+													</td>\
+													<td class="h4">\
+														00\
 													</td>\
 													<td>\
-														'+obj_global[i]['nombre']+'\
+														'+obj_especifico[iiii]['nombre']+'\
 													</td>\
 												</tr>'
-								if (obj_global[i]['hijos']!=undefined) {
-									var obj_partida = obj_global[i]['hijos']
-									for(ii in obj_partida){
-										html_partida += '<tr class="font-weight-bold">\
-													<td>\
-														'+i+"."+ii+".00"+".00"+".00"+'\
-													</td>\
-													<td>\
-														'+obj_partida[ii]['nombre']+'\
-													</td>\
-												</tr>'
-										if (obj_partida[ii]['hijos']!=undefined) {
-											var obj_generico = obj_partida[ii]['hijos']
-											for(iii in obj_generico){
-												html_partida += '<tr class="text-primary">\
-															<td>\
-																'+i+"."+ii+"."+iii+".00"+".00"+'\
+										if (obj_especifico[iiii]['hijos']!=undefined) {
+											var obj_sub_especifico = obj_especifico[iiii]['hijos']
+											for(iiiii in obj_sub_especifico){
+												html_partida += '<tr title="'+i+"_"+ii+"_"+iii+"_"+iiii+"_"+iiiii+'" class="tr_resul_partidas '+i+"_"+ii+"_"+iii+"_"+iiii+"_"+iiiii+'">\
+															<td class="h5">\
+																<b>'+i+'</b>\
+															</td>\
+															<td class="h5">\
+																<b>'+ii+'</b>\
+															</td>\
+															<td class="h5">\
+																<b>'+iii+'</b>\
+															</td>\
+															<td class="h5">\
+																<b>'+iiii+'</b>\
+															</td>\
+															<td class="h5">\
+																<b>'+iiiii+'</b>\
 															</td>\
 															<td>\
-																'+obj_generico[iii]['nombre']+'\
+																'+obj_sub_especifico[iiiii]['nombre']+'\
 															</td>\
 														</tr>'
-												if (obj_generico[iii]['hijos']!=undefined) {
-													var obj_especifico = obj_generico[iii]['hijos']
-													for(iiii in obj_especifico){
-														html_partida += '<tr class="">\
-																	<td>\
-																		'+i+"."+ii+"."+iii+"."+iiii+".00"+'\
-																	</td>\
-																	<td>\
-																		'+obj_especifico[iiii]['nombre']+'\
-																	</td>\
-																</tr>'
-														if (obj_especifico[iiii]['hijos']!=undefined) {
-															var obj_sub_especifico = obj_especifico[iiii]['hijos']
-															for(iiiii in obj_sub_especifico){
-																html_partida += '<tr class="">\
-																			<td>\
-																				'+i+"."+ii+"."+iii+"."+iiii+"."+iiiii+'\
-																			</td>\
-																			<td>\
-																				'+obj_sub_especifico[iiiii]['nombre']+'\
-																			</td>\
-																		</tr>'
-															}
-														}
-													}
-												}
 											}
 										}
 									}
 								}
-							}			
-
-							html_partida += '</tbody></table>'
-							$(".resultados_partida_server").empty().append(html_partida)
+							}
+						}
+					}
 				}
-			})
+			}			
+
+			html_partida += '</tbody></table>'
+			$(".resultados_partida_server").empty().append(html_partida)
 		}
 	</script>
 	<style type="text/css">
@@ -345,14 +612,14 @@
 			font-family: 'Roboto', sans-serif;
 			height: 100%;
 			width: 100%;
-			background-color: #f2f2f2
-
+			background-color: #f2f2f2;
+			overflow-y: auto;
 		}	
 		.input_partidas{
 			border-radius: 15px;
 			margin: 10px;
 			font-size: 60px;
-			border: solid 2px #f0ad4e;
+			border: solid 2px #594747;
 			text-align: center;
 			width: 110px;
 			outline:0px;
@@ -394,39 +661,48 @@
 		button{
 			cursor: pointer;
 		}
+		.col{
+			word-wrap: break-word;
+		}
+
 	</style>
 </head>
-<body>
+<body class="">
 	<div class="contenedor-agregar-condicion w3-display-topmiddle">
-		<div class="bg-warning card container w3-card-4 w3-display-middle" style="width: 700px;position: fixed;z-index: 2150">
-			<div class="row">
-				<button class="fa fa-close btn btn-warning col-2" onclick="$('.contenedor-agregar-condicion').toggle('display')"></button>
+		<div class="card container w3-card-4 w3-display-middle" style="width: 700px;position: fixed;z-index: 2150">
+			<div class="row bg-white text-warning">
+				<button class="fa fa-close btn btn-white col-2" onclick="$('.contenedor-agregar-condicion').toggle('display')"></button>
 				<div class="col">
-					<span class="w3-right nombre_entidad text-white"></span>
+					<span class="w3-right nombre_entidad" style="text-shadow:1px 1px 0 #444"></span>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row w3-padding-32 bg-warning">
 				<ul class="w3-ul w3-hoverable list_entidad" style="width: 100%">
 				  
 				</ul>
 			</div>
 		</div>
-		<div style="width:100%;height: 100%;position: fixed;background-color: gray;opacity: 0.5"></div>
-
+		<div style="width:100%;height: 100%;position: fixed;background-color: gray;opacity: 0.5" onclick="$('.contenedor-agregar-condicion').toggle('display')"></div>
 	</div>
 	<div class="container-fluid" style="height: 100%">
 		<div class="row">
 			<div class="col" style="height: 100%;overflow-y: auto;">
 				<div class="container-fluid">
 					<div class="row w3-center">
-						<div class="col">
+						<div class="col w3-padding-32 ">
 							<span class="h1">Crear partida presupuestaria</span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col">
-							<button class="btn btn-success w3-right guardar_partida"><i class="fa fa-save fa-3x"></i></button>
+							<span class="w3-left w3-margin borrar_partida"><i class="fa fa-remove fa-3x"></i></span>
 						</div>
+						<div class="col-5 w3-center">
+							<span class="modo-actual h1">Neutro</span>
+						</div>
+						<div class="col">
+							<span class="w3-right w3-margin guardar_partida"><i class="fa fa-save fa-3x"></i></span>
+						</div>	
 					</div>
 					<div class="row w3-center w3-margin">
 						<div class="col contenedor-inputs-partidas">
@@ -437,15 +713,15 @@
 							<input class="input_partidas" type="text" maxlength="2">
 						</div>
 					</div>
-					<div class="row w3-border w3-margin w3-round-xlarge w3-padding w3-hover-border-orange">
+					<div class="row w3-border w3-margin w3-round-xlarge w3-padding-large w3-hover-border-orange w3-white">
 						<div class="col">
 							<div class="form-group">
-								<label for="nombre_partida" class="h3">Nombre de la partida</label>
-								<input type="text" id="nombre_partida" class="form-control" value="Nombre de la partida">
+								<label for="nombre_partida" class="h1">Nombre de la partida</label>
+								<input type="text" id="nombre_partida" class="w3-input w3-border-0 w3-round" placeholder="Nombre de la partida">
 							</div>
 						</div>
 					</div>
-					<div class="w3-border w3-margin w3-round-xlarge w3-padding w3-hover-border-orange">
+					<div class="w3-padding-large w3-border w3-margin w3-round-xlarge w3-hover-border-orange w3-white">
 						<div class="row">
 							<div class="col">
 								<span class="h1">Condiciones <button class="btn btn-success agregar-card-condicion fa fa-plus"></button></span>
@@ -455,14 +731,14 @@
 							
 						</div>
 					</div>
-					<div class="w3-margin">
+					<div class="w3-round-xlarge w3-padding-large w3-margin w3-white">
 						<div class="row">
 							<div class="col">
 								<span class="h1">Asociar conceptos</span>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col w3-margin w3-round-xlarge w3-panel w3-border w3-border-orange contenedor_agregados">
+							<div class="col w3-margin w3-round-xlarge w3-panel w3-border contenedor_agregados">
 					  			<div style="width: 100%;height: 400px;overflow-y: auto;">
 					  				<div class="w3-center w3-padding w3-margin-bottom w3-border-bottom">
 					  					<span class="h5">
@@ -475,7 +751,7 @@
 					  		</div>
 					  		<div class="col w3-margin w3-round-xlarge w3-panel w3-border w3-hover-border-orange">
 					  			<div style="width: 100%;height: 400px;overflow-y: auto;">
-					  				<input type="text" class="w3-margin-bottom w3-margin-top form-control solicitar_personal_incl_excl" placeholder="Busqueda...">
+					  				<input type="text" class="w3-margin-bottom w3-margin-top form-control solicitar_personal" placeholder="Busqueda...">
 					  				<table class="table">
 					  					<thead>
 					  						<tr class="bg-warning text-white">
@@ -492,22 +768,20 @@
 					</div>	
 				</div>
 			</div>
-			<div class="col-4" style="height: 100%;overflow-y: auto;">
+			<div class="col-5" style="height: 100%;overflow-y: auto;">
 				<div class="container-fluid">
 					<div class="row w3-center">
-						<div class="col">
+						<div class="col w3-padding-32 ">
 							<span class="h1">Creadas</span>
 						</div>
 					</div>
-					<div class="row w3-center">
+					<div class="row w3-center w3-padding-32">
 						<div class="col resultados_partida_server">
-							<span class="font-italic">Sin resultados</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 </body>
 </html>
