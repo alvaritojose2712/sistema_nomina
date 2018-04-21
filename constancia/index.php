@@ -17,6 +17,9 @@
 					data:{buscar:$("#buscar_personal_constancia").val()},
 					type:"post",
 					datatype:"json",
+					beforeSend:function(){
+				        	$("#resultados_buscar_personal_constancia").append('<center><i class="fa fa-spinner fa-pulse fa-2x fa-fw w3-text-black"></i><span class="sr-only">Loading...</span></center>')
+				    },
 					success:function(data){
 						//alert(data);
 						$("#resultados_buscar_personal_constancia").empty();
@@ -81,11 +84,9 @@
 				  success: function(data) {
 				  	alert(data)
 				  	$("#select_t").modal('toggle')
-				  	
 				  }
 				});
 			}
-			
 		}
 		function use_file(name,indice) {
 			var file = name.replace(/:::/g," ")
@@ -112,7 +113,7 @@
 	                data: formData,
 	                cache: false,
 	                contentType: false,
-		     processData: false
+		     		processData: false
 	            })
 	                .done(function(res){
 	                   alert(res)
@@ -121,25 +122,27 @@
 	                });
 	        });
 	    });
+	    
     </script>
 	<style type="text/css">
 		@font-face {
 		  font-family: 'Open Sans';
-		  font-style: italic;
-		  font-weight: 400;
 		  src: url(../fonts/OpenSans-Light.ttf);
 		}
 		html,body{
 			font-family: 'Open Sans', sans-serif;
-			font-size: 18px;
-			zoom: 0.90;
 			height: 100%;
 			width: 100%;
 		}	
 	</style>
 </head>
 <body onload="buscar_constancia()">
-
+<!-- 	<div class="nav_contenedor"></div>
+	<script type="text/javascript">
+		// $(function(){
+		//   $(".nav_contenedor").load("../nav.php");
+		// });
+	</script> -->
 	<div class="modal fade" id="select_t">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">

@@ -88,8 +88,9 @@
 </head>
 <body>
 	<div class="w3-display-middle">
+		<!-- <h1 class="w3-center text-primary" style="color: #69FFFD">SINAPSIS</h1> -->
 		<div id="notificacion" class="w3-padding" style="display: none;cursor: pointer;" onclick="$(this).hide(200).empty()"></div>
-		<div id="contenedor" class="container w3-padding w3-margin-top w3-animate-top">	
+		<div id="contenedor" class="container w3-padding w3-margin-top w3-animate-top card w3-card-2">	
 			
 			<div class="row w3-margin">	
 				<div class="col">

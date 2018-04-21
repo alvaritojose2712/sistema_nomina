@@ -220,7 +220,7 @@
 			.inactive{
 				border-width: 0px;
 				pointer-events:none;
-				width: 200px;
+				
 			}
 			
 		</style>

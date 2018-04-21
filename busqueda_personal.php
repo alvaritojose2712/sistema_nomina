@@ -10,7 +10,8 @@
 	<title> .: Búsqueda | Nómina :.</title>
 	<link rel="stylesheet" type="text/css" href="css/w3.css">
 	
-	<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="font-awesome/css/font-awesome.css">
+
 	<script type="text/javascript" src="js/formato_moneda.js"></script>
 	<script type="text/javascript" src="js/param_url.js"></script>
 	<script type="text/javascript" src="js/jquery.js"></script>
@@ -19,11 +20,10 @@
  		
  		<link rel="stylesheet" type="text/css" href="css/loaders.css/loaders.css">
 		<script src="css/loaders.css/loaders.css.js"></script>
- 		
  		<script src="css/bootstrap/dist/js/tether.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css">
 		<script src="css/bootstrap/dist/js/bootstrap.min.js"></script>
-		
+	<script defer src="js/all.js"></script>	
 	<script type="text/javascript">
 		var estatus = "";
 	    var num=1;
@@ -79,6 +79,7 @@
 			$(".cerrar_partidas_presupuestarias,.abrir_partidas_presupuestarias").click(function () {
 				$("#show_partidas").animate({'width':"100%"},100)
 					$( "#show_partidas" ).toggle( "display" );
+					$( "#calculos" ).toggle( "display" );
 			})
 			$('#tab_casos_a a').click(function (e) {
 			  e.preventDefault()
@@ -291,9 +292,18 @@
 			        }			  
 			    })
 			})
-
 			$(document).on("click",".abrir_pago_retroactivo",function () {
 				$("#modal_pago_retroactivo").modal("show")
+			})
+			$(".reportar_excel_partidas").click(function () {
+				$("#data_partidas_to_excel_or_pdf").val(JSON.stringify(obj['data_general']['partida_presupuestaria']))
+				$("#form_to_excel_partidas").attr("action","generar_excel/index.php")
+				$("#form_to_excel_partidas").submit()
+			})
+			$(".reportar_pdf_partidas").click(function () {
+				$("#data_partidas_to_excel_or_pdf").val($("#resultados_partida").html())
+				$("#form_to_excel_partidas").attr("action","generar_pdf/partida_presupuestaria.php")
+				$("#form_to_excel_partidas").submit()
 			})
 		})
 		function json_opera_espec() {
@@ -468,7 +478,7 @@
 						"estatus" : estatus,
 						"ordenar":ordenar_asc_desc,
 						"id_nomina":getParameterByName('id'),
-						"confirm_retroactivo":$("#confirm_retroactivo").prop('checked'),
+						"confirm_retroactivo":$(".confirm_retroactivo").prop('checked'),
 						"fecha_retroactivo":$("#fecha_retroactivo").val()
 			   		},
 			        type:"post",
@@ -564,9 +574,9 @@
 							var html_partida = '<table class="table table-hover table-bordered">\
 													<thead>\
 														<tr>\
-															<th>Código</th>\
-															<th>Denominación</th>\
-															<th>Total requerimiento Bs.</th>\
+															<th style="background-color:#5cb85c" class="text-white">Código</th>\
+															<th style="background-color:#5cb85c" class="text-white">Denominación</th>\
+															<th style="background-color:#5cb85c" class="text-white">Total requerimiento Bs.</th>\
 														</tr>\
 													</thead>\
 													<tbody>'
@@ -588,27 +598,27 @@
 									var obj_partida = obj_global[i]['hijos']
 									for(ii in obj_partida){
 										html_partida += '<tr class="h2 font-weight-bold">\
-													<td>\
-														'+"&nbsp;"+i+"."+ii+".00"+".00"+".00"+'\
-													</td>\
-													<td>\
+													<th>\
+														'+i+"."+ii+".00"+".00"+".00"+'\
+													</th>\
+													<th>\
 														'+obj_partida[ii]['nombre']+'\
-													</td>\
-													<td>\
+													</th>\
+													<th>\
 														'+formato(obj_partida[ii]['monto'])+'\
-													</td>\
+													</th>\
 												</tr>'
 										if (obj_partida[ii]['hijos']!=undefined) {
 											var obj_generico = obj_partida[ii]['hijos']
 											for(iii in obj_generico){
-												html_partida += '<tr class="text-primary h3">\
-															<td>\
-																'+"&nbsp;"+"&nbsp;"+i+"."+ii+"."+iii+".00"+".00"+'\
+												html_partida += '<tr class="h3">\
+															<td style="color:#09D7F6">\
+																'+i+"."+ii+"."+iii+".00"+".00"+'\
 															</td>\
-															<td>\
+															<td style="color:#09D7F6">\
 																'+obj_generico[iii]['nombre']+'\
 															</td>\
-															<td>\
+															<td style="color:#09D7F6">\
 																'+formato(obj_generico[iii]['monto'])+'\
 															</td>\
 														</tr>'
@@ -617,7 +627,7 @@
 													for(iiii in obj_especifico){
 														html_partida += '<tr class="h4">\
 																	<td>\
-																		'+"&nbsp;"+"&nbsp;"+"&nbsp;"+i+"."+ii+"."+iii+"."+iiii+".00"+'\
+																		'+i+"."+ii+"."+iii+"."+iiii+".00"+'\
 																	</td>\
 																	<td>\
 																		'+obj_especifico[iiii]['nombre']+'\
@@ -631,7 +641,7 @@
 															for(iiiii in obj_sub_especifico){
 																html_partida += '<tr class="h5">\
 																			<td>\
-																				'+"&nbsp;"+"&nbsp;"+"&nbsp;"+"&nbsp;"+i+"."+ii+"."+iii+"."+iiii+"."+iiiii+'\
+																				'+i+"."+ii+"."+iii+"."+iiii+"."+iiiii+'\
 																			</td>\
 																			<td>\
 																				'+obj_sub_especifico[iiiii]['nombre']+'\
@@ -893,7 +903,6 @@
 		html,body{
 			font-family: 'Open Sans', sans-serif;
 			font-size: 20px;
-			zoom: 0.90;
 			height: 100%;
 			width: 100%;
 		}	
@@ -958,12 +967,18 @@
 	</style>
 </head>
 <body>
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
+	<!-- <div class="nav_contenedor"></div>
+	<script type="text/javascript">
+		//$(function(){
+		//  $(".nav_contenedor").load("nav.php");
+		//});
+	</script> -->
+	<nav class="navbar navbar-toggleable-md navbar-secundary bg-secundary bg-faded">
 	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	 
-	  <a class="navbar-brand" href="#" onclick="window.location='operaciones_parametros_nomina/index.php?id='+getParameterByName('id')"><i class="fa fa-windows"></i> División de períodos</a>
+	  <a class="navbar-brand" href="#" onclick="window.location='operaciones_parametros_nomina/index.php?id='+getParameterByName('id')"><i class="fas fa-calendar"></i> División de períodos</a>
 	  
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -1004,10 +1019,16 @@
      	</ul>
 	  </div>
 	</nav>
-	<div class="w3-card-4 bg-warning text-white" id="show_partidas" style="/*background-color: #f5f5f5;*/display: none;width: 0%;position: absolute;z-index: 1000">
-		<div class="row">
+	<div class="w3-card-4 w3-white" id="show_partidas" style="display: none;width: 0%;position: absolute;z-index: 1000;">
+		<div class="row w3-margin-top">
 			<div class="col">
-				<button class='btn btn-danger w3-right cerrar_partidas_presupuestarias'">
+				<button style="background-color: #BE7676" class='btn w3-left reportar_pdf_partidas w3-margin-right'>
+					<i class="fas fa-file-pdf fa-3x"></i>
+				</button>
+				<button style="background-color: #7BD563" class='btn w3-left reportar_excel_partidas w3-margin-right'>
+					<i class='fas fa-file-excel fa-3x'></i>
+				</button>
+				<button class='btn btn-danger w3-right cerrar_partidas_presupuestarias'>
 					<i class='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
 				</button>
 			</div>
@@ -1017,6 +1038,35 @@
 				<header class="w3-center h1">
 					Partidas presupuestarias
 				</header>
+			</div>
+		</div>
+		<div class="row w3-margin">
+			<div class="col">
+				<div class="container-fluid">
+					<form action="generar_excel/index.php" target="_blank" id="form_to_excel_partidas" method="post" class="row">
+						<textarea id="data_partidas_to_excel_or_pdf" name="data_partidas_to_excel_or_pdf" hidden=""></textarea>	
+						<div class="col-4">
+							<div class="row">
+								<div class="col-4"><span class="">Código presupuestario</span></div>
+								<div class="col"><input type="text" class="form-control" name="cod_presu" style="height: 100%"></input></div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="row w3-margin">
+								<div class="col-3"><span class="font-weight-bold">Denominación del IEU</span></div>
+								<div class="col"><textarea class="form-control" cols=2 name="denomi_ieu" rows=1></textarea></div>
+							</div>
+							<div class="row w3-margin">
+								<div class="col-3"><span class="font-weight-bold">Órgano de adscripción</span></div>
+								<div class="col"><textarea class="form-control" cols=2 name="organo_abs" rows=1></textarea></div>
+							</div>
+							<div class="row w3-margin">
+								<div class="col-3"><span class="font-weight-bold">Mes requerido</span></div>
+								<div class="col"><input type="text" class="form-control" name="mes_req" style="width: 40%"></input></div>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -1086,16 +1136,6 @@
 	      			<div class="form-group">
 	      				<label for="">Año</label>
 		      			<select class="form-control" id="año">
-					      <option value="2000">2000</option>
-					      <option value="2001">2001</option>
-					      <option value="2002">2002</option>
-					      <option value="2003">2003</option>
-					      <option value="2004">2004</option>
-					      <option value="2005">2005</option>
-					      <option value="2006">2006</option>
-					      <option value="2007">2007</option>
-					      <option value="2008">2008</option>
-					      <option value="2009">2009</option>
 					      <option value="2010">2010</option>
 					      <option value="2011">2011</option>
 					      <option value="2012">2012</option>
@@ -1112,10 +1152,6 @@
 					      <option value="2023">2023</option>
 					      <option value="2024">2024</option>
 					      <option value="2025">2025</option>
-					      <option value="2026">2026</option>
-					      <option value="2027">2027</option>
-					      <option value="2028">2028</option>
-					      <option value="2029">2029</option>
 					    </select>
 	      			</div>
 	      		</div>
@@ -1398,9 +1434,11 @@
 	      <div class="modal-body">
 			<div class="row">
 				<div class="col">
-					<div class="form-group">
-						<label for="">Pagar retroactivo</label>
-						<input type="checkbox" class="w3-check" id="confirm_retroactivo">
+					<div class="form-group w3-center">
+						<label class="switch">
+						  <input type="checkbox" id="switch_p" class="confirm_retroactivo">
+						  <span class="slider"></span>
+						</label>
 					</div>
 				</div>
 			</div>

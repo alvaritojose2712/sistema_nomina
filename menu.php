@@ -242,10 +242,10 @@
 				</div>
 				<div class="row w3-center">
 					
-					<div style="font-size: 20px;width: 100%" class="w3-margin">
+					<div style="font-size: 20px;width: 100%" class="w3-section">
 						<center>
-							<h1>Sistema integral para el procesamiento y emisión de pagos</h1>
-							<div class="w3-center" style="font-size: 40px">
+							<h1>Sistema Integral Administrativo de Procesos, Soporte, Información y  Seguridad</h1>
+							<div class="w3-center" style="font-size: 50px">
 								Jamás fué tan fácil...
 								<b><span class="text_write"></span></b>
 								<span class="escritor" id="escritor">&nbsp;&nbsp;</span>
@@ -335,7 +335,7 @@
 									<i class="fa fa-clipboard fa-3x"></i>
 								</div>
 								<div class="col">
-									<h6><u>Motor de plantillas</u></h6>
+									<h6><u>Motor de documentos</u></h6>
 									<span title="constancia/index.php" class="w3-white w3-hover-text-blue w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal">
 									Vamos! 
 									</span>
@@ -365,6 +365,21 @@
 								<div class="col">
 									<h6><u>Creador de fórmulas</u></h6>
 									<span title="formulas_pago/" class="w3-white w3-hover-text-blue w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal">
+									Vamos! 
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="card-parametros w3-margin w3-padding w3-border hvr-grow">
+							<div class="row">
+								<div class="col-4">
+									<i class="fa fa-paperclip fa-3x"></i>
+								</div>
+								<div class="col">
+									<h6><u>Partidas presupuestarias</u></h6>
+									<span title="partida_presupuestaria/" class="w3-white w3-hover-text-blue w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal">
 									Vamos! 
 									</span>
 								</div>
