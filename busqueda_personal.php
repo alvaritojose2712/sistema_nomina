@@ -6,7 +6,6 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> .: Búsqueda | Nómina :.</title>
 	<link rel="stylesheet" type="text/css" href="css/w3.css">
 	
@@ -23,7 +22,6 @@
  		<script src="css/bootstrap/dist/js/tether.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css">
 		<script src="css/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script defer src="js/all.js"></script>	
 	<script type="text/javascript">
 		var estatus = "";
 	    var num=1;
@@ -978,7 +976,7 @@
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	 
-	  <a class="navbar-brand" href="#" onclick="window.location='operaciones_parametros_nomina/index.php?id='+getParameterByName('id')"><i class="fas fa-calendar"></i> División de períodos</a>
+	  <a class="navbar-brand" href="#" onclick="window.location='operaciones_parametros_nomina/index.php?id='+getParameterByName('id')"><i class="fa fa-calendar"></i> División de períodos</a>
 	  
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -1023,10 +1021,10 @@
 		<div class="row w3-margin-top">
 			<div class="col">
 				<button style="background-color: #BE7676" class='btn w3-left reportar_pdf_partidas w3-margin-right'>
-					<i class="fas fa-file-pdf fa-3x"></i>
+					<i class="fa fa-file-pdf-o fa-3x"></i>
 				</button>
 				<button style="background-color: #7BD563" class='btn w3-left reportar_excel_partidas w3-margin-right'>
-					<i class='fas fa-file-excel fa-3x'></i>
+					<i class='fa fa-file-excel-o fa-3x'></i>
 				</button>
 				<button class='btn btn-danger w3-right cerrar_partidas_presupuestarias'>
 					<i class='fa fa-arrow-left fa-3x' aria-hidden='true'></i>

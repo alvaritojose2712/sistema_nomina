@@ -432,15 +432,12 @@
 			@font-face {
 			  font-family: 'Open Sans';
 			  font-style: italic;
-			  font-weight: 400;
 			  src: url(../../fonts/OpenSans-Light.ttf);
 			}
 			html,body{
 				font-family: 'Open Sans', sans-serif;
-				font-size:30px;
 				height: 100%;
 				width: 100%;
-				
 			}
 			body{
 				overflow-y: scroll;

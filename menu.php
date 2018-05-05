@@ -23,9 +23,6 @@
 	<script type="text/javascript">
 		
 		var word = ["Procesar pagos","Gestionar información","Emitir documentos"]
-		
-	
-
 		function ww() {
 			var num = 0
 			var n_word = 0
@@ -155,6 +152,7 @@
 				width: 100%;
 				background-color: #F5F5F5;
 				overflow:hidden;
+				background-image: url(image/image1.jpg);
 			}
 			.img-user{
 				margin: 0px;
@@ -229,8 +227,12 @@
 						</p>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col">
+						
+					</div>
+				</div>
 			</div>
-			
 			<div class="col" style="overflow:auto">
 				<div class="row bg-inverse text-white" id="barra-top" style="opacity: 0">
 					<div class="col" style="text-align: right;">

@@ -231,7 +231,7 @@
 	
 	<center>
 		<header>
-			<h1>Motor de plantillas</h1>
+			<h1>Motor de documentos</h1>
 		</header>
 	</center>
 

@@ -31,7 +31,8 @@ include '../conexion_bd.php';
 	}else if ($_POST['accion']=='save') {
 
 		//print_r($_POST);
-		$insert = (new sql("parametros_nomina","'".$_POST['nombre_nomina']."','".$_POST['tipo_periodo']."','".$_POST['formulas_a_pagar']."','".$_POST['divisiones']."','".$_POST['engine']."'",'denominacion,tipo_periodo,formulas_a_pagar,divisiones,engine'))->insert(); 
+		$val = "'".$_POST['nombre_nomina']."','".$_POST['tipo_periodo']."','".$_POST['formulas_a_pagar']."','".$_POST['divisiones']."','".$_POST['engine']."','{}','{}'";
+		$insert = (new sql("parametros_nomina",$val,'denominacion,tipo_periodo,formulas_a_pagar,divisiones,engine,incl_excl,opera_espec'))->insert(); 
 		if ($insert==1) {
 			echo "Exito al guardar";
 		}else{

@@ -478,7 +478,7 @@
 	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
-	  <a class="navbar-brand text-primary" href="#" id="crear_nueva_formula"><i class="fa fa-puzzle-piece"></i> Crear nueva fórmula</a>
+	  <a class="navbar-brand text-white" href="#" id="crear_nueva_formula"><i class="fa fa-puzzle-piece"></i> Crear nueva fórmula</a>
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 	      <li class="nav-item active">
@@ -512,7 +512,7 @@
 			<div class="row w3-border w3-margin">
 				<div class="col">
 					<div class="w3-padding">
-						<div class="bg-danger text-white" style="padding: 5px">
+						<div class="w3-round bg-danger text-white" style="padding: 5px">
 							<center>
 								<h4>Condiciones</h4>
 								<button class="btn btn-danger" onclick="alert(JSON.stringify(json))">
@@ -546,7 +546,7 @@
 			<div class="row w3-border w3-margin">
 				<div class="col">
 					<div class="w3-padding">
-						<div class="bg-danger text-white" style="padding: 5px"><center><h4>Parámetros de la nómina</h4></center></div>
+						<div class="w3-round bg-danger text-white" style="padding: 5px"><center><h4>Parámetros de la nómina</h4></center></div>
 						<hr>
 						<div class="row">
 							<div class="col">
@@ -596,7 +596,7 @@
 								</article>
 							</div>
 						</div>
-						<div class="bg-danger text-white" style="padding: 5px"><center><h4>Operaciones</h4></center></div>
+						<div class="w3-round bg-danger text-white" style="padding: 5px"><center><h4>Operaciones</h4></center></div>
 						<header style="padding: 10px">Variables posibles: 
 								<strong>unidad_tributaria</strong>,
 								<strong>sueldo_tabla</strong>,

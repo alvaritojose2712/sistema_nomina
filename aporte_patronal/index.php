@@ -73,12 +73,12 @@
 					        	$("#seccion_divisiones").append('<center><div><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div></center>')
 					        },
 					        success:function(response)
-					        {	//document.write(response)
-					        	
-								$("#seccion_divisiones").empty()
-					        	obj = JSON.parse(response);	
-					        	var divi = obj.data_general.array_divisiones	
-					        	///Cabezera de divisones
+					        {	
+								try{
+									$("#seccion_divisiones").empty()
+									obj = JSON.parse(response);	
+									var divi = obj.data_general.array_divisiones	
+									///Cabezera de divisones
 									if ($("#grupo_divisiones > div").length==0) {
 
 										var template_group = '<div class="btn-group" role="group" aria-label="Basic example">'
@@ -91,76 +91,79 @@
 										template_group+="</div>"						
 										$("#grupo_divisiones").append(template_group);
 									}
-								///Termina Cabezera de divisines		        	
-					        	if (obj.data_general.num_resultados==0) {
-					        		$("#seccion_divisiones").append("<center><h1>¡No se encontraron resultados!</h1></center>")
-					        	}else{
+									///Termina Cabezera de divisines		        	
+									if (obj.data_general.num_resultados==0) {
+										$("#seccion_divisiones").append("<center><h1>¡No se encontraron resultados!</h1></center>")
+									}else{
 
-									for(indice_division in divi){
-					        			
-										var nom_divi = divi[indice_division]
+										for(indice_division in divi){
+													
+											var nom_divi = divi[indice_division]
 
-										nom_divi===$("#grupo_divisiones").find(".active").attr('id')?turn='':turn='none'
+											nom_divi===$("#grupo_divisiones").find(".active").attr('id')?turn='':turn='none'
 
-								    	var template_tabla = "<div class='' id='"+ nom_divi +"_show' style='display:"+turn+"'>\
-								    	    Unos <strong>"+obj['data_general']['num_resultados']+"</strong> resultados"
-								    	    
-								    	    for(i in obj.data_general.arr_apors){
-								    	    	var num_insti = i 
-								    	    	var name_insti = obj.data_general.arr_apors[i] 
-								    	    	template_tabla+="<div id='"+nom_divi+"_"+name_insti.replace(/ /g,"_")+"'><div><h1>"+name_insti+" <i class='title_institucion fa fa-download' aria-hidden='true'></i></h1>"
-								    	    		template_tabla+="<table class='table'>\
-																		<thead>\
-																			<tr>\
-																				<th>#</th>\
-																				<th>Nombre</th>\
-																				<th>Apellido</th>\
-																				<th>Cédula</th>\
-																				<th>Aporte</th>\
-																				<th>Deducción</th>\
-																				<th>Total Bs.</th>\
-																			</tr>\
-																		</thead>\
-																		<tbody>"
-								    	    		for(i in obj){
-								    	    			
-								    	    			if (i!="data_general" && obj[i][nom_divi][num_insti]!=undefined) {
-								    	    				var id = obj[i]['Total_periodo']['id']
-															var nombre = obj[i]['Total_periodo']['nombre']
-															var apellido = obj[i]['Total_periodo']['apellido']
-															var cedula = obj[i]['Total_periodo']['cedula']
-															
-								    	    					template_tabla+="<tr>\
-																				<td>"+id+"</td>\
-																				<td>"+nombre+"</td>\
-																				<td>"+apellido+"</td>\
-																				<td>"+cedula+"</td>\
-																				<td>"+formato(obj[i][nom_divi][num_insti]['aporte'])+"</td>\
-																				<td>"+formato(obj[i][nom_divi][num_insti]['deduccion'])+"</td>\
-																				<td>"+formato(obj[i][nom_divi][num_insti]['total'])+"</td>\
-																			</tr>"
-								    	    				
-								    	    			}
-								    	    			if (nom_divi=="Total_periodo" && i!="data_general" && obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]!=undefined) {
-		    	    						template_tabla+="<tr>\
-														<td>"+obj[i]['Total_periodo']['id']+"</td>\
-														<td>"+obj[i]['Total_periodo']['nombre']+"</td>\
-														<td>"+obj[i]['Total_periodo']['apellido']+"</td>\
-														<td>"+obj[i]['Total_periodo']['cedula']+"</td>\
-														<td>"+formato(obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]['aporte'])+"</td>\
-														<td>"+formato(obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]['deduccion'])+"</td>\
-														<td>"+formato(obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]['total'])+"</td>\
-													</tr>"
-								    	    				}
-								    	    			
-								    	    		}
-								    	    		template_tabla+="</tbody></table></div>"
-								    	    	template_tabla+="<div>"
-								    	    }
-								    	template_tabla+="</div>"   
-										$("#seccion_divisiones").append(template_tabla);
+												var template_tabla = "<div class='' id='"+ nom_divi +"_show' style='display:"+turn+"'>\
+														Unos <strong>"+obj['data_general']['num_resultados']+"</strong> resultados"
+														
+														for(i in obj.data_general.arr_apors){
+															var num_insti = i 
+															var name_insti = obj.data_general.arr_apors[i] 
+															template_tabla+="<div id='"+nom_divi+"_"+name_insti.replace(/ /g,"_")+"'><div><h1>"+name_insti+" <i class='title_institucion fa fa-download' aria-hidden='true'></i></h1>"
+																template_tabla+="<table class='table'>\
+																			<thead>\
+																				<tr>\
+																					<th>#</th>\
+																					<th>Nombre</th>\
+																					<th>Apellido</th>\
+																					<th>Cédula</th>\
+																					<th>Aporte</th>\
+																					<th>Deducción</th>\
+																					<th>Total Bs.</th>\
+																				</tr>\
+																			</thead>\
+																			<tbody>"
+																for(i in obj){
+																	
+																	if (i!="data_general" && obj[i][nom_divi][num_insti]!=undefined) {
+																		var id = obj[i]['Total_periodo']['id']
+																var nombre = obj[i]['Total_periodo']['nombre']
+																var apellido = obj[i]['Total_periodo']['apellido']
+																var cedula = obj[i]['Total_periodo']['cedula']
+																
+																			template_tabla+="<tr>\
+																					<td>"+id+"</td>\
+																					<td>"+nombre+"</td>\
+																					<td>"+apellido+"</td>\
+																					<td>"+cedula+"</td>\
+																					<td>"+formato(obj[i][nom_divi][num_insti]['aporte'])+"</td>\
+																					<td>"+formato(obj[i][nom_divi][num_insti]['deduccion'])+"</td>\
+																					<td>"+formato(obj[i][nom_divi][num_insti]['total'])+"</td>\
+																				</tr>"
+																		
+																	}
+																	if (nom_divi=="Total_periodo" && i!="data_general" && obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]!=undefined) {
+														template_tabla+="<tr>\
+															<td>"+obj[i]['Total_periodo']['id']+"</td>\
+															<td>"+obj[i]['Total_periodo']['nombre']+"</td>\
+															<td>"+obj[i]['Total_periodo']['apellido']+"</td>\
+															<td>"+obj[i]['Total_periodo']['cedula']+"</td>\
+															<td>"+formato(obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]['aporte'])+"</td>\
+															<td>"+formato(obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]['deduccion'])+"</td>\
+															<td>"+formato(obj[i]['Total_periodo']['recibo_aporte_patronal'][num_insti]['total'])+"</td>\
+														</tr>"
+																		}
+																	
+																}
+																template_tabla+="</tbody></table></div>"
+															template_tabla+="<div>"
+														}
+												template_tabla+="</div>"   
+											$("#seccion_divisiones").append(template_tabla);
+										}	
 									}	
-								}			
+								}catch(err){
+									document.write(response)
+								}
 					        }			  
 					   })
 			    })

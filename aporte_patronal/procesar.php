@@ -94,21 +94,6 @@
         }
         return $lunes_del_mes;
     }
-    function actualizar_edad_hijos(){
-    	//$consulta_hijos_actualizar=conectar()->query("SELECT fecha_nacimiento FROM hijos_personal");
-    	$consulta_hijos_actualizar=(new sql("hijos_personal","","fecha_nacimiento"))->select();
-		while ($row_hijos = $consulta_hijos_actualizar->fetch_assoc()) {
-			$fech = $row_hijos['fecha_nacimiento'];
-			$fecha1 = new DateTime("".$fech."");
-			$fecha2 = new DateTime("".date("y-m-d")."");
-			$fecha = $fecha1->diff($fecha2);
-			$año = $fecha->y;
-			//conectar()->query("UPDATE hijos_personal SET edad='".$año."' WHERE fecha_nacimiento='".$fech."'");
-
-			(new sql("hijos_personal","WHERE fecha_nacimiento='".$fech."'","edad='".$año."'"))->update();
-		}
-		setcookie("edad_actualizada", "listo", time()+86400);  /* expira en un dia */
-    }
 	function sumar($operacion,$asignacion_deduccion,$descripcion,$tipo_concepto,$tipo_sueldo,$id,$periodo_pago,$operacion_recibo_aportes,$value_correspon){
 		global $array_formulas_a_pagar,$suma_total_trabajador,$unidad_tributaria,$sueldo_tabla,$años_antiguedad,$prima_hijos,$lunes_del_mes,$recibo_asignaciones,$recibo_aporte_patronal,$recibo_deducciones,$sueldo_normal,$hrs_nocturnas,$hrs_feriadas,$hrs_diurnas,$hrs_feriadas_nocturnas;
 		
@@ -143,11 +128,8 @@
 				
 			}
 		}
-
-		
 	}
 	
-	$lunes_del_mes = lunes_mes();
 
 		if ($_POST['ordenar'][0]!="") {
 			$ordenar = "order by ".$_POST['ordenar'][0]." ".$_POST['ordenar'][1];

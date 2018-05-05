@@ -9,6 +9,7 @@
 		<script src="css/bootstrap/dist/js/tether.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css">
 		<script src="css/bootstrap/dist/js/bootstrap.min.js"></script>
+		<link href="css/hover/css/hover.css" rel="stylesheet" media="all">
 
 	<script type="text/javascript">
 		    $(document).ready(function () {
@@ -90,26 +91,26 @@
 	<div class="w3-display-middle">
 		<!-- <h1 class="w3-center text-primary" style="color: #69FFFD">SINAPSIS</h1> -->
 		<div id="notificacion" class="w3-padding" style="display: none;cursor: pointer;" onclick="$(this).hide(200).empty()"></div>
-		<div id="contenedor" class="container w3-padding w3-margin-top w3-animate-top card w3-card-2">	
+		<div id="contenedor" class="container w3-padding w3-margin-top w3-animate-top card w3-card-2 card">	
 			
 			<div class="row w3-margin">	
 				<div class="col">
-					<input class="w3-input w3-border" placeholder="Nombre de usuario" autocomplete="off" id="usuario" type="text" placeholder="Nombre de usuario"/>
+					<input class="form-control w3-border" placeholder="Nombre de usuario" autocomplete="off" id="usuario" type="text" placeholder="Nombre de usuario"/>
 				</div>
-				<div class="col-1" style="padding: 0px">
-					<center><i class="fa fa-user fa-2x"></i></center>	
+				<div class="col-2 w3-center" style="">
+					<i class="fa fa-user fa-2x"></i>	
 				</div>
 			</div>
 			<div class="row w3-margin">			
 				<div class="col">
-					<input class="w3-input w3-border" placeholder="Clave" autocomplete="off" id="clave" type="password" placeholder="Clave">
+					<input class="form-control w3-border" placeholder="Clave" autocomplete="off" id="clave" type="password" placeholder="Clave">
 				</div>
-				<div class="col-1" style="padding: 0px">
-					<center><i class="fa fa-key fa-2x"></i></center>	
+				<div class="col-2 w3-center" style="">
+					<i class="fa fa-key fa-2x"></i>	
 				</div>	
 			</div>		
 
-			<button type="button" class="btn btn-primary btn-lg btn-block" id="acceder">Acceder</button>
+			<button type="button" class="btn btn-primary hvr-icon-forward" id="acceder">Acceder</button>
 		</div>
 		
 	</div>

@@ -296,6 +296,7 @@
 					}
 
 				cargar_partidas(json_partidas_disponibles)
+				registrar_datos(JSON.stringify(json_partidas_disponibles))
 				$($(".input_partidas")[4]).keyup()
 			}else{
 				alert("Error: Campos vacíos");
@@ -443,17 +444,27 @@
 			return validar
 		}
 		function ver_partidas_registradas() {
+
 			$.ajax({
 				url: "leer_partida.php",
 				type: "post",
-				data: {},
+				data: {
+					accion:"ver"
+				},
 				beforeSend: function () {
 					
 				},
 				success: function (res) {
-					json_partidas_disponibles = JSON.parse(res)	
+					try {
+						json_partidas_disponibles = JSON.parse(res)	
 
-					cargar_partidas(json_partidas_disponibles)
+						cargar_partidas(json_partidas_disponibles)
+					} catch (error) {
+						if (res!="") {
+							alert(res)
+						}
+						
+					}
 				}
 			})
 		}
@@ -597,6 +608,22 @@
 
 			html_partida += '</tbody></table>'
 			$(".resultados_partida_server").empty().append(html_partida)
+
+		}
+		function registrar_datos(json) {
+			$.ajax({
+				url: 'leer_partida.php',
+				type: "post",
+				data:{
+					json:json,
+					accion:"guardar"
+				},
+				beforeSend: function () {  },
+				success: function (res) { 
+					console.log(res)
+				 }
+			});
+			
 		}
 	</script>
 	<style type="text/css">

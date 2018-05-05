@@ -46,7 +46,13 @@
 			})
 			$(document).ready(function () {
 				$(".user").text($.cookie("usuario"))
+				ajustar()
 			})
+			window.onresize = function(){ajustar()}
+			function ajustar() {
+				let num = parseInt($(window).height())-parseInt($("#barra_navegador").height())
+				$("#vista_frame").css("height",num)
+			}
 		</script>
 		<style type="text/css">
 			@font-face {
@@ -66,11 +72,6 @@
 			}
 			#vista_frame{
 				width: 100%;
-				height: 90%;
-			}
-			nav{
-				height: 10%;
-				overflow-y: auto;
 			}
 			.contenedorExterior {
 			    display: table;
@@ -86,7 +87,6 @@
 			}
 			.opciones_explora{
 				position: absolute;
-				border-radius: 7px;
 				width: 350px;
 				height: 400px;
 				overflow-y: auto;
@@ -95,7 +95,6 @@
 			}
 			.opciones_cuenta{
 				position: absolute;
-				border-radius: 7px;
 				width: 200px;
 				overflow-y: auto;
 				display: none;
@@ -119,15 +118,17 @@
 		</style>
 	</head>
 <body>
-	<nav class="bg-inverse bg-faded container-fluid">
+	<nav class="bg-inverse bg-faded container-fluid w3-card-2 w3-margin-bottom" id="barra_navegador">
 	  <div class="row">
 	  	<div class="col">
   			<div class="contenedorExterior">
 	  			<div class="col contenedorInterior">
-		  			<a href="menu.php" class="h2 text-white"><i class="fa fa-home"></i> Inicio</a>	
+		  			<a href="menu.php" class="h2 text-white">
+		  				<i class="fa fa-home"></i> Inicio
+		  			</a>	
 			  	</div>
 			  	<div class="col contenedorInterior">
-			  		<a class="h4 text-primary" href="webmail/rainloop"><i class="fa fa-web"></i> Correo Electrónico</a>	
+			  		<a class="h4 text-primary" href="webmail/rainloop"><i class="fa fa-mail-forward"></i> Correo Electrónico</a>	
 			  	</div>
 			  	<div class="col contenedorInterior">
 			  		<button class="btn btn-primary abrir_explora">Explora <i class="fa fa-arrow-down"></i></button>
@@ -146,7 +147,7 @@
 	  	</div>
 	  </div>
 	</nav>
-	<div class="w3-card-4 w3-padding opciones_explora">
+	<div class="w3-card-2 w3-padding opciones_explora">
   		<span class="dropdown-header h2 text-primary">Nómina</span>
 			<a class="dropdown-item sessiones" href="#" title="operaciones_parametros_nomina/index.php">	
 				<div class="row">
@@ -252,7 +253,7 @@
 			<div class="row list-group w3-margin-top w3-margin-bottom">
 				<li class="list-group-item">Perfil</li>
 				<li class="list-group-item">Sugerencias</li>
-				<li class="list-group-item" onclick="window.location='log_out.php'">Cerrar sesión</li>
+				<li class="list-group-item text-danger" onclick="window.location='log_out.php'">Cerrar sesión</li>
 			</div>
 		</div>
 	</div>
