@@ -174,27 +174,6 @@
 		
 	$array_all = array();
 	if ($consulta->num_rows>0) {
-		echo "<table class='table table-striped'>
-				<tr>
-					<th>
-						Nombre y apellido
-					</th>
-					<th>
-						Sueldo básico
-					</th>
-					<th>
-						Sueldo normal
-					</th>
-					<th>
-						Sueldo integral
-					</th>
-					<th>
-						Antiguedad
-					</th>
-					<th>
-						Prestaciones Sociales
-					</th>
-				</tr>";
 		while ($row = $consulta->fetch_assoc()) {
 
 				$consulta_sueldo = (new sql("sueldos","WHERE fecha<='".$fecha_cierre."' AND dedicacion='".$row['dedicacion']."' AND categoria='".$row['categoria']."' AND cargo='".$row['cargo']."' order by fecha desc limit 1","salario"))->select();
@@ -220,11 +199,7 @@
 				$consulta_hijos = (new sql("hijos_personal","WHERE cedula_representante='".$row['cedula']."'"))->select();
 
 		        $numero_de_hijos_personal = $consulta_hijos->num_rows;
-		        //Calcular años de antiguedad
-		        $fecha1_ingreso = new DateTime("".$row['fecha_ingreso']."");
-				$fecha2_actual = new DateTime("".date("y-m-d")."");
-				$fecha_antiguedad = $fecha1_ingreso->diff($fecha2_actual);
-				$años_antiguedad = $fecha_antiguedad->y;
+
 
 					while ($row_formulas = $consulta_formulas->fetch_assoc()) {
 
@@ -318,69 +293,181 @@
 					}
 									//Mas el aporte de caja de ahorro
 				$sueldo_integral+=$sueldo_normal+$sueldo_tabla*0.1;	
-
-				$inicio = new DateTime($fecha_inicio);
-				$fecha_ingreso = new DateTime($row['fecha_ingreso']);
-				if ($inicio<$fecha_ingreso) {
-					$inicio = $fecha_ingreso;
-				}
-
-	            $final = new DateTime($fecha_cierre);
-	            $diferencia = $inicio->diff($final);
-	            if ($diferencia->d>28) {
-	            	$diferencia->d=30;
-	            }
-	            $meses = (($diferencia->d)/30)+$diferencia->m;
-	            $trimestre = $meses/3;
-	            //¿Cuántos días le corresponden por concepto de garantía a un trabajador que laboró 5 meses?
-
-				// Por los primeros tres meses le corresponden 15 días.
-				// Por los siguientes dos meses también le corresponden 15 días. ¿Por qué? Porque el derecho al depósito se adquiere al iniciar el trimestre, sin importar que el trabajador preste los servicios durante todo el trimestre. 
-	            $dias_correspon = ceil($trimestre)*15;
-
-	   			//Si la relación de trabajo termina antes de los tres primeros meses, el
-				// pago que le corresponde al trabajador o trabajadora por concepto de
-				// prestaciones sociales será de cinco días de salario por mes trabajado
-				// o fracción.
-	            if (floor($trimestre)==0) {
-	            	$dias_correspon=$meses*5;
-	            }
-
-				//Si la relación de trabajo termina con una antigüedad en el trabajo mayor de 6 meses, se considerará equivalente a un año. Por ejemplo: si la relación de trabajo termina cuando el trabajador tenía un antigüedad de 1 año y 7 meses se considerará que laboró 2 años
-	            if ($fecha_antiguedad->m>=6) {
-					$años_antiguedad++;
-				}	
-
-
-				// Que al cumplir los 2 años se generan los 2 días adicionales, al cumplir tres años se ganarán 4 días adicionales, al cumplir 3 años serán 6 días y así sucesivamente hasta acumular 30 días. 
-				 
-				$dias_adicionales = ($años_antiguedad-1)*2;
-				// Al acumular los 30 días, es decir a los 16 años de servicios, los años siguientes se seguirán generando 30 días
-				if ($dias_adicionales>30) {
-					$dias_adicionales=30;
-				}
-
-	            $integral_diario = $sueldo_integral/30;
-
-	            $prestaciones = $integral_diario*($dias_correspon+(($dias_adicionales/4)*$trimestre));
-				echo "
-						<tr>
-							<td>".$row['nombre']." ".$row['apellido']."</td>
-							<td>".number_format($sueldo_tabla, 2, ',', '.')."</td>
-							<td>".number_format($sueldo_normal, 2, ',', '.')."<br>".$base_calculo_sueldo_normal."</td>
-							<td>".number_format($sueldo_integral, 2, ',', '.')."<br>".$base_calculo_sueldo_integral."</td>
-							<td>Fecha de ingreso=".$row['fecha_ingreso']."<hr>Años=".$años_antiguedad." <hr>Meses=".$fecha_antiguedad->m."</td>
-							<td>".number_format($prestaciones, 2, ',', '.')."<hr>
-								Integral diario = ".$integral_diario."<hr>Dias de prestaciones = ".$dias_correspon."<hr>
-								Días adicionales /trimestre = ".($dias_adicionales/4)."<hr>
-								Nº de trimestres = ".$trimestre."
-							</td>
-						</tr>
-					";
+				$integral_diario = $sueldo_integral/30;
 				
+					//Literal b
+	//15 días de prestaciones por 90 días trabajados
+	define("DIAS_TRABAJADOS",90);
+	define("DIAS_DE_PRESTACIONES",15);
+
+	//Literal c
+	//30 dias por año
+	define("DIAS_x_AÑO_c",30);
+
+	//días adicionales 
+	define("DIAS_ADICIONALES",2);
+
+
+	define("DIAS_DEL_AÑO",360);
+	define("MESES_DEL_AÑO",12);
+	define("DIAS_DEL_MES",30);
+	$ingreso = new DateTime($_POST['ingreso']);
+	$egreso = new DateTime($_POST['egreso']);
+
+	//Literal B
+	$sueldos = json_decode($_POST['sueldos'],true);
+	// $sueldos = array(
+	// 	"2014-02-05"=>"8340",
+	// 	"2014-10-01"=>"10300",
+	// 	"2015-05-01"=>"14800",
+	// 	"2015-11-01"=>"18300",
+	// 	"2016-05-01"=>"21000",
+	// 	"2017-05-01"=>"25000",
+	// 	"2017-07-01"=>"30000",
+	// 	"2017-11-01"=>"34000",
+	// 	"2018-01-01"=>"40000",
+	// 	"2018-04-01"=>"55000"
+	// 	);
+	krsort($sueldos);
+	$apodos_periodo = array(
+		"90"=>"I",
+		"180"=>"II",
+		"270"=>"III",
+		"360"=>"IV"
+	);
+	krsort($apodos_periodo);
+	$total = 0;
+	$data = array("b"=>array(),"c"=>array());
+   	function prestaciones($fecha,$dias_trabajados,$inter,$dias_adicionales,$tiempo){
+   		global $sueldos,$total,$apodos_periodo,$data;
+   		$fecha = date_format(date_create($fecha), 'Y-m-d');
+   		foreach ($sueldos as $fecha_sueldo => $monto_sueldo) {
+   			$fecha_sueldo = date_format(date_create($fecha_sueldo), 'Y-m-d');
+			if($fecha_sueldo <= $fecha){
+				$sueldo_diario = $monto_sueldo/DIAS_DEL_MES;
+				$dias_tramo = $dias_trabajados/DIAS_TRABAJADOS;
+				$apodo = $inter;
+				$dias_prestaciones = $dias_tramo*DIAS_DE_PRESTACIONES;
+				$total_dias = $dias_prestaciones+$dias_adicionales;
+				$monto = $total_dias*$sueldo_diario;
+				$total+=$monto;
+				
+				foreach ($apodos_periodo as $num => $val) {
+					if ($num <= $inter) {
+						$apodo = $val;
+						break;
+					}
+				}
+
+					array_push($data['b'], array(
+						"tiempo"=>$tiempo,
+						"fecha"=>$fecha,
+						"apodo"=>$apodo,
+						"dias_trabajados"=>$dias_trabajados,
+						"sueldo"=>$monto_sueldo,
+						"sueldo_diario"=>$sueldo_diario,
+						"dias_prestaciones"=>round($dias_prestaciones,3),
+						"dias_adicionales"=>round($dias_adicionales,3),
+						"total_dias"=>round($total_dias,3),
+						"monto"=>$monto,
+						"total"=>$total
+					));
+				break;
+			}
+		}
+   	}
+
+				$a = intval($ingreso->format("Y"));
+				$m = intval($ingreso->format("m"));
+				if ($m>MESES_DEL_AÑO) {$m=MESES_DEL_AÑO;}
+				$d = intval($ingreso->format("d"));
+				if ($d>DIAS_DEL_MES) {$d=DIAS_DEL_MES;}
+				
+				$a_end = intval($egreso->format("Y"));
+				$m_end = intval($egreso->format("m"));
+				if ($m_end>MESES_DEL_AÑO) {$m_end=MESES_DEL_AÑO;}
+				$d_end = intval($egreso->format("d"));
+				if ($d_end>DIAS_DEL_MES) {$d_end=DIAS_DEL_MES;}
+
+				$intervalos = DIAS_DEL_AÑO/DIAS_TRABAJADOS;
+				$arr_cortes = array();
+				$count = 0;
+				for ($i=0; $i < $intervalos ; $i++) { 
+					array_push($arr_cortes, $count+=DIAS_TRABAJADOS);
+				}
+				
+				$count = 0;
+				while (true) {
+					$fecha_actual = new DateTime($a."-".$m."-".$d);
+					$diff_actual = $ingreso->diff($fecha_actual);
+					$año_trabajado = $diff_actual->format("%y");
+
+					$tiempo = array("año"=>$año_trabajado,"meses"=>$diff_actual->format("%m"),"dias"=>$diff_actual->format("%d"));
+					if ($año_trabajado>1) {
+						if ($año_trabajado>16) {
+							$año_trabajado=16;
+						}
+						$dias_adicionales = (($año_trabajado-1)*DIAS_ADICIONALES)/$intervalos;
+					}else{
+						$dias_adicionales=0;
+					}
+					
+					$dia_del_año = (($m-1)*DIAS_DEL_MES)+$d;
+					
+					foreach ($arr_cortes as $inter) {
+						if ($dia_del_año==$inter) {
+							prestaciones($a."-".$m."-".$d,$count,$inter,$dias_adicionales,$tiempo);
+							$count = 0;
+							$select_inter = $inter;
+							break;
+						}
+					}
+					if ($d<DIAS_DEL_MES) {
+						$d++;
+					}else{
+						$d=1;
+						if ($m<MESES_DEL_AÑO) {
+							$m++;
+						}else {
+							$m=1;
+							$a++;
+						}
+					}
+					$count++;
+					if ($a==$a_end && $m==$m_end && $d==$d_end) {
+						foreach ($arr_cortes as $inter) {
+							if ($dia_del_año<$inter && $dia_del_año!=0) {
+								prestaciones($a."-".$m."-".$d,$count,$inter,$dias_adicionales,$tiempo);
+								$count = 0;
+								$select_inter = $inter;
+								break;
+							}
+						}
+						break;
+					}
+				}
+				// Literal C
+				$total_meses = $ingreso->diff($egreso)->format("%m");
+				$total_años = $ingreso->diff($egreso)->format("%y");
+				$total_dias = $ingreso->diff($egreso)->format("%d");
+				$acumu_años = 0;
+				$acumu_años += $total_años;
+				if ($total_meses>6) {
+					$acumu_años += $total_meses/MESES_DEL_AÑO;
+				}
+				$sueldo_maximo = max($sueldos); 
+				$data['c']['monto'] = ($acumu_años*DIAS_x_AÑO_c)*($sueldo_maximo/DIAS_DEL_MES);
+				$data['c']['tiempo_trabajado'] = $total_años." años ".$total_meses." meses y ".$total_dias." días";
+				$data['c']['años'] = $acumu_años;
+				$data['c']['dias_x_año'] = DIAS_x_AÑO_c;
+				$data['c']['sueldo_devengado'] = $sueldo_maximo;
+				$data['c']['sueldo_devengado_x_dia'] = $sueldo_maximo/DIAS_DEL_MES;
+				$data['c']['formula_utilizada'] = "( AÑOS_TRABAJADOS * ".DIAS_x_AÑO_c." ) * SUELDO_DIARIO ";
+
+				echo json_encode($data);
 		    	
 		      }//Termina iteración de una persona		
-		      echo "</table>";
+		      
 	}
 
 	

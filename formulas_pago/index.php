@@ -223,47 +223,6 @@
 					$("#items").append(html);
 				}
 			}
-			$(document).ready(function() {
-				$(document).on("click",".delete_todo_campo",function() {
-					var c = $(this).attr("title")
-					delete json[c]
-					$('#div_'+c).animate({opacity:0},150,function(){$('#div_'+c).remove()})
-					$("#select_campo").val("seleccione")
-				})
-				$("#select_campo").change(function(){
-					var select_campo = $("#select_campo").val();
-					if (select_campo!="seleccione") {
-						if(select_campo=="cualquiera"){
-							if (JSON.stringify(json)=="{}") {
-								json={"cualquiera":""};
-								crear_html_campo("cualquiera");
-							}	
-						}else if(select_campo=="numero_hijos"){
-							json["numero_hijos"]={};
-							crear_html_campo("numero_hijos");
-						}else{
-							if (json[select_campo]==undefined && $("#div_cualquiera").length == 0 && $("#div_numero_hijos").length == 0) {
-								json[select_campo]={};
-								crear_html_campo(select_campo);
-							}
-						}
-					}
-				});	
-				$(document).on("change","#select_valor_disponible_numero_hijos",function () {
-					if ($(this).val()=="edad") {
-						$(".div_valor_hijos")
-						.empty()
-						.append("Valor:<input type='text' class='form-control' placeholder='Valor' onKeyPress='return validar_cedula(event)' maxlength='2' value='0'>")
-					}else{
-						$(".div_valor_hijos")
-						.empty()
-						.append("Valor:<select class='form-control'>\
-									<option value='si'>Si</option>\
-									<option value='no'>No</option>\
-								</select>")
-					}
-				})						
-			});
 			//Crear condiciones si es que ya se encontraban en el JSON
 			function json_create() {
 				if (JSON.stringify(json)!="{}") {
@@ -288,8 +247,60 @@
 					}
 				}
 			}
-		</script>
-		<script type="text/javascript">
+			$(document).on("change","#select_valor_disponible_numero_hijos",function () {
+				if ($(this).val()=="edad") {
+					$(".div_valor_hijos")
+					.empty()
+					.append("Valor:<input type='text' class='form-control' placeholder='Valor' onKeyPress='return validar_cedula(event)' maxlength='2' value='0'>")
+				}else{
+					$(".div_valor_hijos")
+					.empty()
+					.append("Valor:<select class='form-control'>\
+								<option value='si'>Si</option>\
+								<option value='no'>No</option>\
+							</select>")
+				}
+			})	
+			$(document).on("click",".delete_todo_campo",function() {
+				var c = $(this).attr("title")
+				delete json[c]
+				$('#div_'+c).animate({opacity:0},150,function(){$('#div_'+c).remove()})
+				$("#select_campo").val("seleccione")
+			})
+			$(document).on("click",".formula_selected",function () {
+					var i = $(this).attr('title')
+						var opera = JSON.parse(obj[i].operaciones);
+						json = JSON.parse(obj[i].condiciones)
+						$("#items").empty()
+						json_create()
+						var arr_opera = Object.keys(opera)
+						if (arr_opera.includes("aporte_patronal")) {
+							$("#formula").val(opera.deduccion)
+							$("#formula_aporte").val(opera.aporte_patronal)
+							$("#contenedor_formula_aporte").css("display","")
+						}else{
+							$("#formula").val(opera.operacion)
+							$("#contenedor_formula_aporte").css("display","none")
+
+						}
+						
+						$("#descripcion_formula").val(obj[i].descripcion)
+						$("#vigencia").val(obj[i].fecha)
+						$("#tipo_concepto").val(obj[i].tipo_concepto)
+						$("#tipo_sueldo").val(obj[i].tipo_sueldo)
+						$("#asignacion_deduccion").val(obj[i].asignacion_deduccion)
+						$("#periodo_pago").val(obj[i].periodo_pago)
+						$("#name_formula")
+						.attr('title',obj[i].id)
+						.text(obj[i].descripcion)
+						$("#datos_operaciones_formula").css("display","")
+				})
+			$(document).on("click",".guardar_cambios",function () {
+				save_insert("update")
+			})
+			$(document).on("click","#crear_nueva_formula",function () {
+				update_insert("insert")
+			})
 			function buscar() {
 			 	$.ajax({
 			        url:"procesar.php",
@@ -325,42 +336,26 @@
 			}
 			$(document).ready(function () {
 				buscar()
-				$("#buscar_input").keyup(buscar)
-				$(document).on("click",".formula_selected",function () {
-					var i = $(this).attr('title')
-						var opera = JSON.parse(obj[i].operaciones);
-						json = JSON.parse(obj[i].condiciones)
-						$("#items").empty()
-						json_create()
-						var arr_opera = Object.keys(opera)
-						if (arr_opera.includes("aporte_patronal")) {
-							$("#formula").val(opera.deduccion)
-							$("#formula_aporte").val(opera.aporte_patronal)
-							$("#contenedor_formula_aporte").css("display","")
+				$("#select_campo").change(function(){
+					var select_campo = $("#select_campo").val();
+					if (select_campo!="seleccione") {
+						if(select_campo=="cualquiera"){
+							if (JSON.stringify(json)=="{}") {
+								json={"cualquiera":""};
+								crear_html_campo("cualquiera");
+							}	
+						}else if(select_campo=="numero_hijos"){
+							json["numero_hijos"]={};
+							crear_html_campo("numero_hijos");
 						}else{
-							$("#formula").val(opera.operacion)
-							$("#contenedor_formula_aporte").css("display","none")
-
+							if (json[select_campo]==undefined && $("#div_cualquiera").length == 0 && $("#div_numero_hijos").length == 0) {
+								json[select_campo]={};
+								crear_html_campo(select_campo);
+							}
 						}
-						
-						$("#descripcion_formula").val(obj[i].descripcion)
-						$("#vigencia").val(obj[i].fecha)
-						$("#tipo_concepto").val(obj[i].tipo_concepto)
-						$("#tipo_sueldo").val(obj[i].tipo_sueldo)
-						$("#asignacion_deduccion").val(obj[i].asignacion_deduccion)
-						$("#periodo_pago").val(obj[i].periodo_pago)
-						$("#name_formula")
-						.attr('title',obj[i].id)
-						.text(obj[i].descripcion)
-						$("#datos_operaciones_formula").css("display","")
-				})
-				$(document).on("click",".guardar_cambios",function () {
-					save_insert("update")
-					
-				})
-				$(document).on("click","#crear_nueva_formula",function () {
-					update_insert("insert")
-				})
+					}
+				});	
+				$("#buscar_input").keyup(buscar)
 				$("#asignacion_deduccion").change(function () {
 					var c = $("#contenedor_formula_aporte")
 					if ($(this).val()=="aporte_patronal") {
@@ -419,6 +414,7 @@
 									}
 								}else{
 									alert(res)
+									buscar()
 								}
 							}
 						})
@@ -442,6 +438,7 @@
 						},
 						success:function (res) {
 							alert(res)
+							buscar()
 						}
 					})
 				}
@@ -546,7 +543,7 @@
 			<div class="row w3-border w3-margin">
 				<div class="col">
 					<div class="w3-padding">
-						<div class="w3-round bg-danger text-white" style="padding: 5px"><center><h4>Parámetros de la nómina</h4></center></div>
+						<div class="w3-round bg-danger text-white" style="padding: 5px"><center><h4>Parámetros de la fórmula</h4></center></div>
 						<hr>
 						<div class="row">
 							<div class="col">

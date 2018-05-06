@@ -129,7 +129,7 @@
 			}
 		}
 	}
-	
+		$lunes_del_mes = lunes_mes();
 
 		if ($_POST['ordenar'][0]!="") {
 			$ordenar = "order by ".$_POST['ordenar'][0]." ".$_POST['ordenar'][1];
@@ -239,36 +239,37 @@
 							$json_decode_condiciones = json_decode($row_formulas['condiciones'], true);
 							$json_decode_operaciones = json_decode($row_formulas['operaciones'], true);			
 						
-							if (key($json_decode_condiciones)=="numero_hijos" && $json_decode_condiciones['numero_hijos']!="") {
-									$sentencia="";
-									foreach ($json_decode_condiciones['numero_hijos'] as $parametro1_hijos => $operador_parametro2) {
+							// if (key($json_decode_condiciones)=="numero_hijos" && $json_decode_condiciones['numero_hijos']!="") {
+							// 		$sentencia="";
+							// 		foreach ($json_decode_condiciones['numero_hijos'] as $parametro1_hijos => $operador_parametro2) {
 										
 										
-										$parametro2_hijos = key($operador_parametro2);
-										$operador_hijos = $operador_parametro2[$parametro2_hijos];
+							// 			$parametro2_hijos = key($operador_parametro2);
+							// 			$operador_hijos = $operador_parametro2[$parametro2_hijos];
 
-										if ($parametro1_hijos=="edad" && !isset($_COOKIE['edad_actualizada'])) {
-											actualizar_edad_hijos();
-										} //Actualizar edad de los hijos del personal
-										$sentencia .= "$parametro1_hijos$operador_hijos'$parametro2_hijos'";
+							// 			if ($parametro1_hijos=="edad" && !isset($_COOKIE['edad_actualizada'])) {
+							// 				actualizar_edad_hijos();
+							// 			} //Actualizar edad de los hijos del personal
+							// 			$sentencia .= "$parametro1_hijos$operador_hijos'$parametro2_hijos'";
 										
-										$prima_hijos = (new sql("hijos_personal","WHERE cedula_representante='".$row['cedula']."' AND $sentencia"))->select()->num_rows;
-										$sentencia .= " AND ";
-									}
-									foreach ($json_decode_operaciones as $nombre_operacion => $valor_operacion) {
-										if ($nombre_operacion=="aporte_patronal") {
-											sumar($valor_operacion,$nombre_operacion,$row_formulas['descripcion'],"","",$row_formulas['id'],"",$json_decode_operaciones['deduccion'],$value_correspon);
-										}																	
-									}
-							}else if(key($json_decode_condiciones)=="numero_hijos" && $json_decode_condiciones['numero_hijos']==""){
-									$prima_hijos = $consulta_hijos->num_rows;
-									foreach ($json_decode_operaciones as $nombre_operacion => $valor_operacion) {								
-										if ($nombre_operacion=="aporte_patronal") {
-											sumar($valor_operacion,$nombre_operacion,$row_formulas['descripcion'],"","",$row_formulas['id'],"",$json_decode_operaciones['deduccion'],$value_correspon);
-										}				
-									}
-							}
-							else if (key($json_decode_condiciones)=="cualquiera") {
+							// 			$prima_hijos = (new sql("hijos_personal","WHERE cedula_representante='".$row['cedula']."' AND $sentencia"))->select()->num_rows;
+							// 			$sentencia .= " AND ";
+							// 		}
+							// 		foreach ($json_decode_operaciones as $nombre_operacion => $valor_operacion) {
+							// 			if ($nombre_operacion=="aporte_patronal") {
+							// 				sumar($valor_operacion,$nombre_operacion,$row_formulas['descripcion'],"","",$row_formulas['id'],"",$json_decode_operaciones['deduccion'],$value_correspon);
+							// 			}																	
+							// 		}
+							// }else if(key($json_decode_condiciones)=="numero_hijos" && $json_decode_condiciones['numero_hijos']==""){
+							// 		$prima_hijos = $consulta_hijos->num_rows;
+							// 		foreach ($json_decode_operaciones as $nombre_operacion => $valor_operacion) {								
+							// 			if ($nombre_operacion=="aporte_patronal") {
+							// 				sumar($valor_operacion,$nombre_operacion,$row_formulas['descripcion'],"","",$row_formulas['id'],"",$json_decode_operaciones['deduccion'],$value_correspon);
+							// 			}				
+							// 		}
+							// }
+							// else 
+							if (key($json_decode_condiciones)=="cualquiera") {
 								//json_operacion/{ "operacion" : "$sueldo_tabla*($años_antiguedad*0.015)" }
 								foreach ($json_decode_operaciones as $nombre_operacion => $valor_operacion){
 									if ($nombre_operacion=="aporte_patronal") {
@@ -293,24 +294,7 @@
 										}else {
 											$positivo++;
 										}
-		                            }else if ($campo_condiciones=="numero_hijos" && $negativo==0) {
-										//{"estatus":{"ALTO NIVEL":"igual"},"numero_hijos":{"estudia":{"=":"si"}}}
-										$sentencia="";
-										foreach ($json_decode_condiciones['numero_hijos'] as $parametro1_hijos => $operador_parametro2) {
-											
-										
-										$parametro2_hijos = key($operador_parametro2);
-										$operador_hijos = $operador_parametro2[$parametro2_hijos];
-
-											if ($parametro1_hijos=="edad" && !isset($_COOKIE['edad_actualizada'])) {
-												actualizar_edad_hijos();
-											} //Actualizar edad de los hijos del personal
-											$sentencia .= "$parametro1_hijos$operador_hijos'$parametro2_hijos'";
-											
-											$prima_hijos = (new sql("hijos_personal","WHERE cedula_representante='".$row['cedula']."' AND $sentencia"))->select()->num_rows;
-											$sentencia .= " AND ";
-									    }
-								    }
+		                            }
 								}	
 								if ($negativo==0) {
 									foreach ($json_decode_operaciones as $nombre_operacion => $valor_operacion) {									
@@ -358,7 +342,6 @@
 				      			"recibo_aporte_patronal" =>  $recibo_aporte_patronal,
 				      			"fecha" 			  =>  date("d/m/Y"),
 				      			"hora"  			  =>  date("H:i:s")
-
 
 				      		);
 

@@ -115,10 +115,13 @@
 			.list-group-item{
 				border: 0px;
 			}
+			.sessiones:active{
+				background-color: #EEEEEE
+			}
 		</style>
 	</head>
 <body>
-	<nav class="bg-inverse bg-faded container-fluid w3-card-2 w3-margin-bottom" id="barra_navegador">
+	<nav class="bg-inverse bg-faded container-fluid w3-card-2" id="barra_navegador">
 	  <div class="row">
 	  	<div class="col">
   			<div class="contenedorExterior">
@@ -148,105 +151,105 @@
 	  </div>
 	</nav>
 	<div class="w3-card-2 w3-padding opciones_explora">
-  		<span class="dropdown-header h2 text-primary">Nómina</span>
+  		<span class="dropdown-header h2 text-muted">Nómina</span>
 			<a class="dropdown-item sessiones" href="#" title="operaciones_parametros_nomina/index.php">	
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-id-card fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-id-card fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Crear nueva nómina
+						<span class="text-muted">Crear nueva nómina
 						</span>
 					</div>
 				</div>
 			</a>
 			<a class="dropdown-item sessiones" href="#" title="operaciones_parametros_nomina/select_nomina.php">
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-mouse-pointer fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-mouse-pointer fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Seleccionar nómina
+						<span class="text-muted">Seleccionar nómina
 						</span>
 					</div>
 				</div>
 			</a>
-		<span class="dropdown-header h2 text-primary">Personal</span>
+		<span class="dropdown-header h2 text-muted">Personal</span>
 			<a class="dropdown-item sessiones" href="#" title="ficha_personal/index.php">	
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-search fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-search fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Buscar personal
+						<span class="text-muted">Buscar personal
 						</span>
 					</div>
 				</div>
 			</a>
 			<a class="dropdown-item sessiones" href="#" title="ficha_personal/incluir_personal.php">
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-user-plus fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-user-plus fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Incluir nuevo personal
+						<span class="text-muted">Incluir nuevo personal
 						</span>
 					</div>
 				</div>
 			</a>
-		<span class="dropdown-header h2 text-primary">Prestaciones sociales</span>
+		<span class="dropdown-header h2 text-muted">Prestaciones sociales</span>
 			<a class="dropdown-item sessiones" href="#" title="prestaciones_sociales/">
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-calculator fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-calculator fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Prestaciones sociales
+						<span class="text-muted">Prestaciones sociales
 						</span>
 					</div>
 				</div>
 			</a>
-		<span class="dropdown-header h2 text-primary">Partidas presupuestarias</span>
+		<span class="dropdown-header h2 text-muted">Partidas presupuestarias</span>
 			<a class="dropdown-item sessiones" href="#" title="partida_presupuestaria/">
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-calendar fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-calendar fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Creador de partidas
+						<span class="text-muted">Creador de partidas
 						</span>
 					</div>
 				</div>
 			</a>
-		<span class="dropdown-header h2 text-primary">Herramientas</span>
+		<span class="dropdown-header h2 text-muted">Herramientas</span>
 			<a class="dropdown-item sessiones" href="#" title="constancia/index.php">	
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-clipboard fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-clipboard fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Motor de documentos
+						<span class="text-muted">Motor de documentos
 						</span>
 					</div>
 				</div>
 			</a>
-		<span class="dropdown-header h2 text-primary">Fórmulas de pago</span>
+		<span class="dropdown-header h2 text-muted">Fórmulas de pago</span>
 			<a class="dropdown-item sessiones" href="#" title="formulas_pago/index.php">
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-wpforms fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-wpforms fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Creador de fórmulas
+						<span class="text-muted">Creador de fórmulas
 						</span>
 					</div>
 				</div>
 			</a>	
-		<span class="dropdown-header h2 text-primary">Globales</span>
+		<span class="dropdown-header h2 text-muted">Globales</span>
 			<a class="dropdown-item sessiones" href="#" title="parametros_globales/">	
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-cogs fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-cogs fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Parámetros globales
+						<span class="text-muted">Parámetros globales
 						</span>
 					</div>
 				</div>
 			</a>
 			<a class="dropdown-item sessiones" href="#" title="usuarios_autenticar/">
 				<div class="row">
-					<div class="col-3"><i class="text-primary fa fa-cog fa-3x"></i></div>
+					<div class="col-3"><i class="text-muted fa fa-cog fa-3x"></i></div>
 					<div class="col">
-						<span class="text-primary">Administrar usuarios
+						<span class="text-muted">Administrar usuarios
 						</span>
 					</div>
 				</div>
 			</a>	
 	</div>
-	<div class="w3-card-4 w3-white opciones_cuenta">
+	<div class="w3-card-2 w3-white opciones_cuenta">
 		<div class="container-fluid">
 			<div class="row w3-padding"><span class="font-italic">Ha iniciado sesión</span></div>
 			<div class="row w3-padding w3-border-bottom"><span class="user h4 font-weight-bold"></span></div>
@@ -257,7 +260,7 @@
 			</div>
 		</div>
 	</div>
-	<iframe src="<?php echo $_GET['path'] ?>" frameborder="0" id="vista_frame" onload="$('.cargando').css('display','none')"></iframe>
+	<iframe  src="<?php echo $_GET['path'] ?>" frameborder="0" id="vista_frame" onload="$('.cargando').css('display','none');$(this).contents().find('body').on('click', function(event) { $('.opciones_explora').hide() });"></iframe>
 	<div class="cargando" style="width: 100%;height: 100%;color: red"><i class="w3-display-middle fa fa-spinner fa-pulse fa-5x fa-fw"></i><span class="sr-only">Loading...</span>
 	<div class="modal-backdrop show"></div>
 	</div>

@@ -40,7 +40,6 @@
 			}
 		}
 		function buscar (ordenar){
-			
 				num++;
 				var asc_desc="";
 				if (this.num%2==0) {
@@ -81,7 +80,7 @@
 									///Cabezera de divisones
 									if ($("#grupo_divisiones > div").length==0) {
 
-										var template_group = '<div class="btn-group" role="group" aria-label="Basic example">'
+										var template_group = '<div class="btn-group" role="group">'
 										
 										
 										for(i in divi){
@@ -102,7 +101,7 @@
 
 											nom_divi===$("#grupo_divisiones").find(".active").attr('id')?turn='':turn='none'
 
-												var template_tabla = "<div class='' id='"+ nom_divi +"_show' style='display:"+turn+"'>\
+												var template_tabla = "<div id='"+ nom_divi +"_show' style='display:"+turn+"'>\
 														Unos <strong>"+obj['data_general']['num_resultados']+"</strong> resultados"
 														
 														for(i in obj.data_general.arr_apors){
@@ -166,109 +165,39 @@
 								}
 					        }			  
 					   })
-			    })
-			   
+			    })	   
 	    }
-
-		function show_data(elem){	
-			//Mostrar modal
-			$("#show_data").modal()
-			//Cédula de la persona seleccionada
-			var ced = $(elem).children('td:eq(3)').text()
-			//Nombre de la división
-			var div = $(elem).parents('div').attr('id').replace('_show',"")
-			//Buscar persona seleccionada
-			for(i in obj){
-				if (i!='data_general') {
-					if (obj[i]['Total_periodo']['cedula']==ced) {
-						var persona = i;
-						break
-					}
-				}
-			}
-			var asig = obj[persona][div].recibo_asignaciones
-			var deduc = obj[persona][div].recibo_deducciones
-			const data = obj[persona].Total_periodo
-
-			var recibo_html = ""
-			var suma_asig = 0
-			var suma_deduc = 0
-			for(i in asig){
-				recibo_html += "<tr><th>"+ i +"</th><td>"+ Object.keys(asig[i]) +"</td><td>"+ formato(Object.values(asig[i])) +"</td><td></td></tr>"
-				suma_asig+=Number(Object.values(asig[i]))
-			}
-			for(i in deduc){
-				recibo_html += "<tr><th>"+ i +"</th><td>"+ Object.keys(deduc[i]) +"</td><td></td><td>"+ formato(Object.values(deduc[i])) +"</td></tr>"
-				suma_deduc+=Number(Object.values(deduc[i]))
-
-			}
-			recibo_html+="<tr><td colspan=2><h4>Total Bs.</h4></td><th>"+ formato(suma_asig) +"</th><th>"+ formato(suma_deduc) +"</th></tr>"
-			
-			template_recibo = '<div><img src="image/cintillo.jpg" style="width:100%"><hr> \
-									<center>'+ div.replace(/_/g,"&nbsp") +'</center>\
-									<center>Período: Desde <strong>'+ $("#fecha_inicio").val() +'</strong> Hasta <strong>'+ $("#fecha_cierre").val() +'</strong></center><hr>\
-								<div>\
-									<i>\
-										<small>\
-											Fecha de Emisión: :fecha:<br>Hora: :hora:\
-										</small>\
-									</i>\
-									<h4>:estatus:</h4>\
-								</div><br>\
-							</div>\
-							<table border="1" style="width:100%" class="w3-table w3-border"><thead><tr><th>Nombre y Apellido</th><th>Cédula</th><th>Sueldo base Bs.</th><th>Cuenta bancaria</th></tr></thead><tbody><tr><td>:nombre: :apellido:</td><td>:cedula:</td><td>:sueldo:</td><td>:cuenta_bancaria:</td></tr></tbody></table>\
-							<hr>\
-							<table border="1" style="width:100%" class="w3-table w3-border">\
-								<thead id="cabezera_tabla_recibo">\
-									<tr>\
-										<th width="10%">#</th>\
-										<th width="30%">Denominación</th>\
-										<th width="30%">Asignaciones</th>\
-										<th width="30%">Deducciones</th>\
-									</tr>\
-								</thead>\
-								<tbody>:recibo:</tbody>\
-							</table>\
-						</div>'
-						.replace(":estatus:",data.estatus)
-						.replace(":fecha:",data.fecha)
-						.replace(":hora:",data.hora)
-						.replace(":nombre:",data.nombre)
-						.replace(":apellido:",data.apellido)
-						.replace(":cedula:",data.cedula)
-						.replace(":sueldo:",formato(data.salario))
-						.replace(":cuenta_bancaria:",data.cuenta_bancaria)
-						.replace(":recibo:",recibo_html)
-
-						$("#body_show").empty()
-						$("#body_show").append(template_recibo)					    
-		}
 		function d_recibo(){				
 		  $("#g-recibo-data").val($("#d_recibo_data").html())
 		  $("#g-recibo").submit()			 
 		}
-
-	</script>
-	<script type="text/javascript">
 		function nav(this_all) {
 			var show = "#"+$(this_all).attr("id")+"_show"		
 			$(show).css("display",'')
 			$(show).siblings('div').css("display",'none')
 			$(this_all).addClass("active")
 			$(this_all).siblings('button').removeClass("active")
-		}	
+		}
+		$(document).on("click",".buscar",function () {
+			buscar()
+		})
+		$(document).on("click",".filtro_estatus",function () {
+			if(!$(this).hasClass('w3-red')){
+				$(this).addClass('w3-red');
+				$(this).siblings('button').removeClass('w3-red')
+			}
+		})
+			
 	</script>
 	<style type="text/css">
 		@font-face {
 		  font-family: 'Open Sans';
 		  font-style: italic;
 		  font-weight: 400;
-		  src: url(../fonts/OpenSans-Regular.ttf);
+		  src: url(../fonts/OpenSans-Light.ttf);
 		}
 		html,body{
 			font-family: 'Open Sans', sans-serif;
-			font-size: 18px;
-			zoom: 0.90;
 			height: 100%;
 			width: 100%;
 		}
@@ -279,94 +208,76 @@
 	</style>
 </head>
 <body>
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
-	 
-	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-	 
-	  <a class="navbar-brand" href="#" onclick="window.location = '../operaciones_parametros_nomina/index.php?id='+getParameterByName('id')">División de períodos</a>
-	  
-	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-	      <li class="nav-item active">
-	        <a class="nav-link text-primary" href="#" onclick="$('#fechas_periodo').modal('toggle')">Fechas del período</a>
-	      </li>
-	      <li class="nav-item dropdown">
-	        <a class="nav-link dropdown-toggle" href="#" id="filtar_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          <i class="fa fa-filter" aria-hidden="true"></i> Filtrar 
-	        </a>
-	        <div class="dropdown-menu" aria-labelledby="filtar_drop">
-	          <a class="dropdown-item" href="#">
-				<div style="padding: 5px">				   
-							
-					<h4>Género</h4>	
-						<input type="radio" name="genero" class="w3-radio" onclick="buscar()" value="Masculino"> Masculino <br>
-						<input type="radio" name="genero" class="w3-radio" onclick="buscar()" value="Femenino"> Femenino <br>
-						<input type="radio" name="genero" class="w3-radio" onclick="buscar()" value="" checked=""> Todos
-	            	<hr>
-						<h4>Categoría</h4>	
-							<input type="checkbox" name="categoria[]" class="w3-check" onclick="buscar()" value="OBRERO"> Obrero <br>
-							<input type="checkbox" name="categoria[]" class="w3-check" onclick="buscar()" value="DOCENTE"> Docente <br> 
-							<input type="checkbox" name="categoria[]" class="w3-check" onclick="buscar()" value="ADMINISTRATIVO"> Administrativo							
-	           		<hr>
-						<h4>Estatus</h4>	
-						        		
-					       <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button estatus" style="width:100%" value="ALTO NIVEL">Alto Nivel</button><br>	
-					       <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button  estatus" style="width:100%" value="EMPLEADO FIJO">Empleado Fijo</button><br>	
-					       <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button  estatus" style="width:100%" value="CONTRATADO">Contratado</button><br>			        			
-						   <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button w3-red estatus" style="width:100%">Todos</button>
+	<div class="container-fluid">
+		<nav class="navbar navbar-toggleable-md navbar-inverse bg-faded bg-faded row">
+		 
+		  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		 
+		  <a class="navbar-brand text-primary" href="#" onclick="window.location = '../operaciones_parametros_nomina/index.php?id='+getParameterByName('id')">División de períodos</a>
+		  
+		  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		      <li class="nav-item active">
+		        <a class="nav-link text-primary" href="#" onclick="$('#fechas_periodo').modal('toggle')">Fechas del período</a>
+		      </li>
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle text-danger" href="#" id="filtar_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          <i class="fa fa-filter" aria-hidden="true"></i> Filtrar 
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="filtar_drop">
+		          <a class="dropdown-item" href="#">
+					<div style="padding: 5px">				   
+								
+						<h4>Género</h4>	
+							<input type="radio" name="genero" class="w3-radio buscar" value="Masculino"> Masculino <br>
+							<input type="radio" name="genero" class="w3-radio buscar" value="Femenino"> Femenino <br>
+							<input type="radio" name="genero" class="w3-radio buscar" value="" checked=""> Todos
+		            	<hr>
+							<h4>Categoría</h4>	
+								<input type="checkbox" name="categoria[]" class="w3-check buscar" value="OBRERO"> Obrero <br>
+								<input type="checkbox" name="categoria[]" class="w3-check buscar" value="DOCENTE"> Docente <br> 
+								<input type="checkbox" name="categoria[]" class="w3-check buscar" value="ADMINISTRATIVO"> Administrativo							
+		           		<hr>
+							<h4>Estatus</h4>	
+							        		
+						       <button onclick="estatus=this.value" class="w3-button estatus buscar filtro_estatus" style="width:100%" value="ALTO NIVEL">Alto Nivel</button><br>	
+						       <button onclick="estatus=this.value" class="w3-button  estatus buscar filtro_estatus" style="width:100%" value="EMPLEADO FIJO">Empleado Fijo</button><br>	
+						       <button onclick="estatus=this.value" class="w3-button  estatus buscar filtro_estatus" style="width:100%" value="CONTRATADO">Contratado</button><br>			        			
+							   <button onclick="estatus=this.value" class="w3-button w3-red estatus buscar filtro_estatus" style="width:100%">Todos</button>
+			        </div>
+		          </a> 
 		        </div>
-	          </a> 
-	        </div>
-	      </li>
-	    </ul>
-	    <ul class="form-inline my-2 my-lg-0">
-        	<input type="text" class="form-control mr-sm-2" placeholder="Buscar por Nombre, Apellido, Cédula, Cargo o Dedicación" id="busqueda" onkeyup="buscar()">
-       		<button class="btn btn-outline-info my-2 my-sm-0" onclick="buscar()" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-     	</ul>
-	  </div>
-	</nav>
-	<aside class="col" id="calculos">
-		<div class="" id="grupo_divisiones">	
-		</div><hr>
-		<div class=" table-responsive" id="seccion_divisiones" style="margin:0px">
+		      </li>
+		    </ul>
+		    <ul class="form-inline my-2 my-lg-0">
+	        	<input type="text" class="form-control mr-sm-2" placeholder="Buscar por Nombre, Apellido, Cédula, Cargo o Dedicación" id="busqueda" onkeyup="buscar()">
+	       		<button class="btn btn-outline-info my-2 my-sm-0 buscar" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+	     	</ul>
+		  </div>
+		</nav>
+		<div class="row">
+			<aside class="w3-section col">
+				<div class="" id="grupo_divisiones">	
+				</div><hr>
+				<div class="table-responsive table table-bordered" id="seccion_divisiones">
+				</div>
+			</aside>
 		</div>
-	</aside>
-
-	  
-    <div class="modal fade" id="show_data" role="dialog">
-	    <div class="modal-dialog modal-lg">
-	    
-	      <div class="modal-content">
-	        <div class="modal-header">
-	          <button type="button" class="close" data-dismiss="modal">&times;</button>
-	          <h4 class="modal-title" ></h4>
-	          <form action="generar_pdf/recibo_individual_nomina.php" id="g-recibo" method="post" target="_blank" hidden="true"><textarea name="g-recibo-data" id="g-recibo-data"></textarea></form>
-	        </div>
-	        <div class="modal-body" id="d_recibo_data">
-	          <p id="body_show"></p>
-	        </div>
-	        <div class="modal-footer">
-	          <button type="button" class="btn btn-success" style="cursor: pointer;"  onclick="d_recibo()">Descargar</button>
-	        </div>
-	      </div> 
-	    </div>
-    </div>
+	</div>
+	 
 	<div class="modal" tabindex="-1" role="dialog" id="fechas_periodo">
 	  <div class="modal-dialog modal-sm" role="document">
 	    <div class="modal-content">
-
-	      <div class="modal-body">
-			<center>
-	      	<h5 class="text-danger">Introduzca la fecha de inicio y cierre del período</h5><hr>
-	      	
-		        <label for="fecha_inicio">Fecha de Inicio</label><br>
-		        <input type="date" id="fecha_inicio" required="">
-		        <hr>
-		        <label for="fecha_cierre">Fecha de Cierre</label><br>
-		        <input type="date" id="fecha_cierre" required="">
-		    </center>
+	      <div class="modal-body w3-center">
+      		<h5 class="text-danger">Introduzca la fecha de inicio y cierre del período</h5>
+      		<hr>
+	        <label for="fecha_inicio">Fecha de Inicio</label><br>
+	        <input type="date" id="fecha_inicio" required="">
+	        <hr>
+	        <label for="fecha_cierre">Fecha de Cierre</label><br>
+	        <input type="date" id="fecha_cierre" required="">
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" onclick="validar_fechas_inicio_cierre()">Continuar</button>    
@@ -380,7 +291,6 @@
 			<textarea name="data_recibo_aporte_patronal" id="data_recibo_aporte_patronal"></textarea>
 		</form>
 	</div>
-	
 
 </body>
 </html>

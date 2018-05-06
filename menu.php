@@ -152,7 +152,6 @@
 				width: 100%;
 				background-color: #F5F5F5;
 				overflow:hidden;
-				background-image: url(image/image1.jpg);
 			}
 			.img-user{
 				margin: 0px;
