@@ -18,5 +18,14 @@
 		}else{
 			echo $actualizar;
 		}
+	}elseif (isset($_POST['json_filtros'])) {
+		$values = "filtros='".$_POST['json_filtros']."'";
+
+		$actualizar = (new sql("parametros_nomina",'WHERE id='.$_POST['id'],$values))->update();
+		if ($actualizar==1) {
+				echo "Actualizado";
+		}else{
+			echo $actualizar;
+		}
 	}
  ?>

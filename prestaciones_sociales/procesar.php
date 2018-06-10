@@ -2,8 +2,7 @@
 
 	include '../conexion_bd.php';
 
-	function filtro($parametro1,$operador,$parametro2)
-	{
+	function filtro($parametro1,$operador,$parametro2){
 		if ($operador=="cualquiera" || $parametro1=="cualquiera" || $parametro2=="cualquiera") {
 			return "Verdadero";
 		}
@@ -53,8 +52,7 @@
 			return "Entrada no válida";
 		}	
 	}
-	function lunes_mes()
-    {
+	function lunes_mes(){
         $fecha_datetime = new DateTime();
         $dias_semana = ["0"=>"domingo","1"=>"lunes","2"=>"martes","3"=>"miercoles","4"=>"jueves","5"=>"viernes","6"=>"sabado"];
 
@@ -110,98 +108,167 @@
 		setcookie("edad_actualizada", "listo", time()+86400);  /* expira en un dia */
     }
 	function sumar($operacion,$asignacion_deduccion,$descripcion,$tipo_concepto,$tipo_sueldo,$id,$periodo_pago){
-		global $array_formulas_a_pagar,$suma_total_trabajador,$unidad_tributaria,$sueldo_tabla,$años_antiguedad,$prima_hijos,$lunes_del_mes,$recibo_asignaciones,$recibo_deducciones,$sueldo_normal,$sueldo_integral,$base_calculo_sueldo_normal,$base_calculo_sueldo_integral;
+		global $array_formulas_a_pagar,$suma_total_trabajador,$unidad_tributaria,$sueldo_tabla,$años_antiguedad,$prima_hijos,$lunes_del_mes,$recibo_asignaciones,$recibo_deducciones,$sueldo_normal,$sueldo_integral,$suma_primas,$suma_bonos_anuales,$primas_detalles,$bonos_anuales_detalles;
 		
 		$realizar_operacion = eval('return '. $operacion .';');
 		
 
 		if (($asignacion_deduccion=="asignacion" && $tipo_concepto=="prima salarial") OR ($periodo_pago=="mensual" && $tipo_concepto=="bono salarial")) {
+			$suma_primas+=$realizar_operacion;
 			$sueldo_normal+=$realizar_operacion;
-			$base_calculo_sueldo_normal.="<hr>".$descripcion." = ".number_format($realizar_operacion, 2, ',', '.');	
+			$primas_detalles[$id] = array("descripcion"=>$descripcion,"monto"=>$realizar_operacion,"sueldo_normal"=>$sueldo_normal,"años_antiguedad"=>$años_antiguedad);
+
 		}
 		if ($periodo_pago=="anual" && $tipo_concepto=="bono salarial" && $tipo_sueldo=="sueldo normal" && $asignacion_deduccion=="asignacion") {
-			$sueldo_integral+=$realizar_operacion/12;
-			$base_calculo_sueldo_integral.="<hr>".$descripcion." = ".number_format($realizar_operacion, 2, ',', '.');	
+			$suma_bonos_anuales+=$realizar_operacion/12;
+			$bonos_anuales_detalles[$id] = array("descripcion"=>$descripcion,"monto"=>$realizar_operacion);
+
+		}	
+	}
+   	function prestaciones($fecha,$dias_trabajados,$inter,$dias_adicionales,$tiempo){
+   		global $sueldos,$total,$apodos_periodo,$data;
+   		$fecha = date_format(date_create($fecha), 'Y-m-d');
+   		$val = false;
+   		foreach ($sueldos as $fecha_sueldo => $monto_sueldo) {
+   			$fecha_sueldo = date_format(date_create($fecha_sueldo), 'Y-m-d');
+			if($fecha_sueldo <= $fecha){
+				$sueldo_diario = $monto_sueldo/DIAS_DEL_MES;
+				$dias_tramo = $dias_trabajados/DIAS_TRABAJADOS;
+				$apodo = $inter;
+				$dias_prestaciones = $dias_tramo*DIAS_DE_PRESTACIONES;
+				$total_dias = $dias_prestaciones+$dias_adicionales;
+				$monto = $total_dias*$sueldo_diario;
+				$total+=$monto;
+				
+				foreach ($apodos_periodo as $num => $val) {
+					if ($num <= $inter) {
+						$apodo = $val;
+						break;
+					}
+				}
+
+					array_push($data['b'], array(
+						"tiempo"=>$tiempo,
+						"fecha"=>date_format(date_create($fecha), 'd-m-Y'),
+						"apodo"=>$apodo,
+						"dias_trabajados"=>$dias_trabajados,
+						"sueldo"=>$monto_sueldo,
+						"sueldo_diario"=>$sueldo_diario,
+						"dias_prestaciones"=>round($dias_prestaciones,3),
+						"dias_adicionales"=>round($dias_adicionales,3),
+						"total_dias"=>round($total_dias,3),
+						"monto"=>$monto,
+						"total"=>$total
+					));
+				$val = true; 
+				break;
+			}
+		}
+		if (!$val) {
+			array_push($data['b'], array(
+				"tiempo"=>"0",
+				"fecha"=>"0",
+				"apodo"=>"0",
+				"dias_trabajados"=>"0",
+				"sueldo"=>"0",
+				"sueldo_diario"=>"0",
+				"dias_prestaciones"=>"0",
+				"dias_adicionales"=>"0",
+				"total_dias"=>"0",
+				"monto"=>"0",
+				"total"=>"0"
+			));
+		}
+   	}
+
+	$consulta = (new sql("personal_upt","
+ 	WHERE cedula LIKE '".$_POST['busqueda']."%'
+ 	OR nombre   LIKE '".$_POST['busqueda']."%' 
+ 	OR apellido LIKE '".$_POST['busqueda']."%' 
+ 	"))->select(); 
+
+	if ($consulta->num_rows>0) {
+		$lunes_del_mes = lunes_mes();
+
+		$inicio_periodo = new DateTime($_POST['fecha_inicio']);
+		$cierre_periodo = new DateTime($_POST['fecha_cierre']);
+		if ($_POST['fecha_inicio']=="" || $_POST['fecha_cierre']=="" || ($inicio_periodo>=$cierre_periodo)) {
+			echo "Fechas Inválidas!!";
+			exit;
 		}
 		
-	}
-	
-	$lunes_del_mes = lunes_mes();
+		$tab_prestaciones = (new sql("prestaciones_sociales","WHERE id=1"))->select()->fetch_assoc();
+		//Literal b
+		//15 días de prestaciones por 90 días trabajados
+		define("DIAS_TRABAJADOS",$tab_prestaciones['DIAS_TRABAJADOS_literal_b']);
+		define("DIAS_DE_PRESTACIONES",$tab_prestaciones['DIAS_DE_PRESTACIONES_literal_b']);
 
-		// if ($_POST['ordenar'][0]!="") {
-		// 	$ordenar = "order by ".$_POST['ordenar'][0]." ".$_POST['ordenar'][1];
-		// }else{
-		// 	$ordenar = " order by id asc";
-		// }//ordenar resultados de acuerdo a las necesidades del usuario
-		
-		// $consulta_por_categoria="";
-		// if (isset($_POST['categoria'])) {
-		// 	$consulta_por_categoria.=" AND ";
-		// 	foreach ($_POST['categoria'] as $key_categoria => $value_categoria) {
-		// 	 $consulta_por_categoria .= " categoria = '".$value_categoria."' OR ";
-		// 	}
-		// 	$consulta_por_categoria = substr($consulta_por_categoria,0,-3);
-		// }
+		//Literal c
+		//30 dias por año de antiguedad
+		define("DIAS_x_AÑO_literal_c",$tab_prestaciones['DIAS_x_AÑO_literal_c']);
+		define("MAX_DIAS_ADICIONALES_literal_b",$tab_prestaciones['MAX_DIAS_ADICIONALES_literal_b']);
 
-	$fecha_formato = array();
-	// $fecha_inicio = "2018-01-01";
-	// $fecha_cierre = "2018-02-01";
 
-	$fecha_inicio = $_POST['fecha_inicio'];
-	$fecha_cierre = $_POST['fecha_cierre'];
-	
-	    
-	$consulta = (new sql("personal_upt","
-	 	WHERE cedula LIKE '".$_POST['busqueda']."%'
-	 	OR nombre   LIKE '".$_POST['busqueda']."%' 
-	 	OR apellido LIKE '".$_POST['busqueda']."%' 
-	 	OR dedicacion LIKE '".$_POST['busqueda']."%' 
-	 	OR cargo LIKE '".$_POST['busqueda']."%' 
-	 	"))->select(); 
+		//días adicionales de prestaciones
+		define("DIAS_ADICIONALES",$tab_prestaciones['DIAS_ADICIONALES_literal_b']);
 
-	// $consulta = (new sql("personal_upt","
-	// 	WHERE (cedula LIKE '".$_POST['busqueda']."%'
-	// 	OR nombre   LIKE '".$_POST['busqueda']."%' 
-	// 	OR apellido LIKE '".$_POST['busqueda']."%' 
-	// 	OR dedicacion LIKE '".$_POST['busqueda']."%' 
-	// 	OR cargo LIKE '".$_POST['busqueda']."%' 
-	// 	) 
-	// 	AND genero LIKE '".$_POST['genero']."%' 
-	// 	AND estatus LIKE '".$_POST['estatus']."%'
-	// 	$consulta_por_categoria
-	// 	$ordenar"))->select(); 
-		
-		
-	$array_all = array();
-	if ($consulta->num_rows>0) {
+		//Información general
+		define("DIAS_DEL_AÑO",360);
+		define("MESES_DEL_AÑO",12);
+		define("DIAS_DEL_MES",30);
+
+		$apodos_periodo = array(
+			"90"=>"I",
+			"180"=>"II",
+			"270"=>"III",
+			"360"=>"IV"
+		);
+		//Ordena los apodos de mayor a menor
+		krsort($apodos_periodo);
+		$array_all = array();
+
+
 		while ($row = $consulta->fetch_assoc()) {
 
-				$consulta_sueldo = (new sql("sueldos","WHERE fecha<='".$fecha_cierre."' AND dedicacion='".$row['dedicacion']."' AND categoria='".$row['categoria']."' AND cargo='".$row['cargo']."' order by fecha desc limit 1","salario"))->select();
+				$consulta_sueldo = (new sql("sueldos","WHERE dedicacion='".$row['dedicacion']."' AND categoria='".$row['categoria']."' AND cargo='".$row['cargo']."'"))->select();
 
-		        $unidad_tributaria = (new sql("unidad_tributaria","WHERE fecha_inicio_vigencia<='".$fecha_cierre."' order by fecha_inicio_vigencia desc limit 1","valor"))->select()->fetch_assoc()['valor'];//Unidad tributaria
 
-		        $sueldo_tabla = $consulta_sueldo->fetch_assoc()['salario'];
-		        $sueldo_normal = 0; //sueldo tabla + primas salariales
-		        $sueldo_integral = 0; //sueldo tabla + primas salariales + 10 caja de ahorro
-				$sueldo_normal+=$sueldo_tabla;
-				
-				$base_calculo_sueldo_normal = "";
-				$base_calculo_sueldo_integral = "";
+		        $sueldo_tabla_ultimo = (new sql("sueldos","WHERE fecha<='".date("Y-m-d")."' AND dedicacion='".$row['dedicacion']."' AND categoria='".$row['categoria']."' AND cargo='".$row['cargo']."'"))->select()->fetch_assoc()['salario'];
 				
 				$hrs_nocturnas = $row['hrs_nocturnas'];
 				$hrs_feriadas = $row['hrs_feriadas'];
 				$hrs_diurnas = $row['hrs_diurnas'];
 				$hrs_feriadas_nocturnas = $row['hrs_feriadas_nocturnas'];
 
-				$consulta_formulas = (new sql("formulas","WHERE fecha<='".$fecha_cierre."' order by tipo_concepto='prima salarial' AND tipo_sueldo='sueldo basico' desc"))->select();
-
+				$fecha_ingreso_trabajador = new DateTime($row['fecha_ingreso']);
 
 				$consulta_hijos = (new sql("hijos_personal","WHERE cedula_representante='".$row['cedula']."'"))->select();
 
 		        $numero_de_hijos_personal = $consulta_hijos->num_rows;
+	
+				//Sueldos para las prestaciones trimestrales			
+				$sueldos = array();
+				$sueldos_details = array();
+				while ($row_sueldos = $consulta_sueldo->fetch_assoc()) {
+					$sueldo_tabla = $row_sueldos['salario'];
+		        	$fecha = $row_sueldos['fecha'];
 
+					$sueldo_normal = 0; //sueldo tabla + primas salariales 
+					$sueldo_normal+=$sueldo_tabla;
+		       		
+		       		$sueldo_integral = 0; //sueldo tabla + primas salariales + 10 caja de ahorro + Bono vacacional + Bono de fin de año
+		       		$suma_primas = 0;
+		        	$suma_bonos_anuales = 0;
+		        	//Detalles
+		        	$primas_detalles = array();
+		        	$bonos_anuales_detalles = array();
 
-					while ($row_formulas = $consulta_formulas->fetch_assoc()) {
+		        	$años_antiguedad = $fecha_ingreso_trabajador->diff((new DateTime($fecha)))->format("%y");
+
+		        	$unidad_tributaria = (new sql("unidad_tributaria","WHERE fecha_inicio_vigencia<='".$fecha."' order by fecha_inicio_vigencia desc limit 1","valor"))->select()->fetch_assoc()['valor'];//Unidad tributaria
+		        	$consulta_formulas = (new sql("formulas","WHERE fecha<='".$fecha."' order by tipo_concepto='prima salarial' AND tipo_sueldo='sueldo basico' desc"))->select();
+
+					while ($row_formulas = $consulta_formulas->fetch_assoc()){
 
 							$json_decode_condiciones = json_decode($row_formulas['condiciones'], true);
 							$json_decode_operaciones = json_decode($row_formulas['operaciones'], true);			
@@ -289,185 +356,192 @@
 
 								}
 							}		
-		
-					}
-									//Mas el aporte de caja de ahorro
-				$sueldo_integral+=$sueldo_normal+$sueldo_tabla*0.1;	
-				$integral_diario = $sueldo_integral/30;
-				
-					//Literal b
-	//15 días de prestaciones por 90 días trabajados
-	define("DIAS_TRABAJADOS",90);
-	define("DIAS_DE_PRESTACIONES",15);
-
-	//Literal c
-	//30 dias por año
-	define("DIAS_x_AÑO_c",30);
-
-	//días adicionales 
-	define("DIAS_ADICIONALES",2);
-
-
-	define("DIAS_DEL_AÑO",360);
-	define("MESES_DEL_AÑO",12);
-	define("DIAS_DEL_MES",30);
-	$ingreso = new DateTime($_POST['ingreso']);
-	$egreso = new DateTime($_POST['egreso']);
-
-	//Literal B
-	$sueldos = json_decode($_POST['sueldos'],true);
-	// $sueldos = array(
-	// 	"2014-02-05"=>"8340",
-	// 	"2014-10-01"=>"10300",
-	// 	"2015-05-01"=>"14800",
-	// 	"2015-11-01"=>"18300",
-	// 	"2016-05-01"=>"21000",
-	// 	"2017-05-01"=>"25000",
-	// 	"2017-07-01"=>"30000",
-	// 	"2017-11-01"=>"34000",
-	// 	"2018-01-01"=>"40000",
-	// 	"2018-04-01"=>"55000"
-	// 	);
-	krsort($sueldos);
-	$apodos_periodo = array(
-		"90"=>"I",
-		"180"=>"II",
-		"270"=>"III",
-		"360"=>"IV"
-	);
-	krsort($apodos_periodo);
-	$total = 0;
-	$data = array("b"=>array(),"c"=>array());
-   	function prestaciones($fecha,$dias_trabajados,$inter,$dias_adicionales,$tiempo){
-   		global $sueldos,$total,$apodos_periodo,$data;
-   		$fecha = date_format(date_create($fecha), 'Y-m-d');
-   		foreach ($sueldos as $fecha_sueldo => $monto_sueldo) {
-   			$fecha_sueldo = date_format(date_create($fecha_sueldo), 'Y-m-d');
-			if($fecha_sueldo <= $fecha){
-				$sueldo_diario = $monto_sueldo/DIAS_DEL_MES;
-				$dias_tramo = $dias_trabajados/DIAS_TRABAJADOS;
-				$apodo = $inter;
-				$dias_prestaciones = $dias_tramo*DIAS_DE_PRESTACIONES;
-				$total_dias = $dias_prestaciones+$dias_adicionales;
-				$monto = $total_dias*$sueldo_diario;
-				$total+=$monto;
-				
-				foreach ($apodos_periodo as $num => $val) {
-					if ($num <= $inter) {
-						$apodo = $val;
-						break;
-					}
-				}
-
-					array_push($data['b'], array(
-						"tiempo"=>$tiempo,
-						"fecha"=>$fecha,
-						"apodo"=>$apodo,
-						"dias_trabajados"=>$dias_trabajados,
-						"sueldo"=>$monto_sueldo,
-						"sueldo_diario"=>$sueldo_diario,
-						"dias_prestaciones"=>round($dias_prestaciones,3),
-						"dias_adicionales"=>round($dias_adicionales,3),
-						"total_dias"=>round($total_dias,3),
-						"monto"=>$monto,
-						"total"=>$total
-					));
-				break;
-			}
-		}
-   	}
-
-				$a = intval($ingreso->format("Y"));
-				$m = intval($ingreso->format("m"));
-				if ($m>MESES_DEL_AÑO) {$m=MESES_DEL_AÑO;}
-				$d = intval($ingreso->format("d"));
-				if ($d>DIAS_DEL_MES) {$d=DIAS_DEL_MES;}
-				
-				$a_end = intval($egreso->format("Y"));
-				$m_end = intval($egreso->format("m"));
-				if ($m_end>MESES_DEL_AÑO) {$m_end=MESES_DEL_AÑO;}
-				$d_end = intval($egreso->format("d"));
-				if ($d_end>DIAS_DEL_MES) {$d_end=DIAS_DEL_MES;}
-
-				$intervalos = DIAS_DEL_AÑO/DIAS_TRABAJADOS;
-				$arr_cortes = array();
-				$count = 0;
-				for ($i=0; $i < $intervalos ; $i++) { 
-					array_push($arr_cortes, $count+=DIAS_TRABAJADOS);
-				}
-				
-				$count = 0;
-				while (true) {
-					$fecha_actual = new DateTime($a."-".$m."-".$d);
-					$diff_actual = $ingreso->diff($fecha_actual);
-					$año_trabajado = $diff_actual->format("%y");
-
-					$tiempo = array("año"=>$año_trabajado,"meses"=>$diff_actual->format("%m"),"dias"=>$diff_actual->format("%d"));
-					if ($año_trabajado>1) {
-						if ($año_trabajado>16) {
-							$año_trabajado=16;
-						}
-						$dias_adicionales = (($año_trabajado-1)*DIAS_ADICIONALES)/$intervalos;
-					}else{
-						$dias_adicionales=0;
 					}
 					
-					$dia_del_año = (($m-1)*DIAS_DEL_MES)+$d;
+					/////////////////////////////////////
+					$sueldos[$row_sueldos['fecha']] = $sueldo_tabla+$suma_primas+$suma_bonos_anuales+($sueldo_tabla*0.1);
+
+					array_push($sueldos_details, array(
+						'sueldo_tabla_fecha' => $row_sueldos['fecha'], 
+						'sueldo_tabla' => $sueldo_tabla, 
+						'primas_salariales' => $primas_detalles, 
+						'bonos_anuales' => $bonos_anuales_detalles, 
+						'aporte_caja_ahorro' => ($sueldo_tabla*0.1),
+						'sueldo_integral' => $sueldos[$row_sueldos['fecha']]
+						));
 					
-					foreach ($arr_cortes as $inter) {
-						if ($dia_del_año==$inter) {
-							prestaciones($a."-".$m."-".$d,$count,$inter,$dias_adicionales,$tiempo);
-							$count = 0;
-							$select_inter = $inter;
-							break;
-						}
-					}
-					if ($d<DIAS_DEL_MES) {
-						$d++;
-					}else{
-						$d=1;
-						if ($m<MESES_DEL_AÑO) {
-							$m++;
-						}else {
-							$m=1;
-							$a++;
-						}
-					}
-					$count++;
-					if ($a==$a_end && $m==$m_end && $d==$d_end) {
-						foreach ($arr_cortes as $inter) {
-							if ($dia_del_año<$inter && $dia_del_año!=0) {
-								prestaciones($a."-".$m."-".$d,$count,$inter,$dias_adicionales,$tiempo);
-								$count = 0;
-								$select_inter = $inter;
-								break;
+					$sueldo_integral = $sueldos[$row_sueldos['fecha']];
+				}
+				//Ordena los sueldos de mayor a menor
+				krsort($sueldos);
+				
+				$total = 0;
+				$data = array("b"=>array(),"c"=>array());
+				
+				//Literal B
+					// $sueldos = array(
+					// 	"2014-02-05"=>"8340",
+					// 	"2014-10-01"=>"10300",
+					// 	"2015-05-01"=>"14800",
+					// 	"2015-11-01"=>"18300",
+					// 	"2016-05-01"=>"21000",
+					// 	"2017-05-01"=>"25000",
+					// 	"2017-07-01"=>"30000",
+					// 	"2017-11-01"=>"34000",
+					// 	"2018-01-01"=>"40000",
+					// 	"2018-04-01"=>"55000"
+					// 	);
+				if ($_POST['show']=="LIT_A_B") {
+					if ($inicio_periodo>=$fecha_ingreso_trabajador || $cierre_periodo>$fecha_ingreso_trabajador) {
+							if ($fecha_ingreso_trabajador>$inicio_periodo) {
+								$inicio_periodo = $fecha_ingreso_trabajador;
 							}
-						}
-						break;
-					}
-				}
-				// Literal C
-				$total_meses = $ingreso->diff($egreso)->format("%m");
-				$total_años = $ingreso->diff($egreso)->format("%y");
-				$total_dias = $ingreso->diff($egreso)->format("%d");
-				$acumu_años = 0;
-				$acumu_años += $total_años;
-				if ($total_meses>6) {
-					$acumu_años += $total_meses/MESES_DEL_AÑO;
-				}
-				$sueldo_maximo = max($sueldos); 
-				$data['c']['monto'] = ($acumu_años*DIAS_x_AÑO_c)*($sueldo_maximo/DIAS_DEL_MES);
-				$data['c']['tiempo_trabajado'] = $total_años." años ".$total_meses." meses y ".$total_dias." días";
-				$data['c']['años'] = $acumu_años;
-				$data['c']['dias_x_año'] = DIAS_x_AÑO_c;
-				$data['c']['sueldo_devengado'] = $sueldo_maximo;
-				$data['c']['sueldo_devengado_x_dia'] = $sueldo_maximo/DIAS_DEL_MES;
-				$data['c']['formula_utilizada'] = "( AÑOS_TRABAJADOS * ".DIAS_x_AÑO_c." ) * SUELDO_DIARIO ";
+							$a = intval($inicio_periodo->format("Y"));
+							$m = intval($inicio_periodo->format("m"));
+							if ($m>MESES_DEL_AÑO) {$m=MESES_DEL_AÑO;}
+							$d = intval($inicio_periodo->format("d"));
+							if ($d>DIAS_DEL_MES) {$d=DIAS_DEL_MES;}
+							///////////////////////////////////////////////////
+							$a_end = intval($cierre_periodo->format("Y"));
+							$m_end = intval($cierre_periodo->format("m"));
+							if ($m_end>MESES_DEL_AÑO) {$m_end=MESES_DEL_AÑO;}
+							$d_end = intval($cierre_periodo->format("d"));
+							if ($d_end>DIAS_DEL_MES) {$d_end=DIAS_DEL_MES;}
 
-				echo json_encode($data);
+							$intervalos_del_año = DIAS_DEL_AÑO/DIAS_TRABAJADOS;
+							
+							$arr_cortes = array(); //array(90,180,270,360)
+							$contador_intervalos = 0;
+							for ($i=0; $i < $intervalos_del_año ; $i++) { 
+								array_push($arr_cortes, $contador_intervalos+=DIAS_TRABAJADOS);
+							}
+							
+							$dias_trabajados = 1;
+							while (true) {
+								//Frena el contador de fechas Si llega a la Fecha de Cierre =>
+								$fecha_actual = new DateTime($a."-".$m."-".$d);
+
+								if ($fecha_actual==(new DateTime($a_end."-".$m_end."-".$d_end))) {
+									foreach ($arr_cortes as $inter) {
+										if ($dia_del_año<=$inter && $dia_del_año!=0) {
+											prestaciones($d."-".$m."-".$a, $dias_trabajados, $inter, $dias_adicionales, $tiempo);
+											$dias_trabajados = 0;
+											break;
+										}
+									}
+									break;
+								}
+
+								$dia_del_año = (($m-1)*DIAS_DEL_MES)+$d;
+								$diff_actual = $fecha_ingreso_trabajador->diff($fecha_actual);
+								$años_trabajados = $diff_actual->format("%y");
+
+								$tiempo = array(
+									"año"  => $años_trabajados,
+									"meses"=> $diff_actual->format("%m"),
+									"dias" => $diff_actual->format("%d")
+								);
+
+								//Calcular días Adicionales
+								if ($años_trabajados>1){
+									$dias_adicionales = (($años_trabajados-1)*DIAS_ADICIONALES)/$intervalos_del_año;
+									if ($dias_adicionales>MAX_DIAS_ADICIONALES_literal_b) {
+										$dias_adicionales = MAX_DIAS_ADICIONALES_literal_b;
+									}
+								}else{
+									$dias_adicionales=0;
+								}
+								
+								foreach ($arr_cortes as $inter) {
+									if ($dia_del_año==$inter) {
+										prestaciones($d."-".$m."-".$a, $dias_trabajados, $inter, $dias_adicionales, $tiempo);
+										$dias_trabajados = 0;
+										break;
+									}
+								}
+								
+								//Contador de fechas
+								if ($d<DIAS_DEL_MES) {
+									$d++;
+								}else{
+									$d=1;
+									if ($m<MESES_DEL_AÑO) {
+										$m++;
+									}else {
+										$m=1;
+										$a++;
+									}
+								}
+								$dias_trabajados++;
+							}
+					}else{
+						prestaciones("1999-01-01", "0", "0", "0", "0");
+					}
+							
+
+				}else if ($_POST['show']=="LIT_C") {// Literal C
+
+					$total_meses = $fecha_ingreso_trabajador->diff($cierre_periodo)->format("%m");
+					$total_años = $fecha_ingreso_trabajador->diff($cierre_periodo)->format("%y");
+					$total_dias = $fecha_ingreso_trabajador->diff($cierre_periodo)->format("%d");
+					$acumu_años = 0;
+					$acumu_años += $total_años;
+					if ($total_meses>6) {
+						$acumu_años += $total_meses/MESES_DEL_AÑO;
+					}
+					$sueldo_maximo = max($sueldos); 
+					if ($fecha_ingreso_trabajador<$cierre_periodo) {
+						$sueldo_maximo_diario = $sueldo_maximo/DIAS_DEL_MES;
+						$data['c']['monto'] = ($acumu_años*DIAS_x_AÑO_literal_c)*($sueldo_maximo_diario);
+						$data['c']['tiempo_trabajado'] = $total_años." años ".$total_meses." meses y ".$total_dias." días";
+						$data['c']['años'] = $acumu_años;
+						$data['c']['dias_x_año'] = DIAS_x_AÑO_literal_c;
+						$data['c']['sueldo_devengado'] = $sueldo_maximo;
+						$data['c']['sueldo_devengado_x_dia'] = $sueldo_maximo_diario;
+						$data['c']['formula_utilizada'] = "( AÑOS_TRABAJADOS * ".DIAS_x_AÑO_literal_c." ) * SUELDO_DIARIO ";
+						$data['c']['dias_totales'] = $acumu_años*DIAS_x_AÑO_literal_c;
+
+					}else{
+						$data['c']['monto'] = 0;
+						$data['c']['tiempo_trabajado'] = 0;
+						$data['c']['años'] = 0;
+						$data['c']['dias_x_año'] = 0;
+						$data['c']['sueldo_devengado'] = 0;
+						$data['c']['sueldo_devengado_x_dia'] = 0;
+						$data['c']['formula_utilizada'] = 0;
+						$data['c']['dias_totales'] = 0;
+					}
+					
+				}
+				
+			$data["sueldos"] = $sueldos_details;
+			$array_all[$row['cedula']] = array(
+				"id" 	        	  =>  $row['id'],
+      			"estatus" 	    	  =>  $row['estatus'],
+      			"estado" 	    	  =>  $row['estado'],
+				"nombre" 	    	  =>  $row['nombre'],
+				"apellido" 	    	  =>  $row['apellido'],
+				"cedula" 	    	  =>  $row['cedula'],
+				"genero" 	    	  =>  $row['genero'],
+				"categoria"     	  =>  $row['categoria'],
+				"cargo" 	    	  =>  $row['cargo'],
+				"dedicacion"    	  =>  $row['dedicacion'],
+				"cuenta_bancaria"     =>  $row['cuenta_bancaria'],
+				"telefono_1"		  =>  $row['telefono_1'],
+				"telefono_2"		  =>  $row['telefono_2'],
+				"correo"		 	  =>  $row['correo'],
+				"fecha_ingreso"		  =>  $row['fecha_ingreso'],
+				"grado_instruccion"	  =>  $row['grado_instruccion'],
+				"caja_ahorro"	      =>  $row['caja_ahorro'],
+				"antiguedad_otros_ieu"=>  $row['antiguedad_otros_ieu'],
+				'data_prestaciones'   =>  $data
+			); 
+			
 		    	
-		      }//Termina iteración de una persona		
-		      
+		}//Termina iteración de una persona		
+		echo json_encode($array_all);     
+	}else{
+		echo "No se encontraron resultados!";
 	}
 
 	

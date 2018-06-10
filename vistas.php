@@ -1,11 +1,3 @@
-<?php 
-	session_start(); 
-	setcookie("nombre",$_SESSION['nombre']);
-	setcookie("apellido",$_SESSION['apellido']);
-	setcookie("usuario",$_SESSION['usuario']);
-	setcookie("departamento",$_SESSION['departamento']);
-	setcookie("permiso",$_SESSION['permiso']);
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -46,6 +38,7 @@
 			})
 			$(document).ready(function () {
 				$(".user").text($.cookie("usuario"))
+				$(".institucion").text($.cookie("denominacion_institucion"))
 				ajustar()
 			})
 			window.onresize = function(){ajustar()}
@@ -118,23 +111,33 @@
 			.sessiones:active{
 				background-color: #EEEEEE
 			}
+			#barra_navegador{
+				background: rgba(0,64,71,1);
+				background: -moz-linear-gradient(left, rgba(0,64,71,1) 0%, rgba(14,57,62,1) 34%, rgba(41,43,44,1) 100%);
+				background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,64,71,1)), color-stop(34%, rgba(14,57,62,1)), color-stop(100%, rgba(41,43,44,1)));
+				background: -webkit-linear-gradient(left, rgba(0,64,71,1) 0%, rgba(14,57,62,1) 34%, rgba(41,43,44,1) 100%);
+				background: -o-linear-gradient(left, rgba(0,64,71,1) 0%, rgba(14,57,62,1) 34%, rgba(41,43,44,1) 100%);
+				background: -ms-linear-gradient(left, rgba(0,64,71,1) 0%, rgba(14,57,62,1) 34%, rgba(41,43,44,1) 100%);
+				background: linear-gradient(to right, rgba(0,64,71,1) 0%, rgba(14,57,62,1) 34%, rgba(41,43,44,1) 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#004047', endColorstr='#292b2c', GradientType=1 );
+			}
 		</style>
 	</head>
 <body>
-	<nav class="bg-inverse bg-faded container-fluid w3-card-2" id="barra_navegador">
+	<nav class="bg-faded container-fluid w3-card-2" id="barra_navegador">
 	  <div class="row">
 	  	<div class="col">
   			<div class="contenedorExterior">
 	  			<div class="col contenedorInterior">
-		  			<a href="menu.php" class="h2 text-white">
-		  				<i class="fa fa-home"></i> Inicio
+		  			<a href="menu.php" class="h2 text-info">
+		  				<img src="image/sinapsis/sinapsis-icon.svg" width="100" alt="" class=""> Inicio
 		  			</a>	
 			  	</div>
 			  	<div class="col contenedorInterior">
-			  		<a class="h4 text-primary" href="webmail/rainloop"><i class="fa fa-mail-forward"></i> Correo Electrónico</a>	
+			  		<a class="h4 text-info" href="webmail/rainloop"><i class="fa fa-mail-forward"></i> Correo Electrónico</a>	
 			  	</div>
 			  	<div class="col contenedorInterior">
-			  		<button class="btn btn-primary abrir_explora">Explora <i class="fa fa-arrow-down"></i></button>
+			  		<button class="btn btn-outline-info abrir_explora">Explora <i class="fa fa-arrow-down"></i></button>
 			  	</div>
   			</div>
 	  	</div>
@@ -251,8 +254,9 @@
 	</div>
 	<div class="w3-card-2 w3-white opciones_cuenta">
 		<div class="container-fluid">
-			<div class="row w3-padding"><span class="font-italic">Ha iniciado sesión</span></div>
+			<div class="row w3-padding"><span class="font-italic">Ha iniciado sesión como:</span></div>
 			<div class="row w3-padding w3-border-bottom"><span class="user h4 font-weight-bold"></span></div>
+			<div class="row w3-padding w3-border-bottom">Institución: <span class="institucion h4 font-weight-bold"></span></div>
 			<div class="row list-group w3-margin-top w3-margin-bottom">
 				<li class="list-group-item">Perfil</li>
 				<li class="list-group-item">Sugerencias</li>

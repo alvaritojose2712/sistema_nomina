@@ -1,6 +1,8 @@
 <?php 
+	session_start();
 	include 'conexion_bd.php';
 	$consulta_parametros_nomina = (new sql("parametros_nomina","WHERE id='".$_GET['id']."'"))->select()->fetch_assoc();
+	$valores = (new sql("valores_globales","WHERE id='1'"))->select()->fetch_assoc();
  ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -23,18 +25,84 @@
 		<link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css">
 		<script src="css/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-		var estatus = "";
+		const co = ["#001819","#002426","#00494D","#00585D","#006D73","#008C94","#00ACB6","#00C6D1","#00CED9","#00F2FF"] 
+		const disponibles = { 
+			"estado" : <?php echo $valores['estado']; ?>,
+			"genero" : {0:'Masculino',1:'Femenino'},
+			"estatus" : <?php echo $valores['estatus']; ?>,
+			"grado_instruccion" : <?php echo $valores['grado_instruccion']; ?>,
+			"categoria" : 
+				<?php
+					$cat = json_decode($valores['cat_car_dedic']); 
+					$arr = array();
+					foreach ($cat as $key => $value) {
+						array_push($arr, $key);
+					}
+					echo json_encode($arr);
+				?>	
+			,
+			"dedicacion" : 
+				<?php
+					$cat = json_decode($valores['cat_car_dedic']); 
+					$arr = array();
+					foreach ($cat as $cat => $car_dedic) {
+						foreach ($car_dedic as $car_dedic_key => $sub_arr_final) {
+							if ($car_dedic_key=="dedicacion") {
+								foreach ($sub_arr_final as $key => $value) {
+									if (in_array($value, $arr)==false) {
+										array_push($arr, $value);
+									}
+								}
+							}
+						}
+					}
+					echo json_encode($arr);
+				?>	
+			,
+			"caja_ahorro" : {0:'si',1:'no'},
+			"cargo" : 
+				<?php
+					$cat = json_decode($valores['cat_car_dedic']); 
+					$arr = array();
+					foreach ($cat as $cat => $car_dedic) {
+						foreach ($car_dedic as $car_dedic_key => $sub_arr_final) {
+							if ($car_dedic_key=="cargo") {
+								foreach ($sub_arr_final as $key => $value) {
+									if (in_array($value, $arr)==false) {
+										array_push($arr, $value);
+									}
+								}
+							}
+						}
+					}
+					echo json_encode($arr);
+				?>	
+			};
 	    var num=1;
 	    var operaciones_especiales_json = new Object();
 		$(document).ready(function () {
+			let num_color = 0
+			for(i in disponibles){
+				let html = '<div class="btn-group grupo_condiciones_campo" title="'+i+'">'
+
+				html += '<button class="btn btn-secundary text-inverse">'+i+'</button>'
+				for(e in disponibles[i]){
+					html += '<button class="btn text-white condicion_campo" style="background-color:'+co[num_color]+'" title="'+disponibles[i][e]+'" value="'+disponibles[i][e]+'">'+disponibles[i][e]+'</button>'
+				}
+				html += "</div><hr>"
+				$(".group-condiciones").append(html)
+			
+				num_color++
+			}
 			if ($.cookie('fecha_cierre')==undefined || $.cookie('fecha_cierre')==undefined) {
 				$("#fechas_periodo").modal()
 			}else{
 				$("#fecha_inicio").val($.cookie('fecha_inicio'))
 				$("#fecha_cierre").val($.cookie('fecha_cierre'))
 
-				$("#mostrar_fecha_inicio").text($.cookie('fecha_inicio').replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
-				$("#mostrar_fecha_cierre").text($.cookie('fecha_cierre').replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
+				$(".fecha_inicio_show").text($.cookie('fecha_inicio').replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
+				$(".fecha_cierre_show").text($.cookie('fecha_cierre').replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
+				$(".nombre_nomina").text(getParameterByName('denominacion'))
 				buscar()
 			}
 			$("#search_de").click(function(){
@@ -290,6 +358,25 @@
 			        }			  
 			    })
 			})
+			$(document).on("click",".guardar_filtros",function (e) {
+				$.ajax({
+			        url:"operaciones_parametros_nomina/casos_especiales/procesar.php",
+			        type:"post",
+			        datatype:"json",
+			        data:{
+			        	json_filtros:crear_json_condiciones(),
+			     	    id: getParameterByName('id')
+			    	},
+			        beforeSend:function () {
+			        	
+			        },
+			        success:function(response)
+			        {	
+			        	alert(response)		
+			        	buscar()	
+			        }			  
+			    })
+			})
 			$(document).on("click",".abrir_pago_retroactivo",function () {
 				$("#modal_pago_retroactivo").modal("show")
 			})
@@ -443,8 +530,9 @@
 				$.cookie('fecha_inicio', $("#fecha_inicio").val());
 				$.cookie('fecha_cierre', $("#fecha_cierre").val());
 
-				$("#mostrar_fecha_inicio").text($("#fecha_inicio").val().replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
-				$("#mostrar_fecha_cierre").text($("#fecha_cierre").val().replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
+				$(".fecha_inicio_show").text($("#fecha_inicio").val().replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
+				$(".fecha_cierre_show").text($("#fecha_cierre").val().replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1'))
+				$(".nombre_nomina").text(getParameterByName('denominacion'))
 				return $('#fechas_periodo').modal('toggle')
 			}else{
 				return false
@@ -459,11 +547,6 @@
 					var asc_desc="desc";
 			    }
 		    	var ordenar_asc_desc = [ordenar,asc_desc];
-			   
-			    var categoria_valores = [];
-			    $('input[name="categoria[]"]:checked').each(function() {
-			       categoria_valores.push($(this).val());
-			    });
 			   		
 			    $.ajax({
 			        url:"personal.php",
@@ -471,9 +554,6 @@
 						"fecha_inicio" : $("#fecha_inicio").val(), 
 						"fecha_cierre" : $("#fecha_cierre").val(), 
 						"busqueda" : $("#busqueda").val(), 
-						"categoria" : categoria_valores,
-						"genero" : $('input[name=genero]:checked').val(),
-						"estatus" : estatus,
 						"ordenar":ordenar_asc_desc,
 						"id_nomina":getParameterByName('id'),
 						"confirm_retroactivo":$(".confirm_retroactivo").prop('checked'),
@@ -481,7 +561,7 @@
 			   		},
 			        type:"post",
 			        datatype:"json",
-			        beforeSend:function (x) {
+			        beforeSend:function () {
 			        	$("#calculos").append('\
 			        		<div class="container cargando w3-display-bottommiddle">\
 						        <div class="loader-inner ball-pulse-rise" style="width:200px">\
@@ -508,7 +588,7 @@
 									
 									for(i in divi){
 										i==0?turn='active':turn=''
-										template_group+='<button onclick="nav(this)" id="'+ divi[i] +'" class="btn btn-primary '+turn+'" role="button" aria-pressed="true"> '+ divi[i].replace(/_/g,"&nbsp") +' </button>' 
+										template_group+='<button title="'+ divi[i] +'" class="btn btn-primary pestaña '+turn+'"> '+ divi[i] +' </button>' 
 									}	
 									template_group+="</div>"						
 									$("#grupo_divisiones").append(template_group);
@@ -520,51 +600,56 @@
 								for(indice_division in divi){
 				        			
 									var nom_divi = divi[indice_division]
-									nom_divi===$("#grupo_divisiones").find(".active").attr('id')?turn='':turn='none'
+									nom_divi===$("#grupo_divisiones").find(".active").attr('title')?turn='':turn='none'
 
-							    	var template_tabla = "<div class='' id='"+ nom_divi +"_show' style='display:"+turn+"'>\
-							    	    Unos <strong>"+obj['data_general']['num_resultados']+"</strong> resultados\
-							    	    <table class='table table-striped table-hover' style='cursor:pointer' >\
+							    	var template_tabla = "<div class='division' title='"+ nom_divi +"' style='display:"+turn+"'>\
+							    	    <div style='display:block'>Unos <strong>"+obj['data_general']['num_resultados']+"</strong> resultados</div>\
+							    	    <table class='table table-striped table-hover'>\
 													<thead>\
 														<tr>\
-															<th scope='col' onclick=buscar('id')>#</th>\
-															<th scope='col' onclick=buscar('estatus')>Estatus</th>\
-															<th scope='col' onclick=buscar('nombre')>Nombre</th>\
-															<th scope='col' onclick=buscar('apellido')>Apellido</th>\
-															<th scope='col' onclick=buscar('cedula')>Cédula</th>\
-															<th scope='col' onclick=buscar('genero')>Género</th>\
-															<th scope='col' onclick=buscar('categoria')>Categoría</th>\
-															<th scope='col' onclick=buscar('cargo')>Cargo</th>\
-															<th scope='col' onclick=buscar('dedicacion')>Dedicación</th>\
-															<th scope='col'>Años de servicio</th>\
-															<th scope='col'>Salario básico Bs.</th>\
-															<th scope='col'>Total a pagar Bs.</th>\
+															<th>#</th>\
+															<th>Cédula</th>\
+															<th>Estatus</th>\
+															<th>Nombre</th>\
+															<th>Apellido</th>\
+															<th>Género</th>\
+															<th>Categoría</th>\
+															<th>Cargo</th>\
+															<th>Dedicación</th>\
+															<th>Años de servicio</th>\
+															<th>Salario básico Bs.</th>\
+															<th>Total a pagar Bs.</th>\
 														</tr>\
 													</thead>\
 													<tbody>"									
-																		
+									let monto_total = 0								
 									for(indice_persona in obj){										
 										if (indice_persona!="data_general") {
 											
 											var data_comun = obj[indice_persona]["Total_periodo"]
 											var data_unica = obj[indice_persona][nom_divi]
 			
-											template_tabla+="<tr onclick=show_data(this)>\
-												<th scope='row'>" + data_comun.id + "</th>\
+											template_tabla+="<tr class='tr_persona' title='"+data_comun.cedula+"'>\
+												<th>" + data_comun.id + "</th>\
+												<td class='text-primary'>" + format_cedula(data_comun.cedula) + "</td>\
 												<td>" + data_comun.estatus + "</td>\
 												<td>" + data_comun.nombre + "</td>\
 												<td>" + data_comun.apellido + "</td>\
-												<td>" + data_comun.cedula + "</td>\
 												<td>" + data_comun.genero[0] + "</td>\
 												<td>" + data_comun.categoria + "</td>\
 												<td>" + data_comun.cargo + "</td>\
 												<td>" + data_comun.dedicacion + "</td>\
 												<td>" + data_comun.años_servicio + "</td>\
-												<td>" + formato(data_comun.salario,2,['.',".",',']) + "</td>\
-												<td class='text-success'>" + formato(data_unica.total,2,['.',".",','])+ "</td>\
+												<td>" + formato(data_comun.salario) + "</td>\
+												<td class='text-success'>" + formato(data_unica.total)+ "</td>\
 											</tr>"	
+											monto_total += data_unica.total
 										}								
-									}										
+									}	
+									template_tabla+="<tr style='background-color:#DADADA'>\
+										<td colspan='11' style='text-align: right;'><h3>Total Bs.</h3></td>\
+										<td><h3 class='text-success'>"+formato(monto_total)+"</h3></td>\
+									</tr>";									
 									template_tabla+="</tbody></table></div>"
 									$("#seccion_divisiones").append(template_tabla);
 								}	
@@ -660,21 +745,35 @@
 
 							html_partida += '</tbody></table>'
 							$("#resultados_partida").empty().append(html_partida)	
+							let filtros_obj = JSON.parse(obj['data_general']['filtros'])
+							let filtros_text = ""
+							for(ii in filtros_obj){
+								var padre_group = $(".grupo_condiciones_campo[title='"+ii+"']")
+								let filtros_text_sub = ""
+								for(e in filtros_obj[ii]){
+									padre_group.find(".condicion_campo[title='"+e+"']").addClass('bg-danger')
+									filtros_text_sub+=e+","
+								}
+								filtros_text_sub = filtros_text_sub.slice(0, -1)
+								filtros_text+=" ["+filtros_text_sub+"] "
+							}
+							$(".filtros").text(filtros_text)
 							
 						}catch(err){
-							alert(err)
-							$("#seccion_divisiones").append(response)
+							console.log(err)
+							$("#seccion_divisiones").append("<div class='alert alert-info'>"+response+"</div>")
 						}		
 			        }			  
 			    })
 	    }
-		function show_data(elem){
+		$(document).on("click",".tr_persona",function() {
+			
 			//Mostrar modal
 			$("#show_data").modal()
 			//Cédula de la persona seleccionada
-			var ced = $(elem).children('td:eq(3)').text()
+			var ced = $(this).attr("title")
 			//Nombre de la división
-			var div = $(elem).parents('div').attr('id').replace('_show',"")
+			var div = $(this).parents('.division').attr('title')
 			//Buscar persona seleccionada
 			for(i in obj){
 				if (i!='data_general') {
@@ -710,12 +809,9 @@
 							<th colspan=2><h4><center>"+ formato(suma_asig-suma_deduc) +"</center></h4></th>\
 						</tr>"
 			
-			template_recibo = '<div><img src="image/cintillo.jpg" style="width:100%"><hr> \
-									<center>'+ div.replace(/_/g,"&nbsp") +'\
-									<br>Período: Desde <strong>'+ $("#fecha_inicio").val().replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1') +'</strong> Hasta <strong>'+ $("#fecha_cierre").val().replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1') +'</strong></center><hr>\
-								<h4>:estado:</h4>\
-							</div>\
-							<table class="w3-table w3-bordered">\
+			template_recibo = '<div class="w3-center"><strong>'+ div.replace(/_/g,"&nbsp") +'</strong></div>\
+							<h4>:estado:</h4>\
+							<table border="1" class="w3-table table table-bordered w3-section">\
 								<thead>\
 									<tr>\
 										<th>Nombre y Apellido</th>\
@@ -731,8 +827,7 @@
 									</tr>\
 								</tbody>\
 							</table>\
-							<hr>\
-							<table class="w3-table w3-bordered">\
+							<table border="1" class="w3-table table table-bordered w3-section">\
 								<thead>\
 									<tr>\
 										<th>Sueldo básico Bs.</th>\
@@ -748,8 +843,7 @@
 									</tr>\
 								</tbody>\
 							</table>\
-							<hr>\
-							<table class="w3-table w3-bordered">\
+							<table border="1" class="w3-table table table-bordered w3-section">\
 								<thead>\
 									<tr>\
 										<th>Estatus</th>\
@@ -767,8 +861,7 @@
 									</tr>\
 								</tbody>\
 							</table>\
-							<br>\
-							<table border="1" style="width:100%" class="w3-table w3-border">\
+							<table border="1" style="width:100%" border="1" class="w3-table table table-bordered w3-section">\
 								<thead id="cabezera_tabla_recibo">\
 									<tr>\
 										<th width="10%">#</th>\
@@ -785,8 +878,7 @@
 										Fecha de Emisión: :fecha:<br>Hora: :hora:\
 									</small>\
 								</i>\
-							</div>\
-						</div>'
+							</div>'
 						.replace(":estado:",data.estado)
 						.replace(":estatus:",data.estatus)
 						.replace(":categoria:",data.categoria)
@@ -796,7 +888,7 @@
 						.replace(":hora:",data.hora)
 						.replace(":nombre:",data.nombre)
 						.replace(":apellido:",data.apellido)
-						.replace(":cedula:",data.cedula)
+						.replace(":cedula:",format_cedula(data.cedula))
 						.replace(":sueldo:",formato(data.salario))
 						.replace(":sueldo_normal:",formato(data.salario_normal))
 						.replace(":sueldo_integral:",formato(data.salario_integral))
@@ -809,8 +901,8 @@
 
 						$(".destinatario:input").val(data.correo)
 						$("#mensaje").val()
-						$("#asunto").val("Recibo de pago "+data.nombre+" "+data.apellido+"_"+data.cedula+" | "+div.replace(/_/g," "))
-		}
+						$("#asunto").val("Recibo de pago "+data.nombre+" "+data.apellido+"_"+data.cedula+" | "+div)
+		})
 		function d_recibo(){
 			$("#g-recibo-data").val($("#d_recibo_data").html())
 			$("#g-recibo").submit()			 
@@ -870,7 +962,7 @@
 									},
 									success:function(data){
 										$(".loading").remove()
-										$("body").append("<div onclick='$(this).remove()' class='w3-display-topmiddle w3-green' style='overflow:auto;height:500px;z-index:2030'>"+data+"</div>")
+										$("body").append("<div onclick='$(this).remove()' class='w3-display-topmiddle alert alert-success' style='overflow:auto;height:500px;z-index:2030'>"+data+"</div>")
 									}
 								});
 						}
@@ -881,15 +973,186 @@
 		}
 		function pre_send_email() {
 			$('#show_data').modal('hide');
-			$('#enviar_recibo_email').modal()
+			$('#modal_enviar_recibo_email').modal()
 		}
-		function nav(this_all) {
-			var show = "#"+$(this_all).attr("id")+"_show"		
-			$(show).css("display",'')
-			$(show).siblings('div').css("display",'none')
-			$(this_all).addClass("active")
-			$(this_all).siblings('button').removeClass("active")
+		$(document).on("click",".pestaña",function() {
+			var show = $(this).attr("title")		
+			$(".division[title='"+show+"']").css("display",'')
+			
+			$(".division[title='"+show+"']").siblings('div').css("display",'none')
+			$(this).addClass("active")
+			$(this).siblings('button').removeClass("active")
+		})
+		function crear_json_condiciones() {
+			let json_condiciones_campo = {};
+			let arr_ = $(".grupo_condiciones_campo").toArray()
+			for(i in arr_){
+				let campo_padre = $(arr_[i]).attr("title")
+				let campos_group = $(arr_[i]).find(".bg-danger").toArray()
+				if (campos_group.length>0) {
+					json_condiciones_campo[campo_padre] = {}
+					for(e in campos_group){
+						if ($(campos_group[e]).hasClass('bg-danger')) {
+							json_condiciones_campo[campo_padre][$(campos_group[e]).val()] = ""
+						}
+					}
+				}
+				
+			} 
+			return JSON.stringify(json_condiciones_campo)
 		}
+		$(document).on("click",".estatus",function() {
+			$(this).toggleClass('btn-primary');
+			buscar()
+		})
+		$(document).on("click",".crear_pdf_general",function() {
+			let divi = ""
+			let divisiones = $(".division").toArray()
+			for(i in divisiones){
+				if ($(divisiones[i]).css('display')!="none") {
+					divi = $(divisiones[i]).attr("title")
+					break;	
+				}
+				
+			}
+			let html = '<div class="w3-padding w3-center">\
+						<img src="image/cintillo.jpg" class="w3-section" style="width:100%">\
+						<h2 class="text-inverse">'+$(".nombre_nomina:first").text()+'</h2>\
+						<h6><i class="filtros">'+$(".filtros:first").text()+'</i></h6>\
+						<span style="">\
+							<small>Desde</small> <span class="text-primary fecha_inicio_show">'+$(".fecha_inicio_show:first").text()+'</span> <small>Hasta</small> <span class="text-primary fecha_cierre_show">'+$(".fecha_cierre_show:first").text()+'</span>\
+						</span><hr>\
+						<strong>'+divi.replace(/_/g," ")+'</strong>\
+					</div>\
+					<div>\
+						<i>\
+							<small>\
+								Fecha de Emisión: '+obj['data_general'].fecha+'<br>Hora: '+obj['data_general'].hora+'\
+							</small>\
+						</i>\
+					</div>\
+					<table class="w3-table w3-table-bordered" border="1">\
+						<thead>\
+							<tr>\
+								<th>#</th>\
+								<th>Cédula</th>\
+								<th>Apellidos y Nombres</th>\
+								<th>Cuenta Bancaria</th>\
+								<th>Monto Bs.</th>	\
+							</tr>\
+						</thead>\
+						<tbody>'
+				let num = 0
+				let monto_total = 0	
+				for(i in obj){
+					if (i!="data_general") {
+						num++
+						html+="<tr>\
+						<td>"+num+"</td>\
+						<td>"+format_cedula(obj[i].Total_periodo.cedula)+"</td>\
+						<td>"+obj[i].Total_periodo.apellido+", "+obj[i].Total_periodo.nombre+"</td>\
+						<td>"+obj[i].Total_periodo.cuenta_bancaria+"</td>\
+						<td>"+formato(obj[i][divi].total)+"</td>\
+						<tr>";
+						monto_total += obj[i][divi].total
+					}
+				}
+					
+				html+="<tr style='background-color:#DADADA'>\
+					<td colspan='4' style='text-align: right;'><h3>Total Bs.</h3></td>\
+					<td><h3 class='text-success'>"+formato(monto_total)+"</h3></td>\
+				</tr>";			
+						html+='</tbody>\
+					</table>'
+
+			$("textarea[name=reporte_general_pdf_data]").val(html)
+			$("#descargar_reporte_general").submit()	
+		})
+		$(document).on("click",".crear_txt_general",function() {
+			let data_all = new Object()
+			let divi = ""
+			let divisiones = $(".division").toArray()
+			for(i in divisiones){
+				if ($(divisiones[i]).css('display')!="none") {
+					divi = $(divisiones[i]).attr("title")
+					break;	
+				}
+				
+			}
+			let num = 0
+			for(i in obj){
+				if (i!="data_general") {
+					let data_local = new Object()
+					let cedula = obj[i].Total_periodo.cedula
+					let cuenta_bancaria = obj[i].Total_periodo.cuenta_bancaria
+					let monto = formato(obj[i][divi].total).replace(/\./g,"").replace(/,/g,"")
+
+					//data_local['EMPRESA_cuerpo'] = 
+					data_local['MONTO_cuerpo'] = monto;
+					data_local['CUENTA_cuerpo'] = cuenta_bancaria;
+					data_local['CEDULA_cuerpo'] = cedula;
+					// data_local['FILLER_1_cuerpo'] = "00000"
+					// data_local['TIPO_cuerpo'] = "0"
+					// data_local['FILLER_2_cuerpo'] = "00"
+					data_all[num] = data_local;
+					num++
+				}
+			}
+			$("textarea[name=data_generar_txt]").val(JSON.stringify(data_all))
+			$("#form_generar_txt").submit()
+		})
+		$(document).on("click",".condicion_campo",function(e) {
+
+			$(this).toggleClass('bg-danger')
+			e.stopPropagation();
+		})
+		$(document).on("click",".modo_send_multiples_recibos",function() {
+			if (obj!=undefined) {
+				$('#modal-send-multiples-recibos').modal()
+
+				let divi = ""
+				let divisiones = $(".division").toArray()
+				for(i in divisiones){
+					if ($(divisiones[i]).css('display')!="none") {
+						divi = $(divisiones[i]).attr("title")
+						break;	
+					}
+					
+				}
+				let num = 0
+				$(".personas-a-enviar-recibo").empty()
+				for(i in obj){
+					if (i!="data_general") {
+						let id = obj[i].Total_periodo.id
+						let cedula = obj[i].Total_periodo.cedula
+						let nombres = obj[i].Total_periodo.nombre
+						let apellidos = obj[i].Total_periodo.apellido
+						let html = "<tr>\
+							<td>"+id+"</td>\
+							<td>"+cedula+"</td>\
+							<td>"+apellidos+", "+nombres+"</td>\
+							<td class='td_estado_seleccion_envio_recibo'><div style='display:none' class='w3-center'><i class='fa fa-check'></i></div><div></div></td>\
+							<td>"+cedula+"</td>\
+						</tr>"
+						
+						$(".personas-a-enviar-recibo").append(html)
+					}
+				}
+			}
+
+		})
+		$(document).on("click",".td_estado_seleccion_envio_recibo",function() {
+			$(this).toggleClass('seleccionado').find("div").toggle();
+		})
+		$(document).on("click",".seleccionar_todos_enviar_correo",function() {
+			$(this).find('i').toggle()
+			if ($(this).find('.fa-check').css("display")=="none") {
+				$(".td_estado_seleccion_envio_recibo").addClass('seleccionado').find("div:first").css("display","").siblings('div').css("display","none");
+			}else{
+				$(".td_estado_seleccion_envio_recibo").removeClass('seleccionado').find("div:first").css("display","none").siblings('div').css("display","");
+			}
+			
+		})
 	</script>
 	<style type="text/css">
 		@font-face {
@@ -962,15 +1225,12 @@
 		.slider.round:before {
 		  border-radius: 50%;
 		}
+		.seleccionado{
+			background-color: #84FF7B
+		}
 	</style>
 </head>
 <body>
-	<!-- <div class="nav_contenedor"></div>
-	<script type="text/javascript">
-		//$(function(){
-		//  $(".nav_contenedor").load("nav.php");
-		//});
-	</script> -->
 	<nav class="navbar navbar-toggleable-md navbar-secundary bg-secundary bg-faded">
 	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
@@ -980,38 +1240,35 @@
 	  
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-	      <li class="nav-item active">
-	        <a class="nav-link text-primary" href="#" onclick="$('#fechas_periodo').modal('toggle')">Fechas del período</a>
-	      </li>
+
 	      <li class="nav-item dropdown">
 	        <a class="nav-link dropdown-toggle" href="#" id="filtar_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          <i class="fa fa-filter" aria-hidden="true"></i> Filtrar 
 	        </a>
-	        <div class="dropdown-menu" aria-labelledby="filtar_drop">
-	          <a class="dropdown-item" href="#">
-				<div style="padding: 5px">				   
-					<h4>Género</h4>	
-						<input type="radio" name="genero" class="w3-radio" onclick="buscar()" value="Masculino"> Masculino <br>
-						<input type="radio" name="genero" class="w3-radio" onclick="buscar()" value="Femenino"> Femenino <br>
-						<input type="radio" name="genero" class="w3-radio" onclick="buscar()" value="" checked=""> Todos
-	            	<hr>
-						<h4>Categoría</h4>	
-							<input type="checkbox" name="categoria[]" class="w3-check" onclick="buscar()" value="OBRERO"> Obrero <br>
-							<input type="checkbox" name="categoria[]" class="w3-check" onclick="buscar()" value="DOCENTE"> Docente <br> 
-							<input type="checkbox" name="categoria[]" class="w3-check" onclick="buscar()" value="ADMINISTRATIVO"> Administrativo							
-	           		<hr>
-						<h4>Estatus</h4>	
-						        		
-					       <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button estatus" style="width:100%" value="ALTO NIVEL">Alto Nivel</button><br>	
-					       <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button  estatus" style="width:100%" value="EMPLEADO FIJO">Empleado Fijo</button><br>	
-					       <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button  estatus" style="width:100%" value="CONTRATADO">Contratado</button><br>			        			
-						   <button onclick="estatus=this.value;buscar();if(!$(this).hasClass('w3-red')){$(this).addClass('w3-red');$(this).siblings('button').removeClass('w3-red')}" class="w3-button w3-red estatus" style="width:100%">Todos</button>
-		        </div>
-	          </a> 
+	        <div class="dropdown-menu w3-padding" aria-labelledby="filtar_drop" style="width: 1000px"> 			    
+				<button class="btn btn-outline-danger guardar_filtros">Guardar Filtros</button>
+				<hr>
+				<div class="group-condiciones table-responsive">
+				</div>
 	        </div>
 	      </li>
+	      <li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle" href="#" id="generar_file" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          <i class="fa fa-file" aria-hidden="true"></i> Generar 
+	        </a>
+	        <div class="dropdown-menu w3-padding" aria-labelledby="generar_file">
+				<div class="btn-group-vertical" style="width: 100%">
+					<button class="btn btn-info crear_txt_general"><i class="fa fa-file-o"></i> .txt</button>
+					<!-- <button class="btn btn-success"><i class="fa fa-file-excel-o"></i> .xlsx</button> -->
+					<button class="btn btn-danger crear_pdf_general"><i class="fa fa-file-pdf-o"></i> .pdf</button>
+				</div>
+	        </div>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link text-primary" href="#" onclick="$('#fechas_periodo').modal('toggle')">Fechas del período</a>
+	      </li>
 	    </ul>
-	    <ul class="form-inline my-2 my-lg-0">
+	    <ul class="form-inline my-4 my-lg-0">
         	<input type="text" class="form-control mr-sm-2" placeholder="Buscar por Nombre, Apellido, Cédula, Cargo o Dedicación" id="busqueda" onkeyup="buscar()">
        		<button class="btn btn-outline-info my-2 my-sm-0" onclick="buscar()" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
      	</ul>
@@ -1046,21 +1303,21 @@
 						<div class="col-4">
 							<div class="row">
 								<div class="col-4"><span class="">Código presupuestario</span></div>
-								<div class="col"><input type="text" class="form-control" name="cod_presu" style="height: 100%"></input></div>
+								<div class="col"><input type="text" class="form-control" name="cod_presu" style="height: 100%" value="<?php echo $_SESSION['codigo_presupuestario_institucion'] ?>"></input></div>
 							</div>
 						</div>
 						<div class="col">
 							<div class="row w3-margin">
 								<div class="col-3"><span class="font-weight-bold">Denominación del IEU</span></div>
-								<div class="col"><textarea class="form-control" cols=2 name="denomi_ieu" rows=1></textarea></div>
+								<div class="col"><textarea class="form-control" cols=2 name="denomi_ieu" rows=1><?php echo $_SESSION['denominacion_institucion'] ?></textarea></div>
 							</div>
 							<div class="row w3-margin">
 								<div class="col-3"><span class="font-weight-bold">Órgano de adscripción</span></div>
-								<div class="col"><textarea class="form-control" cols=2 name="organo_abs" rows=1></textarea></div>
+								<div class="col"><textarea class="form-control" cols=2 name="organo_abs" rows=1><?php echo $_SESSION['organo_adscripcion_institucion'] ?></textarea></div>
 							</div>
 							<div class="row w3-margin">
 								<div class="col-3"><span class="font-weight-bold">Mes requerido</span></div>
-								<div class="col"><input type="text" class="form-control" name="mes_req" style="width: 40%"></input></div>
+								<div class="col"><input type="text" class="form-control" name="mes_req" style="width: 40%" value=""></input></div>
 							</div>
 						</div>
 					</form>
@@ -1076,25 +1333,42 @@
 		</div>
 	</div>
 	<aside class="col w3-margin-top" id="calculos">
+		<div class="row w3-section">
+			<div class="col">
+				<div class="btn-group">
+					<button class="btn btn-outline-warning abrir_partidas_presupuestarias" >
+						<i class="fa fa-paste fa-2x"></i> Partidas presupuestarias
+					</button>
+					<button class="btn btn-outline-primary" id="abrir_casos_especiales">
+						<i class="fa fa-street-view fa-2x"></i> Casos especiales
+					</button>
+					<button class="btn btn-outline-info abrir_pago_retroactivo" >
+						<i class="fa fa-paste fa-2x"></i> Pago de retroactivo
+					</button>
+				</div>
+				
+			</div>
+			<div class="col">
+				<div class="btn-group w3-right">
+					<button class="btn btn-outline-secondary modo_send_multiples_recibos">
+						<i class="fa fa-send fa-2x"></i> Enviar múltiples recibos
+					</button>
+				</div>
+			</div>
+		</div>
 		<div class="row">
-			<div class="col w3-margin-bottom">
-				<button class="btn btn-outline-warning abrir_partidas_presupuestarias" >
-					<i class="fa fa-paste fa-3x"></i> Partidas presupuestarias
-				</button>
-				<button class="btn btn-outline-primary" id="abrir_casos_especiales">
-					<i class="fa fa-street-view fa-3x"></i> Casos especiales
-				</button>
-				<button class="btn btn-outline-info abrir_pago_retroactivo" >
-					<i class="fa fa-paste fa-3x"></i> Pago de retroactivo
-				</button>
+			<div class="col">
+				<div class="w3-padding w3-center">
+        			<h2 class="text-inverse nombre_nomina"></h2>
+        			<h6><i class="filtros"></i></h6>
+					<span style="">
+						<small>Desde</small> <span class="text-primary h4 fecha_inicio_show"></span> <small>Hasta</small> <span class="text-primary h4 fecha_cierre_show"></span>
+					</span>
+        		</div>
 			</div>
 		</div>
 		<div class="row w3-margin-bottom">
 			<div class="col" id="grupo_divisiones"></div>
-			<div class="col-4 w3-border-bottom">
-				Desde: <span class="text-primary h4" id="mostrar_fecha_inicio"></span>
-				Hasta: <span class="text-primary h4" id="mostrar_fecha_cierre"></span>
-			</div>
 		</div>
 		<div class="row">
 			<div class="col table-responsive" id="seccion_divisiones">
@@ -1110,7 +1384,15 @@
 	          <form action="generar_pdf/recibo_individual_nomina.php" id="g-recibo" method="post" target="_blank" hidden="true"><textarea name="g-recibo-data" id="g-recibo-data"></textarea></form>
 	        </div>
 	        <div class="modal-body" id="d_recibo_data">
-	          <p id="body_show"></p>
+        		<div class="w3-padding w3-center">
+        			<img src="image/cintillo.jpg" class="w3-section" style="width:100%">
+        			<h2 class="text-inverse nombre_nomina"></h2>
+        			<h6><i class="filtros"></i></h6>
+					<span style="">
+						<small>Desde</small> <span class="text-primary fecha_inicio_show"></span> <small>Hasta</small> <span class="text-primary fecha_cierre_show"></span>
+					</span>
+        		</div>
+        		<div class="w3-padding w3-section" id="body_show"></div>
 	        </div>
 	        <div class="modal-footer">
 	          <button type="button" class="btn btn-info float-left" style="cursor: pointer;" email=""  onclick="pre_send_email()" id="botton_Send_email">Enviar por correo <i class="fa fa-paper-plane"></i></button>
@@ -1196,9 +1478,9 @@
 	    </div>
 	  </div>
 	</div>
-	<div class="modal" tabindex="-1" role="dialog" id="enviar_recibo_email" style="width: 100%">
-	  <div class="modal-dialog modal-lg" role="document" style="width: 100%">
-	    <div class="modal-content w3-display-topmiddle" style="width: 100%">
+	<div class="modal w-100" tabindex="-1" role="dialog" id="modal_enviar_recibo_email">
+	  <div class="modal-dialog modal-lg w-100" role="document">
+	    <div class="modal-content w3-display-topmiddle w-100">
 
 	      <div class="modal-body" >
 			<center>
@@ -1418,6 +1700,46 @@
         </div>
       </div> 
     </div>
+    <div class="modal fade" id="modal-send-multiples-recibos">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title"><i class="fa fa-send"></i> Enviar Múltiples recibos por correo electrónico</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<table class="table table-bordered">
+	      		<thead>
+	      			<tr>
+						<th colspan="3"></th>
+						<th class="seleccionar_todos_enviar_correo w3-center">
+							<i class="fa fa-check" ></i>
+							<i class="fa fa-close" style="display: none"></i>
+						</th>
+						<th></th>
+					</tr>
+	      			<tr>
+	      				<th>#</th>
+	      				<th>Cédula</th>
+	      				<th>Nombres y apellidos</th>
+	      				<th>Selección</th>
+	      				<th>Estado de envio</th>
+	      			</tr>
+	      		</thead>
+	      		<tbody class="personas-a-enviar-recibo">
+	      			
+	      		</tbody>	
+	      	</table>
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-outline-success boton-enviar-multiples-recibos">Enviar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
     <div class="modal" tabindex="-1" role="dialog" id="modal_pago_retroactivo">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
@@ -1454,6 +1776,14 @@
 	      </div>
 	    </div>
 	  </div>
+	</div>
+	<div class="reportes_oculto" hidden="">
+		<form action="generar_pdf/recibo_individual_nomina.php" method="post" target="_blank" id="descargar_reporte_general">
+			<textarea name="reporte_general_pdf_data" id="" cols="30" rows="10"></textarea>
+		</form>
+		<form action="generar_txt/bicentenario.php" target="_blank" id="form_generar_txt" method="post">
+			<textarea name="data_generar_txt" id="" cols="30" rows="10"></textarea>
+		</form>
 	</div>
 </body>
 </html>

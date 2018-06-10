@@ -14,65 +14,151 @@
 		<script src="../css/bootstrap/dist/js/bootstrap.min.js"></script>
 		<title> Seleccionar nómina</title>
 		<script type="text/javascript">
-			function confirm_borrar(id) {
-				if (window.confirm("¿Desea realmente eliminar la nómina " + id + "?")) {
-					$(document).ready(function() {
-						$.ajax({
-							url:'borrar_nomina.php',
-							type:"post",
-							data:{
-								'id':id
-							},
-							success:function(data){
-								alert(data);
-								location.reload();
+			function buscar_nomina() {
+				const place = $(".cards_nominas")
+				$.ajax({
+					url: 'search_nomina.php',
+					type: 'POST',
+					beforeSend: function() {
+						place.append("<div class='cargando w3-center'><i class='fa fa-pulse fa-spinner fa-3x'></i></div>")
+					},
+					data: {"operacion": "buscar","buscar": $("#input_buscar").val()},
+					success: function(res) {
+						$(".cargando").remove()
+						place.empty()
+						let obj = JSON.parse(res)
+						let divisiones = function(arr) {
+							let d = ""
+							for(e in arr){
+								d += "<li>"+arr[e]+"</li>"
 							}
-						});
-					});
-					
-				}
+							return d
+						}
+							for(i in obj){
+								
+								var html = '\
+								<div class="alert alert-info cont_nomina w3-card-2">\
+									<div class="container-fluid">\
+										<div class="row w3-section">\
+											<div class="col">\
+												<div class="btn-group w3-right">\
+													<a href="index.php?id='+i+'"<button class="btn btn-outline-success mod_edit"><i class="fa fa-edit"></i></button></a>\
+													<button class="btn btn-outline-danger delete_nomina" title="'+i+'"><i class="fa fa-trash"></i></button>\
+												</div>	\
+											</div>\
+										</div>\
+										<div class="row">\
+											<div class="col-5">\
+												<div class="row">\
+													<div class="col">\
+														<h2><b class="">'+obj[i].denominacion+'</b></h2>\
+													</div>\
+												</div>\
+												<div class="row">\
+													<div class="col">\
+														<h5 class="">'+obj[i].tipo_periodo+'</h5>\
+													</div>\
+												</div>\
+												<div class="row">\
+													<div class="col">\
+														<a href="../'+obj[i].motor+'?id='+i+'&denominacion='+obj[i].denominacion+'"><button class="btn btn-info"><i class="fa fa-cog fa-3x"></i></button></a>\
+													</div>\
+												</div>\
+											</div>\
+											<div class="col">\
+												<table class="table table-bordered">\
+													<tr>\
+														<th>Fecha de Creación</th>\
+														<td class="">'+obj[i].fecha+'</td>\
+													</tr>\
+													<tr>\
+														<th>Divisiones</th>\
+														<td class=""><ul class="">'+divisiones(Object.keys(JSON.parse(obj[i].divisiones)))+'</ul></td>\
+													</tr>\
+													<tr>\
+														<th>Nº de Fórmulas Asociadas</th>\
+														<td class="">'+Object.keys(JSON.parse(obj[i].formulas)).length+'</td>\
+													</tr>\
+												</table>\
+											</div>\
+										</div>\
+									</div>\
+								</div>'
+
+								place.append(html)
+							}
+						
+					}
+				})	
 			}
+			$(document).ready(buscar_nomina)
+			$(document).on("keyup","#input_buscar",buscar_nomina)
+			$(document).on("click",".delete_nomina",function() {
+				let id = $(this).attr("title")
+				if (window.confirm("¿Desea realmente eliminar la nómina " + id + "?")) {
+					
+					$.ajax({
+						url:'borrar_nomina.php',
+						type:"post",
+						data:{
+							id: id
+						},
+						success:function(data){
+							alert(data);
+							buscar_nomina()
+						}
+					});
+				}
+			})
 		</script>
+		<style type="text/css">
+			@font-face {
+			  font-family: 'Open Sans';
+			  font-weight: 400;
+			  src: url(../fonts/OpenSans-Light.ttf);
+			}
+			html,body{
+				font-family: 'Open Sans', sans-serif;
+				font-size: 20px;
+				height: 100%;
+				width: 100%;
+				background-color:#f2f2f2;
+			}
+			.cont_nomina{
+				transition: 0.2s
+			}
+			.cont_nomina:hover{
+				transform: scale(1.020);
+				transition: 0.2s
+			}
+			button{
+				cursor: pointer;
+			}
+		</style>
 	</head>
 	<body>
-		<center><header class="header w3-header"><h1>Seleccionar nómina</h1></header></center>
-
-		<table class="w3-table table-bordered table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Denominación</th>
-				<th>Período de pago</th>
-				<th>Fecha de creación</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php 
-				$consulta_parametros_nomina = (new sql("parametros_nomina"))->select();
-				while ($row=$consulta_parametros_nomina->fetch_assoc()) {
-					if ($row['engine']=="aporte patronal") {
-						$motor = 'aporte_patronal/';
-					}else{
-						$motor = 'busqueda_personal.php';
-
-					}
-					echo"<tr>
-							<td>".$row['id']."</td>
-							<td>
-								<a href='../".$motor."?id=".$row['id']."'>".$row['denominacion']."
-								</a>
-							</td>
-							<td>".$row['tipo_periodo']."</td>
-							<td>".$row['fecha']."</td>
-							<td><div class='row'>
-								<a href='index.php?id=".$row['id']."' class='col w3-button w3-blue'><i class='fa fa-cog' aria-hidden='true'></i></a>
-								<button class='w3-button w3-red col' onclick=confirm_borrar(".$row['id'].")><i class='fa fa-trash-o' aria-hidden='true'></i></button>
-							</div></td>
-						</tr>";
-				}
-			 ?>
-		</tbody>
-	</table>
+		<div class="container">
+			<div class="row">
+				<div class="col w3-center">
+					<span class="h1 w3-section">Seleccionar Nómina</span>	
+				</div>
+			</div>
+			<div class="row w3-section">
+				<div class="col">
+					<input placeholder="Buscar..." id="input_buscar" type="text" class="form-control">
+				</div>
+			</div>	
+			<div class="row w3-section">
+				<div class="col w3-center">
+					<a href="index.php"><button class="btn btn-outline-success">Crear Nueva</button></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col cards_nominas">
+				
+				</div>
+			</div>
+		</div>
 	
 	</body>
 	</html>

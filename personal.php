@@ -272,10 +272,30 @@
 			}
 			$consulta_por_categoria = substr($consulta_por_categoria,0,-3);
 		}
+		$consulta_por_estatus="";
+		if (isset($_POST['estatus'])) {
+			$consulta_por_estatus.=" AND ";
+			foreach ($_POST['estatus'] as $key_estatus => $value_estatus) {
+			 $consulta_por_estatus .= " estatus = '".$value_estatus."' OR ";
+			}
+			$consulta_por_estatus = substr($consulta_por_estatus,0,-3);
+		}
 	//Identifica la nómina elegida
 	$id_nomina = (new sql("parametros_nomina","WHERE id='".$_POST['id_nomina']."'"))->select()->fetch_assoc();
 	$array_formulas_a_pagar = json_decode($id_nomina['formulas_a_pagar'],true);
 	$json_divisiones = json_decode($id_nomina['divisiones'],true);
+	$json_filtros = json_decode($id_nomina['filtros'],true);
+	$filtros = ""; 
+	if (count($filtros)>0) {
+
+		foreach ($json_filtros as $campo => $sub_array) {
+			$filtros.=" AND ";
+			foreach ($sub_array as $valor => $vacio) {
+				$filtros.=" $campo LIKE '$valor' OR ";
+			}
+			$filtros = substr($filtros,0,-3);
+		}
+	}
 
 	$recibo_casos_especiales = array();
 	$casos_especiales_array = json_decode($id_nomina['incl_excl'],true);
@@ -308,6 +328,11 @@
 	//Crear período
 	$fecha_inicio = $_POST['fecha_inicio'];
 	$fecha_cierre = $_POST['fecha_cierre'];
+
+	if ($_POST['fecha_inicio']=="" || $_POST['fecha_cierre']=="" || ( new DateTime($_POST['fecha_inicio'])>= new DateTime($_POST['fecha_cierre']))) {
+		echo "Fechas Inválidas!!";
+		exit;
+	}
 	$sql_fechas_sueldos = (new sql("sueldos","WHERE fecha>='".$fecha_inicio."' AND fecha<='".$fecha_cierre."' order by fecha asc","distinct(fecha)"))->select();
 	    $fechas = array(0=>$fecha_inicio);
 	    while ($row=$sql_fechas_sueldos->fetch_assoc()) {
@@ -354,10 +379,8 @@
 		OR dedicacion LIKE '".$_POST['busqueda']."%' 
 		OR cargo LIKE '".$_POST['busqueda']."%' 
 		) $caso
-		AND genero LIKE '".$_POST['genero']."%' 
-		AND estatus LIKE '".$_POST['estatus']."%'
-		$consulta_por_categoria
-		$ordenar"))->select(); 
+		  $filtros
+		"))->select(); 
 		
 	$array_all = array();
 	if ($consulta->num_rows>0) {
@@ -665,7 +688,10 @@
 		"array_divisiones"		 => $array_divisones,
 		"partida_presupuestaria" => $resultados_partida,
 		"operaciones_especiales" => $id_nomina['opera_espec'],
-		"casos_especiales"		 => $id_nomina['incl_excl']
+		"casos_especiales"		 => $id_nomina['incl_excl'],
+		"filtros"		         => $id_nomina['filtros'],
+		"fecha"			         => date("d/m/Y"),
+		"hora"  				 => date("H:i:s")
 	);
 	echo json_encode($array_all);
 

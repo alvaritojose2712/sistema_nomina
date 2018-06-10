@@ -19,4 +19,16 @@ function formato(value, decimals=2, separators=['.',".",',']) {
     }
     return (parts.length == 3 ? '-' : '') + result;
 }
+function format_cedula(val) {
+    var count = 1
+    var format = ""
+    for (var i = val.length - 1; i >= 0; i--) {
+        format = val[i]+format
+        if (count%3==0) {
+            format = "."+format
+        }
+        count++
+    }
+    return format
+}
 

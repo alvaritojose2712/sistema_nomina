@@ -57,7 +57,7 @@ class sql
 			$con = $this->conectar();
 			$sql = $con->query("DELETE FROM $this->tabla WHERE $this->where");	
 			if (!$sql) {
-        		return "Error: ".$con->errno;
+        		return "Error: ".$con->error;
     		}elseif ($con->affected_rows==0) {
     			return "Error: Ningún registro afectado!";
     		}else{

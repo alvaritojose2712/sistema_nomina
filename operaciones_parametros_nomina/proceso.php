@@ -18,11 +18,12 @@ include '../conexion_bd.php';
 		$values .= "tipo_periodo='".$_POST['tipo_periodo']."',";
 		$values .= "formulas_a_pagar='".$_POST['formulas_a_pagar']."',";
 		$values .= "divisiones='".$_POST['divisiones']."',";
+		$values .= "filtros='".$_POST['filtros']."',";
 		$values .= "engine='".$_POST['engine']."'";
 
 		$actualizar = (new sql("parametros_nomina",'WHERE id='.$_POST['id_nomina'],$values))->update();
 		if ($actualizar==1) {
-				echo "Actualizado";
+				echo "Cambios realizados con éxito!";
 		}else{
 			echo $actualizar;
 		}
@@ -31,10 +32,10 @@ include '../conexion_bd.php';
 	}else if ($_POST['accion']=='save') {
 
 		//print_r($_POST);
-		$val = "'".$_POST['nombre_nomina']."','".$_POST['tipo_periodo']."','".$_POST['formulas_a_pagar']."','".$_POST['divisiones']."','".$_POST['engine']."','{}','{}'";
-		$insert = (new sql("parametros_nomina",$val,'denominacion,tipo_periodo,formulas_a_pagar,divisiones,engine,incl_excl,opera_espec'))->insert(); 
+		$val = "'".$_POST['nombre_nomina']."','".$_POST['tipo_periodo']."','".$_POST['formulas_a_pagar']."','".$_POST['divisiones']."','".$_POST['engine']."','{}','{}','".$_POST['filtros']."'";
+		$insert = (new sql("parametros_nomina",$val,'denominacion,tipo_periodo,formulas_a_pagar,divisiones,engine,incl_excl,opera_espec,filtros'))->insert(); 
 		if ($insert==1) {
-			echo "Exito al guardar";
+			echo "Guardado con éxito!";
 		}else{
 			echo $insert;
 		}

@@ -54,8 +54,11 @@ try {
     $mail->Subject = $_POST['asunto'];
     $mail->Body    = $_POST['msj'];
   
-    $mail->send();
-    echo 'Mensaje enviado';
+    if($mail->Send()) {
+      echo "Enviado";
+    } else {
+      echo "Mailer Error: " . $mail->ErrorInfo;
+    }
     unlink($file_name);
 } catch (Exception $e) {
     echo 'Mensaje no pudo ser enviado. Mailer Error: ', $mail->ErrorInfo;

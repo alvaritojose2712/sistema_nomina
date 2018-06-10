@@ -18,8 +18,7 @@
 		<script src="../css/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			var json = {};
-		
-			var disponibles = { 
+			const disponibles = { 
 				"estado" : <?php echo $valores['estado']; ?>,
 				"numero_hijos" : {0 : "discapacidad", 1 : "estudia", 2 : "edad"},
 				"genero" : {0:'Masculino',1:'Femenino'},
@@ -72,8 +71,39 @@
 						echo json_encode($arr);
 					?>	
 				};
-
-			var color = 0 ;
+			function buscar() {
+			 	$.ajax({
+			        url:"procesar.php",
+			        data:{
+			        	operacion:"buscar",
+						b:$("#buscar_input").val()
+			   		},
+			        type:"post",
+			        async:false, 
+			        datatype:"json",
+			        success:function(response)
+			        {	//alert(response)
+			        	var incluido = "";
+			        	obj = JSON.parse(response)
+			        	var temple = ''
+			        	obj.map(function (element,i) {
+			        		if(incluido.indexOf(element.tipo_concepto)==-1){
+		        				temple+='<tr>'
+		        					temple+='<td colspan="2" style="background-color:#B7B7B7" class="text-white"><h3>'+element.tipo_concepto+'</h3></td>'
+		        				temple+='</tr>'
+		        				incluido = element.tipo_concepto
+			        		}
+			        			temple+='<tr class="formula_selected" title="' + i + '">'
+				        			temple+='<td>'+ element.id +'</td>'
+				        			temple+='<td>'+ element.descripcion +'</td>'
+				        		temple+='</tr>'        			        		
+			        	})
+			   			$("#resultados")
+			   			.empty()
+			   			.append(temple)
+					}		  
+			    })
+			}
 			function validar_cedula(e){
 				tecla=(document.all) ? e.keyCode: e.which;
 				if (tecla == 8) return true;
@@ -131,7 +161,7 @@
 									<button class='btn btn-danger delete_todo_campo' title='cualquiera'>\
 										<i class='fa fa-window-close' aria-hidden='true'></i>\
 									</button>\
-									<h2 style='color:green'>Aplica para cualquier tipo de personal</h2>\
+									<h2 class='w3-section' style='color:green'>Aplica para cualquier tipo de personal</h2>\
 								</div>"		
 					$("#items").append(html);
 				}else if (select_campo=="numero_hijos") {
@@ -140,7 +170,7 @@
 										<div class='col'>\
 											<button class='btn btn-danger delete_todo_campo' title='"+select_campo+"'><i class='fa fa-window-close' aria-hidden='true'></i>\
 											</button>\
-											<h3>"+select_campo+"</h3>\
+											<h3 class='w3-section'>"+select_campo+"</h3>\
 										</div>\
 									</div>\
 									<div class='row w3-padding'>\
@@ -187,7 +217,7 @@
 											<button class='btn btn-danger delete_todo_campo' title='"+select_campo+"'>\
 												<i class='fa fa-window-close' aria-hidden='true'></i>\
 											</button>\
-											<h3>"+select_campo+"</h3>\
+											<h3 class='w3-section'>"+select_campo+"</h3>\
 										</div>\
 									</div>\
 									<div class='row w3-padding'>\
@@ -267,7 +297,10 @@
 				$('#div_'+c).animate({opacity:0},150,function(){$('#div_'+c).remove()})
 				$("#select_campo").val("seleccione")
 			})
-			$(document).on("click",".formula_selected",function () {
+			$(document).on("click",".formula_selected",function() {
+				$(".formula_selected").removeClass('bg-info')
+				$(this).addClass("bg-info")
+				$(window).scrollTop(0)
 					var i = $(this).attr('title')
 						var opera = JSON.parse(obj[i].operaciones);
 						json = JSON.parse(obj[i].condiciones)
@@ -294,46 +327,16 @@
 						.attr('title',obj[i].id)
 						.text(obj[i].descripcion)
 						$("#datos_operaciones_formula").css("display","")
+						$("#notificacion_nueva_formula").css("display","none")
+
 				})
-			$(document).on("click",".guardar_cambios",function () {
-				save_insert("update")
+			$(document).on("click",".guardar_cambios",function() {
+				update_insert("update")
 			})
 			$(document).on("click","#crear_nueva_formula",function () {
-				update_insert("insert")
+				empty_all()
+
 			})
-			function buscar() {
-			 	$.ajax({
-			        url:"procesar.php",
-			        data:{
-			        	operacion:"buscar",
-						b:$("#buscar_input").val()
-			   		},
-			        type:"post",
-			        async:false, 
-			        datatype:"json",
-			        success:function(response)
-			        {	//alert(response)
-			        	var incluido = "";
-			        	obj = JSON.parse(response)
-			        	var temple = ''
-			        	obj.map(function (element,i) {
-			        		if(incluido.indexOf(element.tipo_concepto)==-1){
-		        				temple+='<tr>'
-		        					temple+='<td colspan="2" class="bg-info text-white"><h3>'+element.tipo_concepto+'</h3></td>'
-		        				temple+='</tr>'
-		        				incluido = element.tipo_concepto
-			        		}
-			        			temple+='<tr class="formula_selected" title="' + i + '">'
-				        			temple+='<td>'+ element.id +'</td>'
-				        			temple+='<td>'+ element.descripcion +'</td>'
-				        		temple+='</tr>'        			        		
-			        	})
-			   			$("#resultados")
-			   			.empty()
-			   			.append(temple)
-					}		  
-			    })
-			}
 			$(document).ready(function () {
 				buscar()
 				$("#select_campo").change(function(){
@@ -378,8 +381,8 @@
 						}
 					}
 					if (campos_vacios==0) {
-						if ($("#vigencia").val()=="" || $("#descripcion").val()=="") {
-						alert("Error: Campos vacíos!")
+						if ($("#vigencia").val()=="" || $("#descripcion").val()=="" || $("#tipo_sueldo").val()==null || $("#tipo_concepto").val()==null || $("#asignacion_deduccion").val()==null || $("#periodo_pago").val()==null || $("#formula").val()=="") {
+						alert("Error: Campos vacíos!" )
 					}else{
 						$.ajax({
 							url:"procesar.php",
@@ -439,9 +442,22 @@
 						success:function (res) {
 							alert(res)
 							buscar()
+							empty_all()
 						}
 					})
 				}
+			}
+			function empty_all() {
+				json = {}
+				$("#datos_operaciones_formula").css("display","none")
+				$("#notificacion_nueva_formula").css("display","")
+				$("#items").empty()
+				
+				$("#contenedor_formula_aporte").css("display","none")
+				$("#descripcion_formula").val("")
+				$("#vigencia").val("")
+				$("#formula_aporte").val("")
+				$("#formula").val("")
 			}
 		</script>
 
@@ -457,7 +473,6 @@
 				height: 100%;
 				width: 100%;
 				background-color: #F5F5F5;
-				overflow: hidden;
 			}
 			.formula_selected:hover{
 				background-color: grey;
@@ -471,7 +486,7 @@
 		</style>
 </head>
 <body>
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-info bg-faded" style="height: 10%">
+	<nav class="navbar navbar-toggleable-md navbar-inverse bg-info bg-faded">
 	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -488,155 +503,173 @@
      	</ul>
 	  </div>
 	</nav>
-	<div class="row w3-margin-top" style="height: 90%;width: 100%;margin: 0;padding: 0">
-
-		<div class="col" style="height: 100%;overflow-y: auto;">
-			<div class="row">
-				<span class="h1 w3-center w3-margin">Configurar fórmula</span>
-			</div>
-			<div class="row" id="datos_operaciones_formula" style="display: none;z-index: 1000">
-				<div class="col">
-					<div class="form-group">
-						<label for="">Nombre de la fórmula: </label>
-						<h2><span id="name_formula" class="text-primary"></span></h2>
-					</div>
-					<div class="form-group" id="operaciones_formula">
-						<button class="btn btn-danger" onclick="delete_formula()">Eliminar</button>
-						<button class="btn btn-warning guardar_cambios">Guardar cambios</button>
+	<div class="container-fluid">
+		<div class="row w3-margin-top" style="width: 100%;">
+			<div class="col">
+				<div class="row w3-section">
+					<div class="col">
+						<span class="h1 w3-center w3-margin">Administrar fórmulas</span>
 					</div>
 				</div>
-			</div>
-			<div class="row w3-border w3-margin">
-				<div class="col">
-					<div class="w3-padding">
-						<div class="w3-round bg-danger text-white" style="padding: 5px">
-							<center>
+				<div class="row w3-section" id="datos_operaciones_formula" style="display: none;z-index: 1000">
+					<div class="col w3-margin">
+						<div class="form-group">
+							<label for="">Nombre de la fórmula: </label>
+							<h2><span id="name_formula" class="text-primary"></span></h2>
+						</div>
+						<div class="form-group" id="operaciones_formula">
+							<button class="btn btn-danger" onclick="delete_formula()">Eliminar</button>
+							<button class="btn btn-warning guardar_cambios">Guardar cambios</button>
+						</div>
+					</div>
+				</div>
+				<div class="row w3-section" id="notificacion_nueva_formula" style="display: none;z-index: 1000">
+					<div class="col w3-margin">
+						<div class="form-group" id="">
+							<button class="btn btn-outline-success w3-right" onclick="update_insert('insert')">Registrar en la Base de datos <i class="fa fa-save"></i></button>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row w3-section">
+					<div class="col">
+						<div class="w3-padding">
+							<div class="w3-round bg-danger text-white w3-center w3-padding w3-section">
 								<h4>Condiciones</h4>
 								<button class="btn btn-danger" onclick="alert(JSON.stringify(json))">
 									Ver condiciones (JSON)
 								</button>
-							</center>
-						</div><hr>
-						<h2>¿Quién aplica para esta fórmula? </h2>
-						
-						<div style="width: 100%" class="w3-display-top">
-							<label for="select_campo">Condicionar campo:</label>
-							<select class="form-control" id="select_campo">
-								<option value="seleccione">-- Seleccione --</option>
-								<option value="estado">Estado</option>
-								<option value="genero">Género</option>
-								<option value="estatus">Estatus</option>
-								<option value="grado_instruccion">Grado de instrucción</option>
-								<option value="categoria">Categoría</option>
-								<option value="cargo">Cargo</option>	
-								<option value="dedicacion">Dedicación</option>
-								<option value="caja_ahorro">Caja de ahorro</option>
-								<option value="numero_hijos">Hijos</option>
-								<option value="cualquiera">* Aplica para cualquier tipo de personal *</option>
-							</select>
-						</div>
-						<div style="width: 100%" id="items">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row w3-border w3-margin">
-				<div class="col">
-					<div class="w3-padding">
-						<div class="w3-round bg-danger text-white" style="padding: 5px"><center><h4>Parámetros de la fórmula</h4></center></div>
-						<hr>
-						<div class="row">
-							<div class="col">
-								<article class="form-group">
-									<header>Descripción</header>
-									<textarea placeholder="Nombre de la fórmula" id="descripcion_formula" style="width: 100%"></textarea>
-								</article>
-								<article class="form-group">
-									<header>Vigente desde</header>
-									<input type="date" class="form-control" id="vigencia">
-								</article>
-								<article class="form-group">
-									<header>Tipo de concepto</header>
-									<select class="form-control" id="tipo_concepto">
-										<option value="prima salarial">Prima salarial</option>
-										<option value="deduccion salarial">Deducción salarial</option>
-										<option value="bono salarial">Bono salarial</option>
-										<option value="bono alimentacion">Bono de alimentación</option>
-										<option value="aporte_patronal">Aporte patronal</option>
-									</select>
-								</article>
 							</div>
-							<div class="col">
-								<article class="form-group">
-									<header>Tipo de sueldo</header>
-									<select class="form-control" id="tipo_sueldo">
-										<option value="sueldo basico">Sueldo básico</option>
-										<option value="sueldo normal">Sueldo normal</option>
-										<option value="aporte_patronal">Aporte patronal</option>
-									</select>
-								</article>
-								<article class="form-group">
-									<header>Asignación-Deducción-Aporte</header>
-									<select class="form-control" id="asignacion_deduccion">
-										<option value="asignacion">Asignación</option>
-										<option value="deduccion">Deducción</option>
-										<option value="aporte_patronal">Aporte patronal</option>
-									</select>
-								</article>
-								<article class="form-group">
-									<header>Período de pago</header>
-									<select class="form-control" id="periodo_pago">
-										<option value="semanal">Semanal</option>
-										<option value="mensual" selected="">Mensual</option>
-										<option value="anual">Anual</option>
-									</select>
-								</article>
-							</div>
-						</div>
-						<div class="w3-round bg-danger text-white" style="padding: 5px"><center><h4>Operaciones</h4></center></div>
-						<header style="padding: 10px">Variables posibles: 
-								<strong>unidad_tributaria</strong>,
-								<strong>sueldo_tabla</strong>,
-								<strong>años_antiguedad</strong>,
-								<strong>prima_hijos</strong>,
-								<strong>lunes_del_mes</strong>,
-								<strong>sueldo_normal</strong>
-								<br>
-								Operaciones posible: 
-									<strong>menos</strong>,
-									<strong>mas</strong>,
-									<strong>entre</strong>,
-									<strong>por</strong>
-						</header>
-							<hr>	
-						<div>
-							<div class="form-control">
-								<label for="formula">Fórmula de <b>asignación o deducción</b></label>
-								<textarea placeholder='Escriba su fórmula' id='formula' style='width: 100%;height:100px'></textarea>
-							</div>
-							<div class="form-control" style="display: none" id="contenedor_formula_aporte">
-								<label for="formula">Fórmula de <b>aporte patronal</b></label>
-								<textarea placeholder='Escriba su fórmula' id='formula_aporte' style='width: 100%;height:100px'></textarea>
-							</div>
+							<h2>¿Quién aplica para esta fórmula?</h2>
 							
+							<div style="width: 100%" class="w3-display-top">
+								<label for="select_campo">Condicionar campo:</label>
+								<select class="form-control" id="select_campo">
+									<option value="seleccione">-- Seleccione --</option>
+									<option value="estado">Estado</option>
+									<option value="genero">Género</option>
+									<option value="estatus">Estatus</option>
+									<option value="grado_instruccion">Grado de instrucción</option>
+									<option value="categoria">Categoría</option>
+									<option value="cargo">Cargo</option>	
+									<option value="dedicacion">Dedicación</option>
+									<option value="caja_ahorro">Caja de ahorro</option>
+									<option value="numero_hijos">Hijos</option>
+									<option value="cualquiera">* Aplica para cualquier tipo de personal *</option>
+								</select>
+							</div>
+							<div style="width: 100%" id="items">
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row w3-section">
+					<div class="col">
+						<div class="w3-padding">
+							<div class="w3-round bg-danger text-white w3-padding w3-section w3-center">
+								<h4>Parámetros de la fórmula</h4>
+							</div>
+							<hr>
+							<div class="row parametros_formula">
+								<div class="col">
+									<article class="form-group">
+										<header>Descripción</header>
+										<textarea placeholder="Nombre de la fórmula" id="descripcion_formula" style="width: 100%"></textarea>
+									</article>
+									<article class="form-group">
+										<header>Vigente desde</header>
+										<input type="date" class="form-control" id="vigencia">
+									</article>
+									<article class="form-group">
+										<header>Tipo de concepto</header>
+										<select class="form-control" id="tipo_concepto">
+											<option value="prima salarial">Prima salarial</option>
+											<option value="deduccion salarial">Deducción salarial</option>
+											<option value="bono salarial">Bono salarial</option>
+											<option value="bono alimentacion">Bono de alimentación</option>
+											<option value="aporte_patronal">Aporte patronal</option>
+											<option value="salario">** Salario **</option>
+										</select>
+									</article>
+								</div>
+								<div class="col">
+									<article class="form-group">
+										<header>Tipo de sueldo</header>
+										<select class="form-control" id="tipo_sueldo">
+											<option value="sueldo basico">Sueldo básico</option>
+											<option value="sueldo normal">Sueldo normal</option>
+											<option value="aporte_patronal">Aporte patronal</option>
+											<option value="salario">** Salario **</option>
+										</select>
+									</article>
+									<article class="form-group">
+										<header>Asignación-Deducción-Aporte</header>
+										<select class="form-control" id="asignacion_deduccion">
+											<option value="asignacion">Asignación</option>
+											<option value="deduccion">Deducción</option>
+											<option value="aporte_patronal">Aporte patronal</option>
+										</select>
+									</article>
+									<article class="form-group">
+										<header>Período de pago</header>
+										<select class="form-control" id="periodo_pago">
+											<option value="semanal">Semanal</option>
+											<option value="mensual" selected="">Mensual</option>
+											<option value="anual">Anual</option>
+										</select>
+									</article>
+								</div>
+							</div>
+							<hr>
+							<div class="w3-round bg-danger text-white w3-center w3-padding">
+								<h4>Operaciones</h4>
+							</div>
+								<header style="padding: 10px">Variables posibles: 
+										<strong>unidad_tributaria</strong>,
+										<strong>sueldo_tabla</strong>,
+										<strong>años_antiguedad</strong>,
+										<strong>prima_hijos</strong>,
+										<strong>lunes_del_mes</strong>,
+										<strong>sueldo_normal</strong>
+										<br>
+										Operaciones posible: 
+											<strong>menos</strong>,
+											<strong>mas</strong>,
+											<strong>entre</strong>,
+											<strong>por</strong>
+								</header>
+								<hr>	
+							<div>
+								<div class="form-control">
+									<label for="formula">Fórmula de <b>asignación o deducción</b></label>
+									<textarea placeholder='Escriba su fórmula' id='formula' style='width: 100%;height:100px'></textarea>
+								</div>
+								<div class="form-control" style="display: none" id="contenedor_formula_aporte">
+									<label for="formula">Fórmula de <b>aporte patronal</b></label>
+									<textarea placeholder='Escriba su fórmula para un Aporte Patronal' id='formula_aporte' style='width: 100%;height:100px'></textarea>
+								</div>
+								
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-4" style="height: 100%;overflow-y: auto;">
-			<center><h3>Repositorio de fórmulas</h3></center>	
-			
-			<table class="table table-responsive">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Descripción</th>
-					</tr>
-				</thead>
-				<tbody id="resultados"></tbody>
-			</table>
+			<div class="col-4 table-responsive">
+				<h3 class="w3-center">Repositorio de fórmulas</h3>
+				
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Descripción</th>
+						</tr>
+					</thead>
+					<tbody id="resultados"></tbody>
+				</table>
+			</div>
 		</div>
 	</div>
+	
 </body>
 </html>

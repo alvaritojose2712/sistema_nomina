@@ -659,8 +659,7 @@
 			cursor: pointer;
 		}
 		li:hover{
-			color: green;
-			font-size: 35px;
+			color: #00ABBA;
 			cursor: pointer;
 			transition: 0.5s;
 		}
@@ -696,14 +695,14 @@
 </head>
 <body class="">
 	<div class="contenedor-agregar-condicion w3-display-topmiddle">
-		<div class="card container w3-card-4 w3-display-middle" style="width: 700px;position: fixed;z-index: 2150">
+		<div class="card container w3-card-4 w3-display-topmiddle" style="width: 700px;position: fixed;z-index: 2150;">
 			<div class="row bg-white text-warning">
 				<button class="fa fa-close btn btn-white col-2" onclick="$('.contenedor-agregar-condicion').toggle('display')"></button>
 				<div class="col">
 					<span class="w3-right nombre_entidad" style="text-shadow:1px 1px 0 #444"></span>
 				</div>
 			</div>
-			<div class="row w3-padding-32 bg-warning">
+			<div class="row w3-padding-32 bg-warning" style="overflow-y: auto;height: 700px">
 				<ul class="w3-ul w3-hoverable list_entidad" style="width: 100%">
 				  
 				</ul>
