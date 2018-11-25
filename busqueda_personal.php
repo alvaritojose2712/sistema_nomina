@@ -492,7 +492,7 @@
 		   		},
 		        type:"post",
 		        datatype:"json",
-		        beforeSend:function (x) {
+		        beforeSend:function () {
 		        	$(".personas_opera_espec").append('<center><div><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div></center>')
 		        },
 		        success:function(response)
@@ -505,10 +505,10 @@
 						operaciones_especiales = JSON.parse(operaciones_especiales)
 						operaciones_especiales_json = operaciones_especiales
 						for(i in operaciones_especiales){
-							var c = res[i]['Cédula']
-							var n = res[i]['Nombres']
-							var active = ($(".list_opera_espec").find('.active').length==0)?"active":""
-							$(".list_opera_espec").append('<div class="btn-group w3-margin-bottom select_opera_espec_'+c+'" style="width: 100%">\
+							let c = res[i]['Cédula']
+							let n = res[i]['Nombres']
+							let active = ($(".list_opera_espec").find('.active').length==0)?"active":""
+							$(".list_opera_espec").append('<div class="btn-group w3-margin-bottom w-100 select_opera_espec_'+c+'">\
 					  						<button type="button" style="width: 20%" class="btn btn-warning borrar_user_opera_espec"><i class="fa fa-close"></i></button>\
 					  						<button type="button" style="width: 80%" class="btn btn-secondary button_opera_espec '+active+'">'+n+' <span class="cedula_ready active">'+c+'</span></button>\
 					  					</div>')
@@ -1132,7 +1132,7 @@
 							<td>"+cedula+"</td>\
 							<td>"+apellidos+", "+nombres+"</td>\
 							<td class='td_estado_seleccion_envio_recibo'><div style='display:none' class='w3-center'><i class='fa fa-check'></i></div><div></div></td>\
-							<td>"+cedula+"</td>\
+							<td class='enviado-recibo-multiple'></td>\
 						</tr>"
 						
 						$(".personas-a-enviar-recibo").append(html)
@@ -1140,6 +1140,9 @@
 				}
 			}
 
+		})
+		$(document).on("click",".boton-enviar-multiples-recibos",function() {
+			$(".enviado-recibo-multiple").html("<i class='fa fa-pulse fa-spinner'></i>")
 		})
 		$(document).on("click",".td_estado_seleccion_envio_recibo",function() {
 			$(this).toggleClass('seleccionado').find("div").toggle();

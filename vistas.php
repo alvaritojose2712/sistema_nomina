@@ -5,6 +5,7 @@
 	<title> .: Sistema de Nómina :.</title>
 	<link rel="stylesheet" href="css/w3.css">
 	<link rel="stylesheet" href="css/hover/css/hover.css">
+	<link rel="shortcut icon" type="image/png" href="image/sinapsis/sinapsis-icon.png"/>
 	<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
@@ -174,7 +175,7 @@
 				</div>
 			</a>
 		<span class="dropdown-header h2 text-muted">Personal</span>
-			<a class="dropdown-item sessiones" href="#" title="ficha_personal/index.php">	
+			<a class="dropdown-item sessiones" href="#" title="ficha_personal_new/index.php">	
 				<div class="row">
 					<div class="col-3"><i class="text-muted fa fa-search fa-3x"></i></div>
 					<div class="col">
@@ -183,7 +184,7 @@
 					</div>
 				</div>
 			</a>
-			<a class="dropdown-item sessiones" href="#" title="ficha_personal/incluir_personal.php">
+			<a class="dropdown-item sessiones" href="#" title="ficha_personal_new/incluir.php">
 				<div class="row">
 					<div class="col-3"><i class="text-muted fa fa-user-plus fa-3x"></i></div>
 					<div class="col">

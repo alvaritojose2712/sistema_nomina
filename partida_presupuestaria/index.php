@@ -196,7 +196,7 @@
 							var json = eval("json_partidas_disponibles"+string)
 							$("body").animate({"backgroundColor":"#C1FFD0"},250)
 							$(".input_partidas").animate({"borderColor":"#008E22"},250)
-							$(".modo-actual").text("Espacio disponible").animate({"color":"#1CFF1C"},250)
+							$(".modo-actual").text("Espacio disponible").animate({"color":"#009A00"},250)
 							
 						}catch(err){
 							$("body").animate({"backgroundColor":"#FFC1C4"},250)

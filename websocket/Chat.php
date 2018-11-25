@@ -136,7 +136,7 @@
 			cursor: pointer;
 		}
 		.show-msj{
-			font-size: 35px
+			font-size: 50px
 		}
 		.mensaje{
 			word-wrap: break-word;

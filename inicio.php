@@ -92,8 +92,8 @@
 			<button type="button" class="btn btn-primary" onclick="pagina_actual('operaciones_parametros_nomina/index.php')">Crear nueva nómina</button>
 			<button type="button" class="btn btn-primary" onclick="pagina_actual('operaciones_parametros_nomina/select_nomina.php')">Seleccionar nómina</button>
 			<button type="button" class="btn btn-primary" onclick="pagina_actual('constancia/index.php')">Generar constancia de trabajo</button>
-			<button type="button" class="btn btn-success " onclick="pagina_actual('ficha_personal/index.php')">Buscar personal</button>
-			<button type="button" class="btn btn-success " onclick="pagina_actual('ficha_personal/incluir_personal.php')">Incluir personal nuevo</button>
+			<button type="button" class="btn btn-success " onclick="pagina_actual('ficha_personal_new/index.php')">Buscar personal</button>
+			<button type="button" class="btn btn-success " onclick="pagina_actual('ficha_personal_new/incluir_personal.php')">Incluir personal nuevo</button>
 			<button type="button" class="btn btn-danger " onclick="pagina_actual('creador_formulas/formulas_creator.php')">Agregar nuevas fórmulas</button>	
 			<button type="button" class="btn btn-danger " onclick="pagina_actual('parametros_globales/')">Globales</button>	
 		</div>

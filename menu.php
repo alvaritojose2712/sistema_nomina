@@ -318,9 +318,6 @@
 			padding: 10px
 		}
 
-		.icon-send{
-			
-		}
 		.boton-chat {
 			position: relative;
 			background: #88b7d5;
@@ -427,7 +424,7 @@
 					  <div class="collapse navbar-collapse" id="navbarText">
 					    <ul class="navbar-nav mr-auto">
 					      <li class="nav-item">
-					        <a class="nav-link" href="#">Acerca de Sinapsis</a>
+					        <a class="nav-link" href="#" onclick="$('#modal_acerca_de').modal()">Acerca de Sinapsis</a>
 					      </li>
 					    </ul>
 					    <span class="navbar-text">
@@ -499,7 +496,7 @@
 								</div>
 								<div class="col">
 									<h6><u>Buscar personal</u></h6>
-									<span title="ficha_personal/index.php" class="btn-outline-primary  w3-hover-text-white w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal text-white">
+									<span title="ficha_personal_new/index.php" class="btn-outline-primary  w3-hover-text-white w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal text-white">
 									Vamos! 
 									</span>
 								</div>
@@ -512,7 +509,7 @@
 								</div>
 								<div class="col">
 									<h6><u>Incluir nuevo personal</u></h6>
-									<span title="ficha_personal/incluir_personal.php" class="btn-outline-primary  w3-hover-text-white w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal text-white">
+									<span title="ficha_personal_new/incluir.php" class="btn-outline-primary  w3-hover-text-white w3-btn w3-border w3-border-blue link_opciones hvr-icon-wobble-horizontal text-white">
 									Vamos! 
 									</span>
 								</div>
@@ -700,5 +697,37 @@
 	    </div>
 	  </div>
 	</div>
+	<div class="modal fade" id="modal_acerca_de">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Sobre SINAPSIS</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<p>
+				SINAPSIS, orientado a procesar todos y cada uno de procedimientos administrativos que se lleva a cabo en la Unidad de Recursos humanos de la Universidad Politécnica territorial del Alto Apure “Pedro Camejo”.
+				<ul class="w3-ul"> 
+					<li>Emisión de nóminas</li>
+					<li>Recibos de pago</li>
+					<li>Aportes Patronales</li>
+					<li>Constancias de trabajo</li>
+					<li>Motor de documentos</li>
+					<li>Administrar personal</li>
+					<li>Partidas presupuestarias</li>
+					<li>Prestaciones Sociales</li>
+					<li>CestaTicket</li>
+				</ul>
+			</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 </body>
 </html>

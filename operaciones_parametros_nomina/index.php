@@ -489,7 +489,10 @@
 			} 
 			return JSON.stringify(json_condiciones_campo)
 		}
-		
+		$(document).on("click",".open-modo-new-division",function() {
+			$('#modal_nombre_division').modal();
+			$('#nombre_division').focus()
+		})
 	</script>
 
 	<style type="text/css">
@@ -501,7 +504,7 @@
 			font-family: 'Open Sans', sans-serif;
 		}	
 		strong:hover{
-			color:#563d7c;
+			color:#033140;
 		}
 		.btn,.item_a_especial{
 			cursor: pointer;
@@ -512,7 +515,32 @@
 		}
 		#a_especiales{
 			display: inline-block;
-			z-index: 2500
+			z-index: 2500;
+			border: 4px solid #F5C2C9;
+			position: relative;
+		}
+		#a_especiales:after, #a_especiales:before {
+			top: 100%;
+			left: 50%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+
+		#a_especiales:after {
+			border-color: rgba(136, 183, 213, 0);
+			border-top-color: #d9534f;
+			border-width: 15px;
+			margin-left: -15px;
+		}
+		#a_especiales:before {
+			border-color: rgba(194, 225, 245, 0);
+			border-top-color: #F5C2C9;
+			border-width: 21px;
+			margin-left: -21px;
 		}
 	</style>
 </head>
@@ -520,15 +548,18 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col">
-				<div class="btn-group-vertical h-100">
-					<button class="btn-lg btn btn-outline-secundary text-white" style="background-color: #001819" onclick="$('#modal_nombre_division').modal()"><i class="fa fa-plus"></i> división</button>
-					<button class="btn-lg btn btn-outline-secundary text-white" style="background-color: #00585D" onclick="$('#bar_formulas').modal()"><i class="fa fa-plus"></i> fórmula</button>
-					<button class="btn-lg btn btn-outline-secundary text-white" style="background-color: #008C94" onclick="alert(json_create())">Ver Divisiones (JSON)</button>
-					<button class="btn-lg btn btn-outline-secundary text-inverse" style="background-color: #00C6D1" onclick="alert(crear_json_condiciones())">Ver condiciones (JSON)</button>
-					<button class="btn-lg btn btn-outline-secundary text-inverse" style="background-color: #00F2FF" onclick="save()"><i class="fa fa-save"></i> Guardar</button>
+				<div class="btn-group-vertical h-100 w3-display-middle">
+					<button class="btn-lg btn btn-outline text-white open-modo-new-division" style="background-color: #001819"><i class="fa fa-plus"></i> división</button>
+					<button class="btn-lg btn btn-outline text-white" style="background-color: #00585D" onclick="$('#bar_formulas').modal()"><i class="fa fa-plus"></i> fórmula</button>
+					<button class="btn-lg btn btn-outline text-white" style="background-color: #008C94" onclick="alert(json_create())">Ver Divisiones (JSON)</button>
+					<button class="btn-lg btn btn-outline text-inverse" style="background-color: #00C6D1" onclick="alert(crear_json_condiciones())">Ver condiciones (JSON)</button>
+					<button class="btn-lg btn btn-outline text-inverse" style="background-color: #00F2FF" onclick="save()"><i class="fa fa-save"></i> Guardar</button>
 				</div>
 			</div>
 			<div class="col-md-10 w3-padding-xlarge">
+				<div class="form-group w3-section w3-center">
+					<h1>Crear nueva nómina de pago <i class="fa fa-file-o"></i></h1>
+				</div>
 				<div class="form-group w3-section">
 					<label for="nombre_nomina"><h3>Denominación de la nómina</h3></label>
 					<input type="text" placeholder="Nombre de la nómina" id="nombre_nomina" class="form-control-lg form-control">
@@ -552,35 +583,39 @@
 				</div>
 				<hr>
 				<div class="form-group w3-section">
-					<h2>Condicionar Nómina <span class="open-condiciones"><i class="fa fa-arrow-down"></i><i class="fa fa-arrow-up" style="display: none"></i></span></h2>
-					<div class="group-condiciones table-responsive w-100" style="">
-
-					</div>
 					
-				</div>
-				<div class="form-group w3-section">
 					<div class="" style="display: block;">
-						<h1>Divisiones</h1>
+						<h1>Divisiones <button class="btn btn-outline-primary open-modo-new-division"><i class="fa fa-plus"></i></button></h1>
 					</div>
-					<div class=" w3-section" style="display: block;">
-						<div class="w3-padding w3-card-4 bg-danger text-white w3-round" id="a_especiales" style="display: none">
+					<div class="" style="display: block;">
+						<input type="text" placeholder="Aplicar a todos (Solo esta División)" style="text-align: right;" class="form-control form-control-lg aplicar_todos" onkeypress="return soloNumeros(event)" maxlength="3" style="width: 50px">
+					</div>
+					<div class="w3-section" style="display: block;margin-bottom: 20px">
+						<div class="w3-padding w3-card-2 bg-danger text-white w3-round-large" id="a_especiales" style="display: none">
 							<textarea hidden="" class="valor_a_especiales"></textarea>
 							<strong class="item_a_especial renombrar_division">1- Renombrar</strong><br>
 							<strong class="item_a_especial eliminar_division">2- Eliminar</strong>
 						</div>
 					</div>
-					<div class="" style="display: block;">
-						<div class="btn-group" id="d-head">	
-					</div> 	
+					<div class="w3-section-large" style="display: block;">
+						<div class="form-group">
+							<div class="btn-group" id="d-head">	
+							</div> 
+						</div>	
+						<div class="form-group w3-section">
+							<div id="d-body">
+							</div> 	
+						</div>
 					</div>	
-				</div>	
-				<div class="form-group w3-section">
-					<input type="text" placeholder="Aplicar a todos (Solo esta División)" style="text-align: right;" class="form-control aplicar_todos" onkeypress="return soloNumeros(event)" maxlength="3">
 				</div>
-				<div class="form-group w3-section">
-					<div id="d-body">
-					</div> 	
+				<hr>	
+				<div class="form-group" style="margin-top: 50px">
+					<h2>Condicionar Nómina <span class="open-condiciones"><i class="fa fa-arrow-down"></i><i class="fa fa-arrow-up" style="display: none"></i></span></h2>
+					<div class="group-condiciones table-responsive w-100 w3-section" style="">
+
+					</div>
 				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -607,7 +642,7 @@
 	<div class="modal" id="modal_notificacion">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
-	      <div class="modal-body notificacion alert alert-success">
+	      <div class="modal-body notificacion alert alert-success w3-center">
 	        
 	      </div>
 	      <div class="modal-footer">
@@ -630,7 +665,7 @@
 	        </div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-outline-success guardar_division"><i class="fa fa-arrow-send"></i> Aceptar</button>
+	        <button type="button" class="btn btn-outline-primary guardar_division"><i class="fa fa-arrow-send"></i> Aceptar</button>
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 	      </div>
 	    </div>

@@ -30,7 +30,8 @@
 			}
 		</script>
 		<script type="text/javascript">
-
+			
+			
 			var cat_car_dedic = <?php echo $valores['cat_car_dedic']; ?>;
 			var estado = <?php echo $valores['estado']; ?>;
 			var estatus = <?php echo $valores['estatus']; ?>;
@@ -89,7 +90,7 @@
 					for(i in inputs_select){
 						if($(inputs_select[i]).val()=="-Seleccione-" || $(inputs_select[i]).val()==null || $(inputs_select[i]).val()==""){
 							validar_select = false;
-							alert('Campo inválido: '+$(inputs_select[i]).siblings('label').text())
+							alert('Campo inválido: <i class="fa fa-exclamation-triangle"></i> '+$(inputs_select[i]).siblings('label').text())
 							break;
 						}
 					}
@@ -99,7 +100,7 @@
 					for(i in inputs_text){
 						if($(inputs_text[i]).val()=="-Seleccione-" || $(inputs_text[i]).val()==null || $(inputs_text[i]).val()==""){
 							validar_input = false;
-							alert('Campo inválido: '+$(inputs_text[i]).siblings('label').text())
+							alert('Campo inválido: <i class="fa fa-exclamation-triangle"></i> '+$(inputs_text[i]).siblings('label').text())
 							break;
 						}
 					}

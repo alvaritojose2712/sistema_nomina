@@ -286,7 +286,7 @@
 	$json_divisiones = json_decode($id_nomina['divisiones'],true);
 	$json_filtros = json_decode($id_nomina['filtros'],true);
 	$filtros = ""; 
-	if (count($filtros)>0) {
+	if (count($json_filtros)>0) {
 
 		foreach ($json_filtros as $campo => $sub_array) {
 			$filtros.=" AND ";

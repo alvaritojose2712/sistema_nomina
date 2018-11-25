@@ -133,17 +133,17 @@
 
 		$actualizar = (new sql("personal_upt",'WHERE id='.$_POST['Id'],$values))->update();
 			
-			if ($actualizar==1 || $actualizar=="0 registros afectados") {
-				echo "Actualizado";
-				(new sql("hijos_personal","cedula_representante='".$_POST['cedula']."'"))->delete();
-				if (isset($_POST['hijos'])) {
-					foreach ($_POST['hijos'] as $clave_sub_array => $sub_array) {
-						(new sql("hijos_personal","'".$sub_array['nombre']."','".$sub_array['apellido']."','".$_POST['cedula']."','".$sub_array['fecha_nacimiento']."','".$sub_array['estudia']."','".$sub_array['discapacidad']."'",'nombre,apellido,cedula_representante,fecha_nacimiento,estudia,discapacidad'))->insert();		
-					}
+		if ($actualizar==1 || $actualizar=="0 registros afectados") {
+			echo "Actualizado con éxito";
+			(new sql("hijos_personal","cedula_representante='".$_POST['cedula']."'"))->delete();
+			if (isset($_POST['hijos'])) {
+				foreach ($_POST['hijos'] as $clave_sub_array => $sub_array) {
+					(new sql("hijos_personal","'".$sub_array['nombre']."','".$sub_array['apellido']."','".$_POST['cedula']."','".$sub_array['fecha_nacimiento']."','".$sub_array['estudia']."','".$sub_array['discapacidad']."'",'nombre,apellido,cedula_representante,fecha_nacimiento,estudia,discapacidad'))->insert();		
 				}
-			}else{
-				echo $actualizar;
 			}
+		}else{
+			echo $actualizar;
+		}
 	}
 ?>
 

@@ -84,7 +84,7 @@
 				        	if (response=="false") {
 				        		$("#notificacion")
 				        		.empty()
-				        		.append("Lo sentimos, pero eso no funcionó, <b>por favor intente de nuevo!</b>")
+				        		.append("Lo sentimos, pero eso no funcionó, <b>por favor intente de nuevo.</b>")
 				        		$('#clave').val("");
 				        	}
 				        	else{
@@ -145,7 +145,7 @@
 			font-family: 'Open Sans', sans-serif;
 
 			background-image: url(image/math.jpg);
-			font-size: 15px
+			font-size: 30px
 
 		}
 		.panel_derecho{
@@ -195,7 +195,7 @@
 								<span class="escritor" id="escritor">&nbsp;&nbsp;</span>
 							</h4>
 							<p class="w3-section">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid adipisci non quod qui, pariatur laborum maiores recusandae cumque ab, officiis aut voluptatibus soluta. Provident, beatae nisi aliquam. Cumque repellendus, perspiciatis.
+								SINAPSIS, orientado a procesar todos y cada uno de procedimientos administrativos que se lleva a cabo en la Unidad de Recursos humanos de la Universidad Politécnica territorial del Alto Apure “Pedro Camejo”.
 							</p>
 						</div>
 					</div>
